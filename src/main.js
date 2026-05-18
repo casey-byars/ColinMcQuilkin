@@ -51,12 +51,14 @@ document.querySelector('#app').innerHTML = `
 
     <!-- ROW 2-3: Nike + Silent Light on left, AI Lab spanning 2 rows on right -->
     <a href="#" class="project-card col-span-2 aspect-[4/3]">
+      <video class="card-video" src="https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev/grid-4-nike-fuel-band.mp4" muted loop playsinline></video>
       <div class="card-overlay">
         <span class="card-client">NIKE</span>
         <span class="card-title">FUEL BAND</span>
       </div>
     </a>
     <a href="#" class="project-card col-span-2 aspect-[4/3]">
+      <video class="card-video" src="https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev/grid-5-silent-light.mp4" muted loop playsinline></video>
       <div class="card-overlay">
         <span class="card-client">WALTER ANDERSON</span>
         <span class="card-title">SILENT LIGHT</span>
@@ -71,12 +73,14 @@ document.querySelector('#app').innerHTML = `
 
     <!-- ROW 3: Trampled + G-Pods fill remaining 4 cols -->
     <a href="#" class="project-card col-span-2 aspect-[4/3]">
+      <video class="card-video" src="https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev/grid-7-trampled.mp4" muted loop playsinline></video>
       <div class="card-overlay">
         <span class="card-client">CMD</span>
         <span class="card-title">TRAMPLED FABRICATION</span>
       </div>
     </a>
     <a href="#" class="project-card col-span-2 aspect-[4/3]">
+      <video class="card-video" src="https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev/grid-g-pods.mp4" muted loop playsinline></video>
       <div class="card-overlay">
         <span class="card-client">CMD</span>
         <span class="card-title">G-PODS</span>
@@ -85,6 +89,7 @@ document.querySelector('#app').innerHTML = `
 
     <!-- ROW 4 -->
     <a href="#" class="project-card col-span-4 aspect-[4/1]">
+      <video class="card-video" src="https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev/grid-under-the-oaks.mp4" muted loop playsinline></video>
       <div class="card-overlay">
         <span class="card-client">LAUREN RODGERS MUSEUM OF ART</span>
         <span class="card-title">UNDER THE OAKS</span>
