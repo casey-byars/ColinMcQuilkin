@@ -83,7 +83,7 @@ document.querySelector('#app').innerHTML = `
         <span class="card-title">SILENT LIGHT</span>
       </div>
     </a>
-    <a href="#" class="project-card col-span-1 aspect-video md:col-span-2 md:row-span-2" style="background-image: url('${R2}/grid-6-ai-lab.jpg'); background-size: cover; background-position: left center;">
+    <a href="#" class="project-card col-span-1 aspect-video md:aspect-auto md:col-span-2 md:row-span-2" style="background-image: url('${R2}/grid-6-ai-lab.jpg'); background-size: cover; background-position: left center;">
       <div class="card-overlay">
         <span class="card-client">CMD</span>
         <span class="card-title">IMMERSION 360 AI LAB</span>
