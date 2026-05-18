@@ -114,7 +114,7 @@ document.querySelector('#app').innerHTML = `
         <span class="card-title">UNDER THE OAKS</span>
       </div>
     </a>
-    <a href="#" class="project-card col-span-1 aspect-video md:col-span-2 md:aspect-[2/1]">
+    <a href="#" class="project-card col-span-1 aspect-video md:col-span-2 md:aspect-[2/1]" style="background-image: url('${R2}/grid-10-public-art.png'); background-size: cover; background-position: center;">
       <div class="card-overlay">
         <span class="card-client">COLIN MCQUILKIN DESIGN</span>
         <span class="card-title">CMDESIGN PUBLIC ART</span>
