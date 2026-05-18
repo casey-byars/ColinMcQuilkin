@@ -27,7 +27,7 @@ document.querySelector('#app').innerHTML = `
   <section class="px-4 pb-4 grid grid-cols-6 gap-[3px]">
 
     <!-- ROW 1: 3 equal columns -->
-    <a href="#" class="project-card col-span-1 aspect-[90/91]" style="background-image: url('/images/mazda_car.jpeg'); background-size: cover; background-position: center;">
+    <a href="#" class="project-card col-span-1 aspect-[90/91]" style="background-image: url('https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev/mazda_car.jpeg'); background-size: cover; background-position: center;">
       <div class="card-overlay">
         <span class="card-client">MAZDA</span>
         <span class="card-title">MUSIC IN DIFFERENT LIGHT</span>
