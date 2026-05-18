@@ -64,7 +64,7 @@ document.querySelector('#app').innerHTML = `
         <span class="card-title">SILENT LIGHT</span>
       </div>
     </a>
-    <a href="#" class="project-card col-span-2 row-span-2">
+    <a href="#" class="project-card col-span-2 row-span-2" style="background-image: url('https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev/grid-6-ai-lab.jpg'); background-size: cover; background-position: center;">
       <div class="card-overlay">
         <span class="card-client">CMD</span>
         <span class="card-title">IMMERSION 360 AI LAB</span>
