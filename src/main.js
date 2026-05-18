@@ -1,5 +1,7 @@
 import './style.css'
 
+const R2 = 'https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev'
+
 document.querySelector('#app').innerHTML = `
   <!-- NAV -->
   <nav class="flex items-center justify-between px-10 py-6 border-b border-neutral-800">
@@ -24,63 +26,63 @@ document.querySelector('#app').innerHTML = `
   </section>
 
   <!-- PROJECT GRID -->
-  <section class="px-4 pb-4 grid grid-cols-6 gap-[3px]">
+  <section class="px-4 pb-4 grid grid-cols-1 md:grid-cols-6 gap-[3px]">
 
-    <!-- ROW 1: 3 equal columns -->
-    <a href="#" class="project-card col-span-1 aspect-[90/91]">
-      <video class="card-video" src="https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev/hype-hotel-mazda.mp4" muted loop playsinline></video>
+    <!-- ROW 1 -->
+    <a href="#" class="project-card col-span-1 aspect-video md:aspect-[90/91]">
+      <video class="card-video" src="${R2}/hype-hotel-mazda.mp4" muted loop playsinline></video>
       <div class="card-overlay">
         <span class="card-client">MAZDA</span>
         <span class="card-title">MUSIC IN DIFFERENT LIGHT</span>
       </div>
     </a>
-    <a href="#" class="project-card col-span-3 aspect-[3/1]">
-      <video class="card-video" src="https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev/starlight-final-four.mp4" muted loop playsinline></video>
+    <a href="#" class="project-card col-span-1 aspect-video md:col-span-3 md:aspect-[3/1]">
+      <video class="card-video" src="${R2}/starlight-final-four.mp4" muted loop playsinline></video>
       <div class="card-overlay">
         <span class="card-client">COCA-COLA</span>
         <span class="card-title">STARLIGHT FINAL FOUR</span>
       </div>
     </a>
-    <a href="#" class="project-card col-span-2 aspect-[2/1]">
-      <video class="card-video" src="https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev/spectrum-analyzer.mp4" muted loop playsinline></video>
+    <a href="#" class="project-card col-span-1 aspect-video md:col-span-2 md:aspect-[2/1]">
+      <video class="card-video" src="${R2}/spectrum-analyzer.mp4" muted loop playsinline></video>
       <div class="card-overlay">
         <span class="card-client">MAZDA</span>
         <span class="card-title">SPECTRUM ANALYZER</span>
       </div>
     </a>
 
-    <!-- ROW 2-3: Nike + Silent Light on left, AI Lab spanning 2 rows on right -->
-    <a href="#" class="project-card col-span-2 aspect-[4/3]">
-      <video class="card-video" src="https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev/grid-4-nike-fuel-band.mp4" muted loop playsinline></video>
+    <!-- ROW 2-3 -->
+    <a href="#" class="project-card col-span-1 aspect-video md:col-span-2 md:aspect-[4/3]">
+      <video class="card-video" src="${R2}/grid-4-nike-fuel-band.mp4" muted loop playsinline></video>
       <div class="card-overlay">
         <span class="card-client">NIKE</span>
         <span class="card-title">FUEL BAND</span>
       </div>
     </a>
-    <a href="#" class="project-card col-span-2 aspect-[4/3]">
-      <video class="card-video" src="https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev/grid-5-silent-light.mp4" muted loop playsinline></video>
+    <a href="#" class="project-card col-span-1 aspect-video md:col-span-2 md:aspect-[4/3]">
+      <video class="card-video" src="${R2}/grid-5-silent-light.mp4" muted loop playsinline></video>
       <div class="card-overlay">
         <span class="card-client">WALTER ANDERSON</span>
         <span class="card-title">SILENT LIGHT</span>
       </div>
     </a>
-    <a href="#" class="project-card col-span-2 row-span-2" style="background-image: url('https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev/grid-6-ai-lab.jpg'); background-size: cover; background-position: center;">
+    <a href="#" class="project-card col-span-1 aspect-video md:col-span-2 md:row-span-2" style="background-image: url('${R2}/grid-6-ai-lab.jpg'); background-size: cover; background-position: center;">
       <div class="card-overlay">
         <span class="card-client">CMD</span>
         <span class="card-title">IMMERSION 360 AI LAB</span>
       </div>
     </a>
 
-    <!-- ROW 3: Trampled + G-Pods fill remaining 4 cols -->
-    <a href="#" class="project-card col-span-2 aspect-[4/3]">
-      <video class="card-video" src="https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev/grid-7-trampled.mp4" muted loop playsinline></video>
+    <!-- ROW 3 -->
+    <a href="#" class="project-card col-span-1 aspect-video md:col-span-2 md:aspect-[4/3]">
+      <video class="card-video" src="${R2}/grid-7-trampled.mp4" muted loop playsinline></video>
       <div class="card-overlay">
         <span class="card-client">CMD</span>
         <span class="card-title">TRAMPLED FABRICATION</span>
       </div>
     </a>
-    <a href="#" class="project-card col-span-2 aspect-[4/3]">
-      <video class="card-video" src="https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev/grid-g-pods.mp4" muted loop playsinline></video>
+    <a href="#" class="project-card col-span-1 aspect-video md:col-span-2 md:aspect-[4/3]">
+      <video class="card-video" src="${R2}/grid-g-pods.mp4" muted loop playsinline></video>
       <div class="card-overlay">
         <span class="card-client">CMD</span>
         <span class="card-title">G-PODS</span>
@@ -88,14 +90,14 @@ document.querySelector('#app').innerHTML = `
     </a>
 
     <!-- ROW 4 -->
-    <a href="#" class="project-card col-span-4 aspect-[4/1]">
-      <video class="card-video" src="https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev/grid-under-the-oaks.mp4" muted loop playsinline></video>
+    <a href="#" class="project-card col-span-1 aspect-video md:col-span-4 md:aspect-[4/1]">
+      <video class="card-video" src="${R2}/grid-under-the-oaks.mp4" muted loop playsinline></video>
       <div class="card-overlay">
         <span class="card-client">LAUREN RODGERS MUSEUM OF ART</span>
         <span class="card-title">UNDER THE OAKS</span>
       </div>
     </a>
-    <a href="#" class="project-card col-span-2 aspect-[2/1]">
+    <a href="#" class="project-card col-span-1 aspect-video md:col-span-2 md:aspect-[2/1]">
       <div class="card-overlay">
         <span class="card-client">COLIN MCQUILKIN DESIGN</span>
         <span class="card-title">CMDESIGN PUBLIC ART</span>
@@ -105,11 +107,33 @@ document.querySelector('#app').innerHTML = `
   </section>
 `
 
+const isMobile = () => window.innerWidth < 768
+
+// Intersection observer for mobile autoplay
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    const video = entry.target.querySelector('.card-video')
+    if (!video) return
+    if (entry.isIntersecting) {
+      video.play()
+    } else {
+      video.pause()
+      video.currentTime = 0.001
+    }
+  })
+}, { threshold: 0.5 })
+
 document.querySelectorAll('.project-card').forEach(card => {
   const video = card.querySelector('.card-video')
   if (!video) return
+
   video.preload = 'metadata'
   video.addEventListener('loadedmetadata', () => { video.currentTime = 0.001 })
-  card.addEventListener('mouseenter', () => video.play())
-  card.addEventListener('mouseleave', () => { video.pause(); video.currentTime = 0.001 })
+
+  if (isMobile()) {
+    observer.observe(card)
+  } else {
+    card.addEventListener('mouseenter', () => video.play())
+    card.addEventListener('mouseleave', () => { video.pause(); video.currentTime = 0.001 })
+  }
 })
