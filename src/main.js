@@ -27,7 +27,7 @@ document.querySelector('#app').innerHTML = `
   <section class="px-4 pb-4 grid grid-cols-6 gap-[3px]">
 
     <!-- ROW 1: 3 equal columns -->
-    <a href="#" class="project-card col-span-1 aspect-[90/91]" style="background-image: url('https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev/mazda_car.jpeg'); background-size: cover; background-position: center;">
+    <a href="#" class="project-card col-span-1 aspect-[90/91]">
       <video class="card-video" src="https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev/hype-hotel-mazda.mp4" muted loop playsinline></video>
       <div class="card-overlay">
         <span class="card-client">MAZDA</span>
@@ -108,6 +108,8 @@ document.querySelector('#app').innerHTML = `
 document.querySelectorAll('.project-card').forEach(card => {
   const video = card.querySelector('.card-video')
   if (!video) return
+  video.preload = 'metadata'
+  video.addEventListener('loadedmetadata', () => { video.currentTime = 0.001 })
   card.addEventListener('mouseenter', () => video.play())
-  card.addEventListener('mouseleave', () => { video.pause(); video.currentTime = 0 })
+  card.addEventListener('mouseleave', () => { video.pause(); video.currentTime = 0.001 })
 })
