@@ -35,6 +35,7 @@ document.querySelector('#app').innerHTML = `
       </div>
     </a>
     <a href="#" class="project-card col-span-3 aspect-[3/1]">
+      <video class="card-video" src="https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev/starlight-final-four.mp4" muted loop playsinline></video>
       <div class="card-overlay">
         <span class="card-client">COCA-COLA</span>
         <span class="card-title">STARLIGHT FINAL FOUR</span>
