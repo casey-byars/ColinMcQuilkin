@@ -4,9 +4,26 @@ const R2 = 'https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev'
 
 document.querySelector('#app').innerHTML = `
   <!-- NAV -->
-  <nav class="flex items-center justify-between px-10 py-6 border-b border-neutral-800">
-    <div class="text-xl tracking-[0.3em] font-light">CMDESIGN</div>
-    <div class="flex gap-10 text-xs tracking-[0.2em] text-neutral-400 uppercase">
+  <nav class="border-b border-neutral-800">
+    <div class="flex items-center justify-between px-6 md:px-10 py-6">
+      <div class="text-xl tracking-[0.3em] font-light">CMDESIGN</div>
+      <!-- Hamburger -->
+      <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 p-2">
+        <span class="block w-6 h-px bg-white transition-all"></span>
+        <span class="block w-6 h-px bg-white transition-all"></span>
+        <span class="block w-6 h-px bg-white transition-all"></span>
+      </button>
+      <!-- Desktop nav -->
+      <div class="hidden md:flex gap-10 text-xs tracking-[0.2em] text-neutral-400 uppercase">
+        <a href="#" class="hover:text-white transition-colors">Experiences</a>
+        <a href="#" class="hover:text-white transition-colors">Creative Collective</a>
+        <a href="#" class="hover:text-white transition-colors">Platforms</a>
+        <a href="#" class="hover:text-white transition-colors">Immersive Systems</a>
+        <a href="#" class="hover:text-white transition-colors">AI 360 Lab</a>
+      </div>
+    </div>
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden flex-col px-6 pb-6 gap-5 text-xs tracking-[0.2em] text-neutral-400 uppercase">
       <a href="#" class="hover:text-white transition-colors">Experiences</a>
       <a href="#" class="hover:text-white transition-colors">Creative Collective</a>
       <a href="#" class="hover:text-white transition-colors">Platforms</a>
@@ -106,6 +123,13 @@ document.querySelector('#app').innerHTML = `
 
   </section>
 `
+
+// Mobile menu toggle
+document.getElementById('menu-toggle').addEventListener('click', () => {
+  const menu = document.getElementById('mobile-menu')
+  menu.classList.toggle('hidden')
+  menu.classList.toggle('flex')
+})
 
 const isMobile = () => window.innerWidth < 768
 
