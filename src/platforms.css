@@ -1,0 +1,116 @@
+.plat-page-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3.5rem, 10vw, 9rem);
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  color: white;
+  line-height: 1;
+}
+
+.plat-subtitle {
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  color: #999;
+  text-transform: uppercase;
+  max-width: 900px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+.plat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: #222;
+}
+
+.plat-card {
+  display: flex;
+  background: #060606;
+  min-height: 280px;
+}
+
+.plat-text {
+  flex: 1;
+  padding: 1.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.plat-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.25rem;
+  font-weight: 400;
+  color: #5b8fff;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.plat-divider {
+  width: 2rem;
+  height: 1px;
+  background: #5b8fff;
+  margin-bottom: 0.75rem;
+}
+
+.plat-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: white;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+.plat-tags {
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #5b8fff;
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+}
+
+.plat-desc {
+  font-size: 0.7rem;
+  color: #888;
+  line-height: 1.7;
+  flex: 1;
+}
+
+.plat-image {
+  width: 42%;
+  flex-shrink: 0;
+  background: #111;
+  overflow: hidden;
+  position: relative;
+}
+
+.plat-image img,
+.plat-image video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width: 1023px) {
+  .plat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .plat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .plat-card {
+    min-height: 200px;
+  }
+
+  .plat-image {
+    width: 38%;
+  }
+}
