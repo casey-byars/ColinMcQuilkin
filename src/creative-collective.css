@@ -1,0 +1,99 @@
+.cc-page-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 8vw, 7rem);
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  color: white;
+  line-height: 1;
+}
+
+.cc-row {
+  display: flex;
+  border: 1px solid #222;
+  min-height: 320px;
+}
+
+.cc-media {
+  flex: 0 0 65%;
+  position: relative;
+  overflow: hidden;
+  background: #111;
+}
+
+.cc-placeholder {
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  background: #111;
+}
+
+.cc-media img,
+.cc-media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cc-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem;
+  background: #080808;
+  border-left: 1px solid #222;
+}
+
+.cc-project-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.25rem;
+  font-weight: 400;
+  color: white;
+  margin-bottom: 1.25rem;
+  line-height: 1.15;
+}
+
+.cc-description {
+  font-size: 0.875rem;
+  color: #999;
+  line-height: 1.75;
+  margin-bottom: 2rem;
+}
+
+.cc-link {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: opacity 0.2s;
+}
+
+.cc-link:hover {
+  opacity: 0.6;
+}
+
+@media (max-width: 767px) {
+  .cc-row {
+    flex-direction: column;
+  }
+
+  .cc-media {
+    flex: none;
+    min-height: 240px;
+  }
+
+  .cc-text {
+    border-left: none;
+    border-top: 1px solid #222;
+    padding: 2rem 1.5rem;
+  }
+
+  .cc-project-title {
+    font-size: 1.75rem;
+  }
+}
