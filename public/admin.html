@@ -476,6 +476,7 @@
       const res = await fetch(API)
       if (!res.ok) throw new Error()
       original = await res.json()
+      sessionStorage.setItem('cms_pwd', password)
       populate(original)
       document.getElementById('login').style.display = 'none'
       document.getElementById('editor').style.display = 'block'
@@ -484,6 +485,24 @@
       document.getElementById('login-err').style.display = 'block'
     }
   }
+
+  // Restore session on page refresh
+  ;(async () => {
+    const saved = sessionStorage.getItem('cms_pwd')
+    if (!saved) return
+    password = saved
+    try {
+      const res = await fetch(API)
+      if (!res.ok) throw new Error()
+      original = await res.json()
+      populate(original)
+      document.getElementById('login').style.display = 'none'
+      document.getElementById('editor').style.display = 'block'
+      setStatus('Loaded')
+    } catch {
+      sessionStorage.removeItem('cms_pwd')
+    }
+  })()
 
   function populate(data) {
     // Text fields
