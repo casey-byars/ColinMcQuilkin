@@ -47,6 +47,15 @@
     .project-block { border: 1px solid #1a1a1a; padding: 1rem; background: #0a0a0a; }
     .project-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: #444; margin-bottom: 0.75rem; }
     .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem; }
+
+    /* Image upload UI */
+    .img-upload-row { display: flex; align-items: flex-start; gap: 0.75rem; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #1a1a1a; }
+    .img-thumb-box { width: 90px; height: 60px; background: #111; border: 1px solid #222; overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .img-thumb-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .img-thumb-empty { font-size: 0.55rem; color: #444; letter-spacing: 0.1em; text-transform: uppercase; text-align: center; }
+    .upload-label { display: inline-block; background: #1a1a1a; border: 1px solid #2a2a2a; color: #aaa; padding: 0.45rem 0.85rem; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
+    .upload-label:hover { background: #222; color: white; }
+    .img-status { font-size: 0.6rem; letter-spacing: 0.08em; color: #555; margin-top: 0.35rem; }
   </style>
 </head>
 <body>
@@ -109,6 +118,15 @@
     </div>
   </div>
 
+  <!-- PLATFORMS -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Platforms — Cards</span>
+      <span class="section-toggle">▶</span>
+    </div>
+    <div class="section-body" id="plat-cards"></div>
+  </div>
+
   <!-- CONTACT -->
   <div class="section">
     <div class="section-header" onclick="toggle(this)">
@@ -157,6 +175,90 @@
     `
   })
 
+  // ── Platforms card builder ───────────────────────────────────────────────
+  const platCards = [
+    [1, 'Interactive Experiences',      'Interactive · Brand Activation · Immersive',
+      'Interactive experiences that bring brands, museums, and festivals to life through immersive brand activation, interactive installations, and engaging environments.'],
+    [2, 'Projection',                   'Architectural · Environmental · Storytelling',
+      'Transforming surfaces into immersive visual experiences. Precision-mapped content designed to tell stories, elevate brands, and engage audiences.'],
+    [3, 'Education Immersive Interactive', 'Video · Lighting · Set Design · Touring',
+      'Research and development for immersive learning environments. Video, lighting, set design that inspire, educate, and captivate audiences.'],
+    [4, 'Video Content Creation',       'Concept · Shoot · Edit · Animate',
+      'High-impact video content for live shows, installations, and brands. From concept development to final delivery, we bring ideas to life on every screen.'],
+    [5, 'Set Design & Fabrication',     'Design · Engineer · Build',
+      'Custom set and scenic design built in-house. From concept and 3D design to fabrication and installation, we build environments that stand out.'],
+    [6, 'Concert Production Design',    'Video · Lighting · Set Design · Touring',
+      'Full production design for touring artists and live events. Video, lighting, set design, and touring systems that create unforgettable live experiences.'],
+    [7, 'Rentals',                      'Projection · Inflatable Environments · Lighting · Silent Disco',
+      'Modular immersive rental systems featuring projection technology, inflatable environments, lighting, and silent disco experiences.'],
+    [8, 'Consulting & Systems Design',  'Plan · Design · Integrate',
+      'From initial concept to system integration, we help plan and design solutions that deliver results. Technical expertise. Creative vision.'],
+  ]
+
+  const platContainer = document.getElementById('plat-cards')
+  platCards.forEach(([i, defTitle, defTags, defDesc]) => {
+    const num = String(i).padStart(2, '0')
+    platContainer.innerHTML += `
+      <div class="project-block">
+        <div class="project-label">Card ${num}</div>
+        <div class="field"><label>Title</label><input type="text" data-key="plat-${i}-title" placeholder="${defTitle}"></div>
+        <div class="field" style="margin-top:0.5rem"><label>Tags</label><input type="text" data-key="plat-${i}-tags" placeholder="${defTags}"></div>
+        <div class="field" style="margin-top:0.5rem"><label>Description</label><textarea data-key="plat-${i}-desc" placeholder="${defDesc}"></textarea></div>
+        <div class="img-upload-row">
+          <div class="img-thumb-box" id="plat-thumb-${i}">
+            <div class="img-thumb-empty">No image</div>
+          </div>
+          <div>
+            <input type="hidden" data-key="plat-${i}-image" id="plat-img-val-${i}">
+            <label class="upload-label" for="plat-file-${i}">Choose Image</label>
+            <input type="file" id="plat-file-${i}" accept="image/*" style="display:none" onchange="uploadPlatImg(${i}, this)">
+            <div class="img-status" id="plat-img-status-${i}"></div>
+          </div>
+        </div>
+      </div>
+    `
+  })
+
+  // ── Image upload ─────────────────────────────────────────────────────────
+  async function uploadPlatImg(n, input) {
+    const file = input.files[0]
+    if (!file) return
+    const statusEl = document.getElementById(`plat-img-status-${n}`)
+    statusEl.textContent = 'Uploading…'
+    statusEl.style.color = '#888'
+
+    const ext = file.name.split('.').pop().toLowerCase()
+    const key = `platforms/card-${n}.${ext}`
+
+    const fd = new FormData()
+    fd.append('file', file)
+    fd.append('key', key)
+
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${password}` },
+        body: fd,
+      })
+      if (!res.ok) throw new Error(await res.text())
+      const { url } = await res.json()
+
+      // Store URL in hidden input so Save All picks it up
+      document.getElementById(`plat-img-val-${n}`).value = url
+
+      // Show thumbnail
+      const thumb = document.getElementById(`plat-thumb-${n}`)
+      thumb.innerHTML = `<img src="${url}" alt="">`
+
+      statusEl.textContent = 'Uploaded ✓'
+      statusEl.style.color = '#4ade80'
+      setTimeout(() => { statusEl.textContent = '' }, 3000)
+    } catch (e) {
+      statusEl.textContent = 'Error: ' + e.message
+      statusEl.style.color = '#f87171'
+    }
+  }
+
   function setStatus(msg, type = '') {
     const el = document.getElementById('status')
     el.textContent = msg
@@ -191,6 +293,13 @@
       const val = data[el.dataset.key]
       if (val !== undefined) el.value = val
     })
+    // Restore platform image thumbnails
+    for (let i = 1; i <= 8; i++) {
+      const url = data[`plat-${i}-image`]
+      if (!url) continue
+      const thumb = document.getElementById(`plat-thumb-${i}`)
+      if (thumb) thumb.innerHTML = `<img src="${url}" alt="">`
+    }
   }
 
   function collect() {

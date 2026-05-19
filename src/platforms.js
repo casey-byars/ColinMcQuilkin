@@ -5,6 +5,7 @@ import { navHTML, initPage } from './shared.js'
 const R2 = 'https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev'
 
 function card(num, title, tags, desc, mediaKey = null) {
+  const n = parseInt(num)
   const media = mediaKey
     ? `<video src="${R2}/${mediaKey}" muted loop playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;"></video>`
     : ''
@@ -13,11 +14,11 @@ function card(num, title, tags, desc, mediaKey = null) {
       <div class="plat-text">
         <div class="plat-number">${num}</div>
         <div class="plat-divider"></div>
-        <div class="plat-title">${title}</div>
-        <div class="plat-tags">${tags}</div>
-        <p class="plat-desc">${desc}</p>
+        <div class="plat-title" data-ck="plat-${n}-title">${title}</div>
+        <div class="plat-tags" data-ck="plat-${n}-tags">${tags}</div>
+        <p class="plat-desc" data-ck="plat-${n}-desc">${desc}</p>
       </div>
-      <div class="plat-image">${media}</div>
+      <div class="plat-image" id="plat-img-${n}">${media}</div>
     </div>
   `
 }
@@ -74,6 +75,30 @@ document.querySelector('#app').innerHTML = `
 `
 
 initPage('platforms')
+
+// Load CMS text + platform card images from KV
+async function loadPageContent() {
+  try {
+    const data = await fetch('/api/content').then(r => r.json())
+    // Patch text fields
+    document.querySelectorAll('[data-ck]').forEach(el => {
+      const val = data[el.dataset.ck]
+      if (val !== undefined) el.textContent = val
+    })
+    // Inject uploaded images (overrides default video if set)
+    for (let i = 1; i <= 8; i++) {
+      const url = data[`plat-${i}-image`]
+      if (!url) continue
+      const container = document.getElementById(`plat-img-${i}`)
+      if (!container) continue
+      // Pause any existing video first
+      const vid = container.querySelector('video')
+      if (vid) vid.pause()
+      container.innerHTML = `<img src="${url}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">`
+    }
+  } catch { /* fall back to hardcoded content */ }
+}
+loadPageContent()
 
 const isMobile = () => window.innerWidth < 768
 document.querySelectorAll('.plat-card').forEach(card => {
