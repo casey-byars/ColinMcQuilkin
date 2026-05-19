@@ -8,7 +8,7 @@ document.querySelector('#app').innerHTML = `
 
   <!-- HERO TAGLINE -->
   <section class="text-center py-12 px-4">
-    <h1 class="text-xl md:text-2xl tracking-[0.25em] font-extralight mb-3">
+    <h1 class="font-display text-xl md:text-2xl tracking-[0.25em] font-extralight mb-3">
       IMAGINATION <span class="text-neutral-600 mx-1">×</span> INNOVATION <span class="text-neutral-600 mx-1">×</span> ILLUMINATION
     </h1>
     <p class="text-[11px] tracking-[0.3em] text-neutral-500 uppercase">

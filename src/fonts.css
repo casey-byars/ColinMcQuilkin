@@ -1,0 +1,30 @@
+/* ================================================
+   GLOBAL TYPOGRAPHY — Edit here to change site fonts
+   ================================================ */
+:root {
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  /* Page title sizes (fluid) */
+  --title-hero:    clamp(3rem,   9vw, 8.5rem);
+  --title-large:   clamp(2.5rem, 7vw, 7rem);
+  --title-section: clamp(1.75rem, 3vw, 2.75rem);
+
+  /* Label / nav sizes */
+  --text-label: 0.65rem;
+  --text-small: 0.68rem;
+  --text-body:  0.82rem;
+
+  /* Letter spacing */
+  --tracking-hero:  0.2em;
+  --tracking-label: 0.18em;
+  --tracking-wide:  0.3em;
+  --tracking-tight: 0.06em;
+}
+
+body {
+  font-family: var(--font-body);
+}
+
+.font-display { font-family: var(--font-display); }
+.font-body    { font-family: var(--font-body); }

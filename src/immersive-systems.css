@@ -1,5 +1,5 @@
 .is-page-title {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-display);
   font-size: clamp(2.5rem, 7vw, 7.5rem);
   font-weight: 400;
   letter-spacing: 0.1em;

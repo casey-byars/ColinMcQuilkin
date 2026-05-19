@@ -15,6 +15,7 @@ export default defineConfig({
         platforms: resolve(__dirname, 'platforms.html'),
         'immersive-systems': resolve(__dirname, 'immersive-systems.html'),
         'ai-360-lab': resolve(__dirname, 'ai-360-lab.html'),
+        contact: resolve(__dirname, 'contact.html'),
       }
     }
   }

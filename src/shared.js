@@ -13,6 +13,7 @@ export const navHTML = `
         <a href="/platforms.html" class="nav-link hover:text-white transition-colors" data-page="platforms">Platforms</a>
         <a href="/immersive-systems.html" class="nav-link hover:text-white transition-colors" data-page="immersive-systems">Immersive Systems</a>
         <a href="/ai-360-lab.html" class="nav-link hover:text-white transition-colors" data-page="ai-360-lab">AI 360 Lab</a>
+        <a href="/contact.html" class="nav-link hover:text-white transition-colors" data-page="contact">Contact</a>
       </div>
     </div>
     <div id="mobile-menu" class="hidden md:hidden flex-col px-6 pb-6 gap-5 text-xs tracking-[0.2em] text-neutral-400 uppercase">
@@ -21,6 +22,7 @@ export const navHTML = `
       <a href="/platforms.html" class="nav-link hover:text-white transition-colors" data-page="platforms">Platforms</a>
       <a href="/immersive-systems.html" class="nav-link hover:text-white transition-colors" data-page="immersive-systems">Immersive Systems</a>
       <a href="/ai-360-lab.html" class="nav-link hover:text-white transition-colors" data-page="ai-360-lab">AI 360 Lab</a>
+      <a href="/contact.html" class="nav-link hover:text-white transition-colors" data-page="contact">Contact</a>
     </div>
   </nav>
 `
