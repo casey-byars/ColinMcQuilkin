@@ -78,7 +78,31 @@ document.querySelector('#app').innerHTML = `
 
 initPage('platforms')
 
-// Load CMS text + platform card images from KV
+const isMobile = () => window.innerWidth < 768
+
+function isVideo(url) { return /\.(mp4|webm|mov|ogg)(\?|$)/i.test(url) }
+
+function attachVideoPlay(vid, card) {
+  vid.disablePictureInPicture = true
+  vid.addEventListener('loadedmetadata', () => { vid.currentTime = 0.001 })
+  if (isMobile()) {
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) vid.play()
+      else { vid.pause(); vid.currentTime = 0.001 }
+    }, { threshold: 0.5 }).observe(card)
+  } else {
+    card.addEventListener('mouseenter', () => vid.play())
+    card.addEventListener('mouseleave', () => { vid.pause(); vid.currentTime = 0.001 })
+  }
+}
+
+// Wire up hover play for hardcoded videos
+document.querySelectorAll('.plat-card').forEach(card => {
+  const v = card.querySelector('video')
+  if (v) attachVideoPlay(v, card)
+})
+
+// Load CMS text + platform card media from KV
 async function loadPageContent() {
   try {
     const data = await fetch('/api/content').then(r => r.json())
@@ -87,32 +111,25 @@ async function loadPageContent() {
       const val = data[el.dataset.ck]
       if (val !== undefined) el.textContent = val
     })
-    // Inject uploaded images (overrides default video if set)
+    // Inject CMS media — image or video
     for (let i = 1; i <= 8; i++) {
       const url = data[`plat-${i}-image`]
       if (!url) continue
       const container = document.getElementById(`plat-img-${i}`)
       if (!container) continue
       // Pause any existing video first
-      const vid = container.querySelector('video')
-      if (vid) vid.pause()
-      container.innerHTML = `<img src="${url}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;">`
+      const existing = container.querySelector('video')
+      if (existing) existing.pause()
+
+      if (isVideo(url)) {
+        container.innerHTML = `<video src="${url}" muted loop playsinline preload="metadata" disablePictureInPicture style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;"></video>`
+        const vid  = container.querySelector('video')
+        const card = container.closest('.plat-card')
+        if (vid && card) attachVideoPlay(vid, card)
+      } else {
+        container.innerHTML = `<img src="${url}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;">`
+      }
     }
   } catch { /* fall back to hardcoded content */ }
 }
 loadPageContent()
-
-const isMobile = () => window.innerWidth < 768
-document.querySelectorAll('.plat-card').forEach(card => {
-  const v = card.querySelector('video')
-  if (!v) return
-  v.addEventListener('loadedmetadata', () => { v.currentTime = 0.001 })
-  if (isMobile()) {
-    new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) v.play(); else { v.pause(); v.currentTime = 0.001 }
-    }, { threshold: 0.5 }).observe(card)
-  } else {
-    card.addEventListener('mouseenter', () => v.play())
-    card.addEventListener('mouseleave', () => { v.pause(); v.currentTime = 0.001 })
-  }
-})
