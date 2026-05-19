@@ -71,6 +71,21 @@ initPage('immersive-systems')
 
 function isVideo(url) { return /\.(mp4|webm|mov|ogg)(\?|$)/i.test(url) }
 
+// Attach hover-play (desktop) or intersection-play (mobile) to a video inside a card
+function attachVideoPlay(vid, card) {
+  vid.disablePictureInPicture = true          // hide Chrome PiP icon
+  vid.addEventListener('loadedmetadata', () => { vid.currentTime = 0.001 })
+  if (window.innerWidth < 768) {
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) vid.play()
+      else { vid.pause(); vid.currentTime = 0.001 }
+    }, { threshold: 0.5 }).observe(card)
+  } else {
+    card.addEventListener('mouseenter', () => vid.play())
+    card.addEventListener('mouseleave', () => { vid.pause(); vid.currentTime = 0.001 })
+  }
+}
+
 async function loadPageContent() {
   try {
     const data = await fetch('/api/content').then(r => r.json())
@@ -95,9 +110,15 @@ async function loadPageContent() {
       if (!url) continue
       const container = document.getElementById(`is-img-${i}`)
       if (!container) continue
-      container.innerHTML = isVideo(url)
-        ? `<video src="${url}" muted loop playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;"></video>`
-        : `<img src="${url}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">`
+
+      if (isVideo(url)) {
+        container.innerHTML = `<video src="${url}" muted loop playsinline preload="metadata" disablePictureInPicture style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;"></video>`
+        const vid  = container.querySelector('video')
+        const card = container.closest('.is-card')
+        if (vid && card) attachVideoPlay(vid, card)
+      } else {
+        container.innerHTML = `<img src="${url}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">`
+      }
     }
   } catch { /* fall back to hardcoded content */ }
 }

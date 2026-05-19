@@ -21,21 +21,21 @@ document.querySelector('#app').innerHTML = `
 
     <!-- ROW 1 -->
     <a href="#" class="project-card col-span-1 aspect-video md:aspect-[90/91]">
-      <video class="card-video" src="${R2}/hype-hotel-mazda.mp4" muted loop playsinline></video>
+      <video class="card-video" disablePictureInPicture style="pointer-events:none;" src="${R2}/hype-hotel-mazda.mp4" muted loop playsinline></video>
       <div class="card-overlay">
         <span class="card-client">MAZDA</span>
         <span class="card-title">MUSIC IN DIFFERENT LIGHT</span>
       </div>
     </a>
     <a href="#" class="project-card col-span-1 aspect-video md:col-span-3 md:aspect-[3/1]">
-      <video class="card-video" src="${R2}/starlight-final-four.mp4" muted loop playsinline></video>
+      <video class="card-video" disablePictureInPicture style="pointer-events:none;" src="${R2}/starlight-final-four.mp4" muted loop playsinline></video>
       <div class="card-overlay">
         <span class="card-client">COCA-COLA</span>
         <span class="card-title">STARLIGHT FINAL FOUR</span>
       </div>
     </a>
     <a href="#" class="project-card col-span-1 aspect-video md:col-span-2 md:aspect-[2/1]">
-      <video class="card-video" src="${R2}/spectrum-analyzer.mp4" muted loop playsinline></video>
+      <video class="card-video" disablePictureInPicture style="pointer-events:none;" src="${R2}/spectrum-analyzer.mp4" muted loop playsinline></video>
       <div class="card-overlay">
         <span class="card-client">MAZDA</span>
         <span class="card-title">SPECTRUM ANALYZER</span>
@@ -44,14 +44,14 @@ document.querySelector('#app').innerHTML = `
 
     <!-- ROW 2-3 -->
     <a href="#" class="project-card col-span-1 aspect-video md:col-span-2 md:aspect-[4/3]">
-      <video class="card-video" src="${R2}/grid-4-nike-fuel-band.mp4" muted loop playsinline></video>
+      <video class="card-video" disablePictureInPicture style="pointer-events:none;" src="${R2}/grid-4-nike-fuel-band.mp4" muted loop playsinline></video>
       <div class="card-overlay">
         <span class="card-client">NIKE</span>
         <span class="card-title">FUEL BAND</span>
       </div>
     </a>
     <a href="#" class="project-card col-span-1 aspect-video md:col-span-2 md:aspect-[4/3]">
-      <video class="card-video" src="${R2}/grid-5-silent-light.mp4" muted loop playsinline></video>
+      <video class="card-video" disablePictureInPicture style="pointer-events:none;" src="${R2}/grid-5-silent-light.mp4" muted loop playsinline></video>
       <div class="card-overlay">
         <span class="card-client">WALTER ANDERSON</span>
         <span class="card-title">SILENT LIGHT</span>
@@ -66,14 +66,14 @@ document.querySelector('#app').innerHTML = `
 
     <!-- ROW 3 -->
     <a href="#" class="project-card col-span-1 aspect-video md:col-span-2 md:aspect-[4/3]">
-      <video class="card-video" src="${R2}/grid-7-trampled.mp4" muted loop playsinline></video>
+      <video class="card-video" disablePictureInPicture style="pointer-events:none;" src="${R2}/grid-7-trampled.mp4" muted loop playsinline></video>
       <div class="card-overlay">
         <span class="card-client">CMD</span>
         <span class="card-title">TRAMPLED FABRICATION</span>
       </div>
     </a>
     <a href="#" class="project-card col-span-1 aspect-video md:col-span-2 md:aspect-[4/3]">
-      <video class="card-video" src="${R2}/grid-g-pods.mp4" muted loop playsinline></video>
+      <video class="card-video" disablePictureInPicture style="pointer-events:none;" src="${R2}/grid-g-pods.mp4" muted loop playsinline></video>
       <div class="card-overlay">
         <span class="card-client">CMD</span>
         <span class="card-title">G-PODS</span>
@@ -82,7 +82,7 @@ document.querySelector('#app').innerHTML = `
 
     <!-- ROW 4 -->
     <a href="#" class="project-card col-span-1 aspect-video md:col-span-4 md:aspect-[4/1]">
-      <video class="card-video" src="${R2}/grid-under-the-oaks.mp4" muted loop playsinline></video>
+      <video class="card-video" disablePictureInPicture style="pointer-events:none;" src="${R2}/grid-under-the-oaks.mp4" muted loop playsinline></video>
       <div class="card-overlay">
         <span class="card-client">LAUREN RODGERS MUSEUM OF ART</span>
         <span class="card-title">UNDER THE OAKS</span>

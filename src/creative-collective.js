@@ -9,7 +9,7 @@ function row(idx, videoKey, posterKey, client, title, desc) {
   return `
     <div class="cc-row">
       <div class="cc-media" id="cc-media-box-${idx}">
-        <video id="cc-media-${idx}" class="cc-video" src="${R2}/${videoKey}" ${poster} muted loop playsinline preload="metadata"></video>
+        <video id="cc-media-${idx}" class="cc-video" src="${R2}/${videoKey}" ${poster} muted loop playsinline preload="metadata" disablePictureInPicture style="pointer-events:none;"></video>
       </div>
       <div class="cc-text">
         <span class="cc-client" data-ck="cc-${idx}-client">${client}</span>

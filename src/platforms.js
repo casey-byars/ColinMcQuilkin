@@ -7,7 +7,7 @@ const R2 = 'https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev'
 function card(num, title, tags, desc, mediaKey = null) {
   const n = parseInt(num)
   const media = mediaKey
-    ? `<video src="${R2}/${mediaKey}" muted loop playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;"></video>`
+    ? `<video src="${R2}/${mediaKey}" muted loop playsinline preload="metadata" disablePictureInPicture style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;"></video>`
     : ''
   return `
     <div class="plat-card">
@@ -96,7 +96,7 @@ async function loadPageContent() {
       // Pause any existing video first
       const vid = container.querySelector('video')
       if (vid) vid.pause()
-      container.innerHTML = `<img src="${url}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">`
+      container.innerHTML = `<img src="${url}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;">`
     }
   } catch { /* fall back to hardcoded content */ }
 }
