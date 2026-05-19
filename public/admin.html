@@ -87,6 +87,7 @@
     .picker-item:hover .picker-name { color: #ccc; }
     .picker-thumb { height: 110px; overflow: hidden; background: #111; position: relative; }
     .picker-thumb img, .picker-thumb video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .vid-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:#0d0d0d; }
     .picker-info  { padding: 0.45rem 0.5rem; }
     .picker-name  { font-size: 0.55rem; letter-spacing: 0.04em; color: #777; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 0.15s; }
     .picker-meta  { display: flex; align-items: center; justify-content: space-between; margin-top: 0.2rem; }
@@ -294,6 +295,45 @@
     status.textContent = ''
   }
 
+  // ── Video thumbnail generator ─────────────────────────────────────────────
+  // Loads video offscreen, seeks to 1s, draws to canvas → data URL
+  function captureVideoThumb(src) {
+    return new Promise(resolve => {
+      const video = document.createElement('video')
+      video.crossOrigin = 'anonymous'
+      video.muted = true
+      video.playsInline = true
+      video.preload = 'auto'
+
+      let settled = false
+      const done = (result) => {
+        if (settled) return
+        settled = true
+        video.src = ''    // free memory
+        resolve(result)
+      }
+
+      video.addEventListener('loadedmetadata', () => {
+        video.currentTime = Math.min(1, video.duration * 0.05 || 0)
+      }, { once: true })
+
+      video.addEventListener('seeked', () => {
+        try {
+          const canvas = document.createElement('canvas')
+          canvas.width  = 320
+          canvas.height = 180
+          canvas.getContext('2d').drawImage(video, 0, 0, 320, 180)
+          done(canvas.toDataURL('image/jpeg', 0.75))
+        } catch { done(null) }
+      }, { once: true })
+
+      video.addEventListener('error', () => done(null), { once: true })
+      setTimeout(() => done(null), 12000)   // give up after 12s
+
+      video.src = src
+    })
+  }
+
   function renderMedia(items) {
     const grid  = document.getElementById('picker-grid')
     const count = document.getElementById('picker-count')
@@ -304,16 +344,20 @@
       return
     }
 
-    grid.innerHTML = items.map(item => {
-      const filename = item.key.split('/').pop()
-      const vid = isVideo(item.url)
-      const preview = vid
-        ? `<video src="${item.url}" muted playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;"></video>`
+    // Render all items — videos get a play-icon placeholder initially
+    grid.innerHTML = items.map((item, idx) => {
+      const filename    = item.key.split('/').pop()
+      const vid         = isVideo(item.url)
+      const badgeColor  = vid ? '#5b8fff' : '#888'
+      const thumbInner  = vid
+        ? `<div class="vid-placeholder" id="vthumb-${idx}">
+             <svg viewBox="0 0 24 24" style="width:28px;height:28px;fill:#2a2a2a;flex-shrink:0"><path d="M8 5v14l11-7z"/></svg>
+           </div>`
         : `<img src="${item.url}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">`
-      const badgeColor = vid ? '#5b8fff' : '#888'
+
       return `
         <div class="picker-item" data-url="${item.url}">
-          <div class="picker-thumb">${preview}</div>
+          <div class="picker-thumb">${thumbInner}</div>
           <div class="picker-info">
             <div class="picker-name" title="${item.key}">${filename}</div>
             <div class="picker-meta">
@@ -324,9 +368,17 @@
         </div>`
     }).join('')
 
-    // Show first frame of videos
-    grid.querySelectorAll('video').forEach(v => {
-      v.addEventListener('loadedmetadata', () => { v.currentTime = 0.001 })
+    // Generate thumbnails for videos (staggered to avoid hammering the CDN)
+    items.forEach((item, idx) => {
+      if (!isVideo(item.url)) return
+      const el = document.getElementById(`vthumb-${idx}`)
+      if (!el) return
+      setTimeout(async () => {
+        const dataUrl = await captureVideoThumb(item.url)
+        if (dataUrl && el.isConnected) {
+          el.outerHTML = `<img src="${dataUrl}" style="width:100%;height:100%;object-fit:cover;display:block;">`
+        }
+      }, idx * 80)   // stagger 80ms per video
     })
   }
 
