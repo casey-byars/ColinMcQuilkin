@@ -1,5 +1,5 @@
 import './style.css'
-import { navHTML, initPage } from './shared.js'
+import { navHTML, initPage, loadContent } from './shared.js'
 
 const R2 = 'https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev'
 
@@ -12,7 +12,7 @@ document.querySelector('#app').innerHTML = `
       IMAGINATION <span class="text-neutral-600 mx-1">×</span> INNOVATION <span class="text-neutral-600 mx-1">×</span> ILLUMINATION
     </h1>
     <p class="text-[11px] tracking-[0.3em] text-neutral-500 uppercase">
-      Immersive Design, Projection, Interactive Art, and Live Environments.
+      <span data-ck="experiences-subtitle">Immersive Design, Projection, Interactive Art, and Live Environments.</span>
     </p>
   </section>
 
@@ -99,3 +99,4 @@ document.querySelector('#app').innerHTML = `
 `
 
 initPage('experiences')
+loadContent()

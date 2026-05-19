@@ -1,13 +1,13 @@
 import './style.css'
 import './contact.css'
-import { navHTML, initPage } from './shared.js'
+import { navHTML, initPage, loadContent } from './shared.js'
 
 document.querySelector('#app').innerHTML = `
   ${navHTML}
 
   <section class="text-center py-16 px-4">
     <h1 class="contact-page-title mb-5">BEGIN A PROJECT</h1>
-    <p class="contact-subtitle">Vision &nbsp;·&nbsp; Collaboration &nbsp;·&nbsp; Execution</p>
+    <p class="contact-subtitle" data-ck="contact-subtitle">Vision &nbsp;·&nbsp; Collaboration &nbsp;·&nbsp; Execution</p>
   </section>
 
   <div class="px-4 pb-16">
@@ -18,7 +18,7 @@ document.querySelector('#app').innerHTML = `
         <div class="contact-section-label">Begin a Project</div>
         <div class="contact-divider"></div>
         <p class="contact-desc">
-          Projection, AI, and interactive systems for live environments—creating immersive experiences for education, museums, brands, and corporate events.
+          <span data-ck="contact-desc">Projection, AI, and interactive systems for live environments—creating immersive experiences for education, museums, brands, and corporate events.</span>
         </p>
         <hr class="contact-hr">
         <div class="contact-name">Colin McQuilkin</div>
@@ -93,3 +93,4 @@ document.querySelector('#app').innerHTML = `
 `
 
 initPage('contact')
+loadContent()

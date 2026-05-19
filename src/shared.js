@@ -27,6 +27,18 @@ export const navHTML = `
   </nav>
 `
 
+export async function loadContent() {
+  try {
+    const data = await fetch('/api/content').then(r => r.json())
+    document.querySelectorAll('[data-ck]').forEach(el => {
+      const val = data[el.dataset.ck]
+      if (val !== undefined) el.textContent = val
+    })
+  } catch {
+    // fall back to default text already in DOM
+  }
+}
+
 export function initPage(activePage) {
   // Highlight active nav link
   document.querySelectorAll('.nav-link').forEach(a => {

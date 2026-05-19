@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CMDESIGN — Content Editor</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #080808; color: #ccc; font-family: 'Inter', system-ui, sans-serif; font-size: 13px; min-height: 100vh; }
+    a { color: inherit; }
+
+    header { border-bottom: 1px solid #222; padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: #080808; z-index: 10; }
+    .logo { font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; color: white; }
+    .status { font-size: 0.65rem; letter-spacing: 0.1em; color: #555; }
+    .status.ok { color: #4ade80; }
+    .status.err { color: #f87171; }
+
+    #login { max-width: 400px; margin: 8rem auto; padding: 2rem; border: 1px solid #222; background: #0d0d0d; }
+    #login h2 { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: #666; margin-bottom: 1.5rem; }
+    input[type=password] { width: 100%; background: #111; border: 1px solid #2a2a2a; color: white; padding: 0.75rem 1rem; font-size: 13px; outline: none; margin-bottom: 0.75rem; }
+    input[type=password]:focus { border-color: #555; }
+    button { background: white; color: black; border: none; padding: 0.75rem 1.5rem; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: opacity 0.2s; }
+    button:hover { opacity: 0.8; }
+    button.secondary { background: none; color: #666; border: 1px solid #333; }
+    button.secondary:hover { color: white; border-color: #666; opacity: 1; }
+    button:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    #editor { display: none; max-width: 900px; margin: 0 auto; padding: 2rem; }
+
+    .save-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid #222; }
+    .save-bar h1 { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: #666; }
+
+    .section { margin-bottom: 2.5rem; border: 1px solid #1e1e1e; }
+    .section-header { padding: 0.9rem 1.25rem; background: #0d0d0d; border-bottom: 1px solid #1e1e1e; display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; }
+    .section-header:hover { background: #111; }
+    .section-title { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: #888; }
+    .section-toggle { color: #444; font-size: 0.7rem; transition: transform 0.2s; }
+    .section-body { padding: 1.25rem; display: none; flex-direction: column; gap: 1.25rem; }
+    .section-body.open { display: flex; }
+
+    .field { display: flex; flex-direction: column; gap: 0.4rem; }
+    .field label { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: #555; }
+    .field textarea, .field input[type=text] { background: #0d0d0d; border: 1px solid #222; color: #ddd; padding: 0.65rem 0.8rem; font-size: 13px; font-family: inherit; outline: none; resize: vertical; width: 100%; transition: border-color 0.2s; line-height: 1.6; }
+    .field textarea:focus, .field input[type=text]:focus { border-color: #555; }
+    .field textarea { min-height: 70px; }
+
+    .project-block { border: 1px solid #1a1a1a; padding: 1rem; background: #0a0a0a; }
+    .project-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: #444; margin-bottom: 0.75rem; }
+    .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <span class="logo">CMDESIGN — Content Editor</span>
+  <span class="status" id="status">Not saved</span>
+</header>
+
+<div id="login">
+  <h2>Admin Login</h2>
+  <input type="password" id="pwd" placeholder="Password" onkeydown="if(event.key==='Enter')login()">
+  <button onclick="login()">Continue</button>
+  <p id="login-err" style="color:#f87171;font-size:0.65rem;margin-top:0.75rem;display:none;">Incorrect password</p>
+</div>
+
+<div id="editor">
+  <div class="save-bar">
+    <h1>Edit Site Content</h1>
+    <div style="display:flex;gap:0.75rem;align-items:center;">
+      <button class="secondary" onclick="revert()">Revert</button>
+      <button id="save-btn" onclick="save()">Save All Changes</button>
+    </div>
+  </div>
+
+  <!-- PAGE SUBTITLES -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Page Subtitles</span>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body open">
+      <div class="field"><label>Experiences</label><input type="text" data-key="experiences-subtitle"></div>
+      <div class="field"><label>Creative Collective</label><input type="text" data-key="cc-subtitle"></div>
+      <div class="field"><label>Platforms</label><input type="text" data-key="platforms-subtitle"></div>
+      <div class="field"><label>Immersive Systems</label><input type="text" data-key="is-subtitle"></div>
+      <div class="field"><label>360 AI Lab</label><input type="text" data-key="ai-subtitle"></div>
+      <div class="field"><label>Contact</label><input type="text" data-key="contact-subtitle"></div>
+    </div>
+  </div>
+
+  <!-- CREATIVE COLLECTIVE PROJECTS -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Creative Collective — Projects</span>
+      <span class="section-toggle">▶</span>
+    </div>
+    <div class="section-body" id="cc-projects"></div>
+  </div>
+
+  <!-- 360 AI LAB -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">360 AI Lab — Hero</span>
+      <span class="section-toggle">▶</span>
+    </div>
+    <div class="section-body">
+      <div class="field"><label>Heading</label><input type="text" data-key="ai-hero-heading"></div>
+      <div class="field"><label>Description</label><textarea data-key="ai-hero-desc"></textarea></div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Contact Page</span>
+      <span class="section-toggle">▶</span>
+    </div>
+    <div class="section-body">
+      <div class="field"><label>Description</label><textarea data-key="contact-desc"></textarea></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const API = '/api/content'
+  let password = ''
+  let original = {}
+
+  // Build Creative Collective project blocks
+  const ccProjects = [
+    [1,'MAZDA','Music in a Different Light'],
+    [2,'COCA-COLA','Starlight Final Four'],
+    [3,'Walter Anderson Museum','Silent Light'],
+    [4,'NIKE','Fuel Band SXSW'],
+    [5,'CMD','Immersion 360 AI Lab'],
+    [6,'MAZDA','SXSW Hype Hotel'],
+    [7,'CMD','Luminous Owls'],
+    [8,'ASYMMETRIC','Work4Hire SXSW'],
+    [9,'CMD','Trampled By Owls'],
+    [10,'Lauren Rodgers Museum','Under the Oaks'],
+    [11,'Big Gigantic','Big Gigantic'],
+    [12,'CMD','CMD Fabrication'],
+    [13,'MAZDA','Spectrum Analyzer'],
+  ]
+  const ccContainer = document.getElementById('cc-projects')
+  ccProjects.forEach(([i, defaultClient, defaultTitle]) => {
+    ccContainer.innerHTML += `
+      <div class="project-block">
+        <div class="project-label">Project ${i}</div>
+        <div class="project-grid">
+          <div class="field"><label>Client</label><input type="text" data-key="cc-${i}-client" placeholder="${defaultClient}"></div>
+          <div class="field"><label>Title</label><input type="text" data-key="cc-${i}-title" placeholder="${defaultTitle}"></div>
+        </div>
+        <div class="field"><label>Description</label><textarea data-key="cc-${i}-desc"></textarea></div>
+      </div>
+    `
+  })
+
+  function setStatus(msg, type = '') {
+    const el = document.getElementById('status')
+    el.textContent = msg
+    el.className = 'status ' + type
+  }
+
+  function toggle(header) {
+    const body = header.nextElementSibling
+    const arrow = header.querySelector('.section-toggle')
+    body.classList.toggle('open')
+    arrow.textContent = body.classList.contains('open') ? '▼' : '▶'
+  }
+
+  async function login() {
+    password = document.getElementById('pwd').value
+    if (!password) return
+    try {
+      const res = await fetch(API)
+      if (!res.ok) throw new Error()
+      original = await res.json()
+      populate(original)
+      document.getElementById('login').style.display = 'none'
+      document.getElementById('editor').style.display = 'block'
+      setStatus('Loaded')
+    } catch {
+      document.getElementById('login-err').style.display = 'block'
+    }
+  }
+
+  function populate(data) {
+    document.querySelectorAll('[data-key]').forEach(el => {
+      const val = data[el.dataset.key]
+      if (val !== undefined) el.value = val
+    })
+  }
+
+  function collect() {
+    const data = {}
+    document.querySelectorAll('[data-key]').forEach(el => {
+      if (el.value.trim()) data[el.dataset.key] = el.value.trim()
+    })
+    return data
+  }
+
+  function revert() {
+    populate(original)
+    setStatus('Reverted')
+  }
+
+  async function save() {
+    const btn = document.getElementById('save-btn')
+    btn.disabled = true
+    btn.textContent = 'Saving…'
+    setStatus('Saving…')
+    try {
+      const res = await fetch(API, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${password}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify(collect())
+      })
+      if (res.status === 401) { setStatus('Wrong password', 'err'); return }
+      if (!res.ok) throw new Error(await res.text())
+      original = collect()
+      setStatus('Saved ✓', 'ok')
+      setTimeout(() => setStatus(''), 3000)
+    } catch (e) {
+      setStatus('Error: ' + e.message, 'err')
+    } finally {
+      btn.disabled = false
+      btn.textContent = 'Save All Changes'
+    }
+  }
+</script>
+
+</body>
+</html>

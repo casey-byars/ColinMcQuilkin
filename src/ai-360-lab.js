@@ -1,13 +1,13 @@
 import './style.css'
 import './ai-360-lab.css'
-import { navHTML, initPage } from './shared.js'
+import { navHTML, initPage, loadContent } from './shared.js'
 
 document.querySelector('#app').innerHTML = `
   ${navHTML}
 
   <section class="text-center py-16 px-4">
     <h1 class="ai-page-title mb-5">360 AI LAB</h1>
-    <p class="ai-subtitle">Education &nbsp;·&nbsp; Immersive &nbsp;·&nbsp; Interactive</p>
+    <p class="ai-subtitle" data-ck="ai-subtitle">Education &nbsp;·&nbsp; Immersive &nbsp;·&nbsp; Interactive</p>
   </section>
 
   <div class="px-4">
@@ -19,8 +19,8 @@ document.querySelector('#app').innerHTML = `
           <span class="ai-section-num">01</span>
           WHAT IS THE 360 AI LAB
         </div>
-        <h2 class="ai-hero-heading">A Modular Immersive<br>Education Platform</h2>
-        <p class="ai-hero-desc">
+        <h2 class="ai-hero-heading" data-ck="ai-hero-heading">A Modular Immersive Education Platform</h2>
+        <p class="ai-hero-desc" data-ck="ai-hero-desc">
           The 360 AI LAB blends art, technology, and AI to create immersive, participatory learning experiences. Inside a projection-mapped dome, we explore creativity, systems thinking, and storytelling through live visuals, sound, and audience interaction.
         </p>
         <div class="ai-info-blocks">
@@ -132,3 +132,4 @@ document.querySelector('#app').innerHTML = `
 `
 
 initPage('ai-360-lab')
+loadContent()
