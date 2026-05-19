@@ -662,10 +662,10 @@
   })()
 
   function populate(data) {
-    // Text fields
+    // Text fields — only set value on actual form elements
     document.querySelectorAll('[data-key]').forEach(el => {
       const val = data[el.dataset.key]
-      if (val !== undefined) el.value = val
+      if (val !== undefined && 'value' in el) el.value = val
     })
     // Restore all media thumbnails
     const slots = [
@@ -683,7 +683,8 @@
   function collect() {
     const data = {}
     document.querySelectorAll('[data-key]').forEach(el => {
-      if (el.value.trim()) data[el.dataset.key] = el.value.trim()
+      const val = (el.value ?? '').trim()   // non-form elements return undefined for .value
+      if (val) data[el.dataset.key] = val
     })
     return data
   }
