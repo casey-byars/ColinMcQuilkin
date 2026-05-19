@@ -186,6 +186,15 @@
     <div class="section-body" id="plat-cards"></div>
   </div>
 
+  <!-- IMMERSIVE SYSTEMS -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Immersive Systems — Cards</span>
+      <span class="section-toggle">▶</span>
+    </div>
+    <div class="section-body" id="is-cards"></div>
+  </div>
+
   <!-- CONTACT -->
   <div class="section">
     <div class="section-header" onclick="toggle(this)">
@@ -558,6 +567,58 @@
       </div>`
   })
 
+  // ── Immersive Systems card builder ───────────────────────────────────────
+  const isCards = [
+    [1, 'Inflatable Sphere',         'Immersive Dome Environments',
+      'High-impact inflatable structures engineered for 360° projection, spatial audio, and environmental control. Fast deploy, scalable, and adaptable to any site.',
+      '360° Projection, Modular Structure, Spatial Audio, Weather Adaptive'],
+    [2, 'Silent Disco',              'Wireless Audio Experiences',
+      'Scalable silent disco systems with multi-channel audio, programmable lighting, and immersive production. Perfect for festivals, activations, and private events.',
+      'Multi-Channel Audio, RF Transmission, LED & Lighting Sync, Crowd Scalable'],
+    [3, 'Projection Mapping',        'Architectural Storytelling',
+      'Precision projection systems that transform architecture into dynamic canvases. Designed for museums, landmarks, brand activations, and large-scale events.',
+      'High Brightness, Edge Blending, Pixel-Mapped Precision, Media Server Control'],
+    [4, 'Interactive Environments',  'Responsive & Generative Spaces',
+      'Sensor-driven systems that respond to presence, motion, and interaction. We design custom environments that blur the line between audience and experience.',
+      'Motion Tracking, Real-Time Generative, Interactive Lighting, Custom Software'],
+    [5, 'Branded Photo Experience',  'Capture. Share. Elevate.',
+      'Premium photo capture experiences that combine cinematic lighting, branded design, and instant sharing. Perfect for brand activations, product launches, and VIP events.',
+      'Cinematic Lighting, Instant Sharing, Custom Branding, Data Capture'],
+    [6, 'Water Projections',         'Liquid Light Environments',
+      'Immersive water-based projection experiences that turn fountains, mist, and water screens into dynamic canvases. Perfect for events, installations, and destination experiences.',
+      'Fountain FX, Architectural Water, Projection Surfaces, Live Event Ready'],
+  ]
+
+  const isContainer = document.getElementById('is-cards')
+  isCards.forEach(([i, defTitle, defTag, defDesc, defSpecs]) => {
+    const num = String(i).padStart(2, '0')
+    isContainer.innerHTML += `
+      <div class="project-block">
+        <div class="project-label">Card ${num}</div>
+        <div class="project-grid">
+          <div class="field"><label>Title</label><input type="text" data-key="is-${i}-title" placeholder="${defTitle}"></div>
+          <div class="field"><label>Tag / Category</label><input type="text" data-key="is-${i}-tag" placeholder="${defTag}"></div>
+        </div>
+        <div class="field"><label>Description</label><textarea data-key="is-${i}-desc" placeholder="${defDesc}"></textarea></div>
+        <div class="field" style="margin-top:0.5rem">
+          <label>Specs <span style="color:#333;font-size:0.55rem;text-transform:none;letter-spacing:0">(comma-separated)</span></label>
+          <input type="text" data-key="is-${i}-specs" placeholder="${defSpecs}">
+        </div>
+        <div class="media-slot">
+          <div>
+            <div class="slot-label">Card Image / Video</div>
+            <div class="thumb-box" id="is-${i}-thumb"><div class="thumb-empty">No media</div></div>
+          </div>
+          <div class="slot-actions">
+            <input type="hidden" data-key="is-${i}-image" id="is-${i}-val">
+            <button class="pick-btn" onclick="openPicker(url => setMediaSlot('is-${i}', url))">Choose Media</button>
+            <button class="clear-btn" onclick="clearMediaSlot('is-${i}')">✕ Clear</button>
+            <div class="slot-url" id="is-${i}-url"></div>
+          </div>
+        </div>
+      </div>`
+  })
+
   // ── Core admin functions ──────────────────────────────────────────────────
   function setStatus(msg, type = '') {
     const el = document.getElementById('status')
@@ -618,6 +679,7 @@
       'ai-hero',
       ...Array.from({length:13}, (_,i) => `cc-${i+1}`),
       ...Array.from({length:8},  (_,i) => `plat-${i+1}`),
+      ...Array.from({length:6},  (_,i) => `is-${i+1}`),
     ]
     slots.forEach(slotId => {
       const input = document.getElementById(`${slotId}-val`)

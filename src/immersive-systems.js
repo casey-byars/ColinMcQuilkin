@@ -3,20 +3,21 @@ import './immersive-systems.css'
 import { navHTML, footerHTML, initPage } from './shared.js'
 
 function card(num, title, tag, desc, specs) {
+  const n = parseInt(num)
   const specItems = specs.map(s => `<span class="is-spec">${s}</span>`).join('')
   return `
     <div class="is-card">
-      <div class="is-image"><!-- drop image/video here --></div>
+      <div class="is-image" id="is-img-${n}"></div>
       <div class="is-body">
         <div class="is-num-row">
           <span class="is-num">${num}</span>
           <span class="is-num-line"></span>
           <span class="is-num-dot"></span>
         </div>
-        <div class="is-title">${title}</div>
-        <div class="is-tag">${tag}</div>
-        <p class="is-desc">${desc}</p>
-        <div class="is-specs">${specItems}</div>
+        <div class="is-title" data-ck="is-${n}-title">${title}</div>
+        <div class="is-tag"   data-ck="is-${n}-tag">${tag}</div>
+        <p class="is-desc"    data-ck="is-${n}-desc">${desc}</p>
+        <div class="is-specs" id="is-specs-${n}">${specItems}</div>
         <a href="#" class="is-link">VIEW SYSTEM DETAILS &nbsp;→</a>
       </div>
     </div>
@@ -67,3 +68,37 @@ document.querySelector('#app').innerHTML = `
 `
 
 initPage('immersive-systems')
+
+function isVideo(url) { return /\.(mp4|webm|mov|ogg)(\?|$)/i.test(url) }
+
+async function loadPageContent() {
+  try {
+    const data = await fetch('/api/content').then(r => r.json())
+
+    // Text fields
+    document.querySelectorAll('[data-ck]').forEach(el => {
+      const val = data[el.dataset.ck]
+      if (val !== undefined) el.textContent = val
+    })
+
+    for (let i = 1; i <= 6; i++) {
+      // Specs — stored as comma-separated string
+      const specs = data[`is-${i}-specs`]
+      if (specs) {
+        const el = document.getElementById(`is-specs-${i}`)
+        if (el) el.innerHTML = specs.split(',').map(s =>
+          `<span class="is-spec">${s.trim()}</span>`).join('')
+      }
+
+      // Image / video
+      const url = data[`is-${i}-image`]
+      if (!url) continue
+      const container = document.getElementById(`is-img-${i}`)
+      if (!container) continue
+      container.innerHTML = isVideo(url)
+        ? `<video src="${url}" muted loop playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;"></video>`
+        : `<img src="${url}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">`
+    }
+  } catch { /* fall back to hardcoded content */ }
+}
+loadPageContent()
