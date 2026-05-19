@@ -7,64 +7,106 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: #080808; color: #ccc; font-family: 'Inter', system-ui, sans-serif; font-size: 13px; min-height: 100vh; }
-    a { color: inherit; }
 
+    /* ── Header ──────────────────────────────────────────────────────────── */
     header { border-bottom: 1px solid #222; padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: #080808; z-index: 10; }
     .logo { font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; color: white; }
     .status { font-size: 0.65rem; letter-spacing: 0.1em; color: #555; }
-    .status.ok { color: #4ade80; }
+    .status.ok  { color: #4ade80; }
     .status.err { color: #f87171; }
 
+    /* ── Login ───────────────────────────────────────────────────────────── */
     #login { max-width: 400px; margin: 8rem auto; padding: 2rem; border: 1px solid #222; background: #0d0d0d; }
     #login h2 { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: #666; margin-bottom: 1.5rem; }
     input[type=password] { width: 100%; background: #111; border: 1px solid #2a2a2a; color: white; padding: 0.75rem 1rem; font-size: 13px; outline: none; margin-bottom: 0.75rem; }
     input[type=password]:focus { border-color: #555; }
+
+    /* ── Buttons ─────────────────────────────────────────────────────────── */
     button { background: white; color: black; border: none; padding: 0.75rem 1.5rem; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: opacity 0.2s; }
     button:hover { opacity: 0.8; }
     button.secondary { background: none; color: #666; border: 1px solid #333; }
     button.secondary:hover { color: white; border-color: #666; opacity: 1; }
     button:disabled { opacity: 0.3; cursor: not-allowed; }
+    .pick-btn  { display: inline-block; background: #161616; border: 1px solid #2a2a2a; color: #aaa; padding: 0.45rem 0.85rem; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: background 0.15s; }
+    .pick-btn:hover  { background: #222; color: white; opacity: 1; }
+    .clear-btn { background: none; border: 1px solid #1e1e1e; color: #444; padding: 0.35rem 0.65rem; font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; }
+    .clear-btn:hover { border-color: #f87171; color: #f87171; opacity: 1; }
 
-    #editor { display: none; max-width: 900px; margin: 0 auto; padding: 2rem; }
-
+    /* ── Editor layout ───────────────────────────────────────────────────── */
+    #editor { display: none; max-width: 960px; margin: 0 auto; padding: 2rem; }
     .save-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid #222; }
     .save-bar h1 { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: #666; }
 
+    /* ── Sections ────────────────────────────────────────────────────────── */
     .section { margin-bottom: 2.5rem; border: 1px solid #1e1e1e; }
     .section-header { padding: 0.9rem 1.25rem; background: #0d0d0d; border-bottom: 1px solid #1e1e1e; display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; }
     .section-header:hover { background: #111; }
-    .section-title { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: #888; }
-    .section-toggle { color: #444; font-size: 0.7rem; transition: transform 0.2s; }
-    .section-body { padding: 1.25rem; display: none; flex-direction: column; gap: 1.25rem; }
+    .section-title  { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: #888; }
+    .section-toggle { color: #444; font-size: 0.7rem; }
+    .section-body   { padding: 1.25rem; display: none; flex-direction: column; gap: 1.25rem; }
     .section-body.open { display: flex; }
 
+    /* ── Fields ──────────────────────────────────────────────────────────── */
     .field { display: flex; flex-direction: column; gap: 0.4rem; }
     .field label { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: #555; }
     .field textarea, .field input[type=text] { background: #0d0d0d; border: 1px solid #222; color: #ddd; padding: 0.65rem 0.8rem; font-size: 13px; font-family: inherit; outline: none; resize: vertical; width: 100%; transition: border-color 0.2s; line-height: 1.6; }
     .field textarea:focus, .field input[type=text]:focus { border-color: #555; }
     .field textarea { min-height: 70px; }
 
-    .project-block { border: 1px solid #1a1a1a; padding: 1rem; background: #0a0a0a; }
-    .project-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: #444; margin-bottom: 0.75rem; }
-    .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem; }
+    /* ── Project / card blocks ───────────────────────────────────────────── */
+    .project-block { border: 1px solid #1a1a1a; padding: 1rem; background: #0a0a0a; display: flex; flex-direction: column; gap: 0.6rem; }
+    .project-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: #444; }
+    .project-grid  { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
 
-    /* Image upload UI */
-    .img-upload-row { display: flex; align-items: flex-start; gap: 0.75rem; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #1a1a1a; }
-    .img-thumb-box { width: 90px; height: 60px; background: #111; border: 1px solid #222; overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-    .img-thumb-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .img-thumb-empty { font-size: 0.55rem; color: #444; letter-spacing: 0.1em; text-transform: uppercase; text-align: center; }
-    .upload-label { display: inline-block; background: #1a1a1a; border: 1px solid #2a2a2a; color: #aaa; padding: 0.45rem 0.85rem; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
-    .upload-label:hover { background: #222; color: white; }
-    .img-status { font-size: 0.6rem; letter-spacing: 0.08em; color: #555; margin-top: 0.35rem; }
+    /* ── Media slot (thumb + buttons) ───────────────────────────────────── */
+    .media-slot { display: flex; align-items: flex-start; gap: 0.75rem; padding-top: 0.65rem; border-top: 1px solid #181818; margin-top: 0.25rem; }
+    .slot-label { font-size: 0.55rem; letter-spacing: 0.15em; text-transform: uppercase; color: #383838; margin-bottom: 0.35rem; }
+    .thumb-box { width: 130px; height: 80px; background: #111; border: 1px solid #1e1e1e; overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; position: relative; }
+    .thumb-box img, .thumb-box video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .thumb-empty { font-size: 0.5rem; color: #333; letter-spacing: 0.1em; text-transform: uppercase; text-align: center; padding: 0.5rem; }
+    .slot-actions { display: flex; flex-direction: column; gap: 0.4rem; justify-content: center; }
+    .slot-url { font-size: 0.5rem; color: #444; letter-spacing: 0.04em; word-break: break-all; max-width: 300px; margin-top: 0.2rem; }
+
+    /* ── Media Picker Modal ──────────────────────────────────────────────── */
+    #media-picker { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.97); z-index: 1000; flex-direction: column; }
+    #picker-header { display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.5rem; border-bottom: 1px solid #222; background: #080808; flex-shrink: 0; flex-wrap: wrap; }
+    #picker-title  { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: white; flex-shrink: 0; margin-right: 0.25rem; }
+    #picker-search { flex: 1; min-width: 180px; background: #111; border: 1px solid #2a2a2a; color: #ddd; padding: 0.5rem 0.75rem; font-size: 12px; font-family: inherit; outline: none; }
+    #picker-search:focus { border-color: #555; }
+    .picker-upload-label { display: inline-block; background: #161616; border: 1px solid #2a2a2a; color: #aaa; padding: 0.5rem 0.9rem; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; flex-shrink: 0; }
+    .picker-upload-label:hover { background: #222; color: white; }
+    #picker-upload-status { font-size: 0.6rem; letter-spacing: 0.08em; color: #555; flex-shrink: 0; }
+    #picker-close { background: none; border: 1px solid #333; color: #888; padding: 0.5rem 0.9rem; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; flex-shrink: 0; margin-left: auto; }
+    #picker-close:hover { border-color: #666; color: white; opacity: 1; }
+
+    #picker-grid { flex: 1; overflow-y: auto; padding: 1rem 1.5rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.5rem; align-content: start; }
+    #picker-empty { padding: 3rem 1.5rem; color: #444; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; }
+
+    .picker-item { cursor: pointer; border: 1px solid #1a1a1a; background: #0a0a0a; transition: border-color 0.15s, background 0.15s; }
+    .picker-item:hover { border-color: #5b8fff; background: #0d0d0d; }
+    .picker-item:hover .picker-name { color: #ccc; }
+    .picker-thumb { height: 110px; overflow: hidden; background: #111; position: relative; }
+    .picker-thumb img, .picker-thumb video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .picker-info  { padding: 0.45rem 0.5rem; }
+    .picker-name  { font-size: 0.55rem; letter-spacing: 0.04em; color: #777; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 0.15s; }
+    .picker-meta  { display: flex; align-items: center; justify-content: space-between; margin-top: 0.2rem; }
+    .picker-badge { font-size: 0.5rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .picker-size  { font-size: 0.5rem; color: #444; }
+
+    #picker-footer { padding: 0.65rem 1.5rem; border-top: 1px solid #222; background: #080808; display: flex; align-items: center; justify-content: space-between; font-size: 0.6rem; letter-spacing: 0.1em; flex-shrink: 0; }
+    #picker-count  { color: #444; }
+    #picker-status { color: #555; }
   </style>
 </head>
 <body>
 
+<!-- ── Header ──────────────────────────────────────────────────────────── -->
 <header>
   <span class="logo">CMDESIGN — Content Editor</span>
   <span class="status" id="status">Not saved</span>
 </header>
 
+<!-- ── Login ───────────────────────────────────────────────────────────── -->
 <div id="login">
   <h2>Admin Login</h2>
   <input type="password" id="pwd" placeholder="Password" onkeydown="if(event.key==='Enter')login()">
@@ -72,6 +114,7 @@
   <p id="login-err" style="color:#f87171;font-size:0.65rem;margin-top:0.75rem;display:none;">Incorrect password</p>
 </div>
 
+<!-- ── Editor ──────────────────────────────────────────────────────────── -->
 <div id="editor">
   <div class="save-bar">
     <h1>Edit Site Content</h1>
@@ -97,15 +140,6 @@
     </div>
   </div>
 
-  <!-- CREATIVE COLLECTIVE PROJECTS -->
-  <div class="section">
-    <div class="section-header" onclick="toggle(this)">
-      <span class="section-title">Creative Collective — Projects</span>
-      <span class="section-toggle">▶</span>
-    </div>
-    <div class="section-body" id="cc-projects"></div>
-  </div>
-
   <!-- 360 AI LAB -->
   <div class="section">
     <div class="section-header" onclick="toggle(this)">
@@ -115,7 +149,28 @@
     <div class="section-body">
       <div class="field"><label>Heading</label><input type="text" data-key="ai-hero-heading"></div>
       <div class="field"><label>Description</label><textarea data-key="ai-hero-desc"></textarea></div>
+      <div class="media-slot">
+        <div>
+          <div class="slot-label">Hero Image / Video</div>
+          <div class="thumb-box" id="ai-hero-thumb"><div class="thumb-empty">No media</div></div>
+        </div>
+        <div class="slot-actions">
+          <input type="hidden" data-key="ai-hero-image" id="ai-hero-val">
+          <button class="pick-btn" onclick="openPicker(url => setMediaSlot('ai-hero', url))">Choose Media</button>
+          <button class="clear-btn" onclick="clearMediaSlot('ai-hero')">✕ Clear</button>
+          <div class="slot-url" id="ai-hero-url"></div>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <!-- CREATIVE COLLECTIVE PROJECTS -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Creative Collective — Projects</span>
+      <span class="section-toggle">▶</span>
+    </div>
+    <div class="section-body" id="cc-projects"></div>
   </div>
 
   <!-- PLATFORMS -->
@@ -138,127 +193,269 @@
     </div>
   </div>
 
+</div><!-- /editor -->
+
+<!-- ── Media Picker Modal ─────────────────────────────────────────────── -->
+<div id="media-picker">
+  <div id="picker-header">
+    <span id="picker-title">Media Library</span>
+    <input type="text" id="picker-search" placeholder="Search files…" oninput="filterMedia(this.value)">
+    <label class="picker-upload-label" for="picker-file-input">↑ Upload New</label>
+    <input type="file" id="picker-file-input" multiple accept="image/*,video/*" style="display:none" onchange="uploadNewMedia(this)">
+    <span id="picker-upload-status"></span>
+    <button id="picker-close" onclick="closePicker()">✕ Close</button>
+  </div>
+  <div id="picker-grid"></div>
+  <div id="picker-footer">
+    <span id="picker-count"></span>
+    <span id="picker-status"></span>
+  </div>
 </div>
 
 <script>
-  const API = '/api/content'
-  let password = ''
-  let original = {}
+  // ── State ─────────────────────────────────────────────────────────────────
+  const API        = '/api/content'
+  const UPLOAD_API = '/api/upload'
+  const MEDIA_API  = '/api/media'
+  let password   = ''
+  let original   = {}
+  let _allMedia  = []
+  let _pickerCb  = null
 
-  // Build Creative Collective project blocks
-  const ccProjects = [
-    [1,'MAZDA','Music in a Different Light'],
-    [2,'COCA-COLA','Starlight Final Four'],
-    [3,'Walter Anderson Museum','Silent Light'],
-    [4,'NIKE','Fuel Band SXSW'],
-    [5,'CMD','Immersion 360 AI Lab'],
-    [6,'MAZDA','SXSW Hype Hotel'],
-    [7,'CMD','Luminous Owls'],
-    [8,'ASYMMETRIC','Work4Hire SXSW'],
-    [9,'CMD','Trampled By Owls'],
-    [10,'Lauren Rodgers Museum','Under the Oaks'],
-    [11,'Big Gigantic','Big Gigantic'],
-    [12,'CMD','CMD Fabrication'],
-    [13,'MAZDA','Spectrum Analyzer'],
-  ]
-  const ccContainer = document.getElementById('cc-projects')
-  ccProjects.forEach(([i, defaultClient, defaultTitle]) => {
-    ccContainer.innerHTML += `
-      <div class="project-block">
-        <div class="project-label">Project ${i}</div>
-        <div class="project-grid">
-          <div class="field"><label>Client</label><input type="text" data-key="cc-${i}-client" placeholder="${defaultClient}"></div>
-          <div class="field"><label>Title</label><input type="text" data-key="cc-${i}-title" placeholder="${defaultTitle}"></div>
-        </div>
-        <div class="field"><label>Description</label><textarea data-key="cc-${i}-desc"></textarea></div>
-      </div>
-    `
+  // ── Utility ───────────────────────────────────────────────────────────────
+  function isVideo(url) { return /\.(mp4|webm|mov|ogg)(\?|$)/i.test(url) }
+  function isImage(url) { return /\.(jpg|jpeg|png|gif|webp|avif|svg)(\?|$)/i.test(url) }
+  function fmtSize(bytes) {
+    if (bytes < 1024) return bytes + ' B'
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(0) + ' KB'
+    return (bytes / 1024 / 1024).toFixed(1) + ' MB'
+  }
+
+  // ── Media slot helpers ────────────────────────────────────────────────────
+  function setMediaSlot(slotId, url) {
+    const input = document.getElementById(`${slotId}-val`)
+    const thumb = document.getElementById(`${slotId}-thumb`)
+    const urlEl = document.getElementById(`${slotId}-url`)
+    if (input) input.value = url
+    if (urlEl)  urlEl.textContent = url.split('/').pop()
+    if (thumb) {
+      if (isVideo(url)) {
+        thumb.innerHTML = `<video src="${url}" muted loop playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;"></video>`
+        const v = thumb.querySelector('video')
+        v.addEventListener('loadedmetadata', () => { v.currentTime = 0.001 })
+      } else {
+        thumb.innerHTML = `<img src="${url}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">`
+      }
+    }
+  }
+
+  function clearMediaSlot(slotId) {
+    const input = document.getElementById(`${slotId}-val`)
+    const thumb = document.getElementById(`${slotId}-thumb`)
+    const urlEl = document.getElementById(`${slotId}-url`)
+    if (input) input.value = ''
+    if (urlEl)  urlEl.textContent = ''
+    if (thumb)  thumb.innerHTML = '<div class="thumb-empty">No media</div>'
+  }
+
+  // ── Media Picker ──────────────────────────────────────────────────────────
+  function openPicker(callback) {
+    _pickerCb = callback
+    document.getElementById('media-picker').style.display = 'flex'
+    document.getElementById('picker-search').value = ''
+    loadMedia()
+  }
+
+  function closePicker() {
+    document.getElementById('media-picker').style.display = 'none'
+    _pickerCb = null
+  }
+
+  function selectMedia(url) {
+    if (_pickerCb) _pickerCb(url)
+    closePicker()
+  }
+
+  async function loadMedia() {
+    const grid = document.getElementById('picker-grid')
+    const status = document.getElementById('picker-status')
+    grid.innerHTML = '<div id="picker-empty">Loading…</div>'
+    try {
+      const res = await fetch(MEDIA_API, {
+        headers: { 'Authorization': `Bearer ${password}` }
+      })
+      if (!res.ok) throw new Error(await res.text())
+      const { items } = await res.json()
+      _allMedia = items
+      renderMedia(items)
+    } catch (e) {
+      grid.innerHTML = `<div id="picker-empty" style="color:#f87171">Error: ${e.message}</div>`
+    }
+    status.textContent = ''
+  }
+
+  function renderMedia(items) {
+    const grid  = document.getElementById('picker-grid')
+    const count = document.getElementById('picker-count')
+    count.textContent = `${items.length} file${items.length !== 1 ? 's' : ''}`
+
+    if (!items.length) {
+      grid.innerHTML = '<div id="picker-empty">No media files yet — upload some above.</div>'
+      return
+    }
+
+    grid.innerHTML = items.map(item => {
+      const filename = item.key.split('/').pop()
+      const vid = isVideo(item.url)
+      const preview = vid
+        ? `<video src="${item.url}" muted playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;"></video>`
+        : `<img src="${item.url}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">`
+      const badgeColor = vid ? '#5b8fff' : '#888'
+      return `
+        <div class="picker-item" onclick="selectMedia(${JSON.stringify(item.url)})">
+          <div class="picker-thumb">${preview}</div>
+          <div class="picker-info">
+            <div class="picker-name" title="${item.key}">${filename}</div>
+            <div class="picker-meta">
+              <span class="picker-badge" style="color:${badgeColor}">${vid ? 'VID' : 'IMG'}</span>
+              <span class="picker-size">${fmtSize(item.size)}</span>
+            </div>
+          </div>
+        </div>`
+    }).join('')
+
+    // Show first frame of videos
+    grid.querySelectorAll('video').forEach(v => {
+      v.addEventListener('loadedmetadata', () => { v.currentTime = 0.001 })
+    })
+  }
+
+  function filterMedia(q) {
+    const query = q.toLowerCase().trim()
+    renderMedia(query ? _allMedia.filter(i => i.key.toLowerCase().includes(query)) : _allMedia)
+  }
+
+  // ── Upload new file via picker ────────────────────────────────────────────
+  async function uploadNewMedia(input) {
+    const files = Array.from(input.files)
+    if (!files.length) return
+    const statusEl = document.getElementById('picker-upload-status')
+    statusEl.textContent = `Uploading ${files.length}…`
+    statusEl.style.color = '#888'
+
+    let done = 0
+    for (const file of files) {
+      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '-')
+      const fd = new FormData()
+      fd.append('file', file)
+      fd.append('key', `uploads/${safeName}`)
+      try {
+        const res = await fetch(UPLOAD_API, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${password}` },
+          body: fd,
+        })
+        if (res.ok) done++
+      } catch {}
+    }
+
+    statusEl.textContent = `${done}/${files.length} uploaded ✓`
+    statusEl.style.color = '#4ade80'
+    input.value = ''
+    setTimeout(() => { statusEl.textContent = '' }, 3000)
+    await loadMedia()  // refresh grid
+  }
+
+  // Close picker on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closePicker()
   })
 
-  // ── Platforms card builder ───────────────────────────────────────────────
+  // ── Creative Collective blocks ────────────────────────────────────────────
+  const ccProjects = [
+    [1, 'MAZDA',                      'Music in a Different Light'],
+    [2, 'COCA-COLA',                  'Starlight Final Four'],
+    [3, 'Walter Anderson Museum',     'Silent Light'],
+    [4, 'NIKE',                       'Fuel Band SXSW'],
+    [5, 'CMD',                        'Immersion 360 AI Lab'],
+    [6, 'MAZDA',                      'SXSW Hype Hotel'],
+    [7, 'CMD',                        'Luminous Owls'],
+    [8, 'ASYMMETRIC',                 'Work4Hire SXSW'],
+    [9, 'CMD',                        'Trampled By Owls'],
+    [10,'Lauren Rodgers Museum',      'Under the Oaks'],
+    [11,'Big Gigantic',               'Big Gigantic'],
+    [12,'CMD',                        'CMD Fabrication'],
+    [13,'MAZDA',                      'Spectrum Analyzer'],
+  ]
+  const ccContainer = document.getElementById('cc-projects')
+  ccProjects.forEach(([i, defClient, defTitle]) => {
+    ccContainer.innerHTML += `
+      <div class="project-block">
+        <div class="project-label">Project ${String(i).padStart(2,'0')}</div>
+        <div class="project-grid">
+          <div class="field"><label>Client</label><input type="text" data-key="cc-${i}-client" placeholder="${defClient}"></div>
+          <div class="field"><label>Title</label><input type="text" data-key="cc-${i}-title" placeholder="${defTitle}"></div>
+        </div>
+        <div class="field"><label>Description</label><textarea data-key="cc-${i}-desc"></textarea></div>
+        <div class="media-slot">
+          <div>
+            <div class="slot-label">Video / Image</div>
+            <div class="thumb-box" id="cc-${i}-thumb"><div class="thumb-empty">No media</div></div>
+          </div>
+          <div class="slot-actions">
+            <input type="hidden" data-key="cc-${i}-media" id="cc-${i}-val">
+            <button class="pick-btn" onclick="openPicker(url => setMediaSlot('cc-${i}', url))">Choose Media</button>
+            <button class="clear-btn" onclick="clearMediaSlot('cc-${i}')">✕ Clear</button>
+            <div class="slot-url" id="cc-${i}-url"></div>
+          </div>
+        </div>
+      </div>`
+  })
+
+  // ── Platform card blocks ──────────────────────────────────────────────────
   const platCards = [
-    [1, 'Interactive Experiences',      'Interactive · Brand Activation · Immersive',
+    [1, 'Interactive Experiences',       'Interactive · Brand Activation · Immersive',
       'Interactive experiences that bring brands, museums, and festivals to life through immersive brand activation, interactive installations, and engaging environments.'],
-    [2, 'Projection',                   'Architectural · Environmental · Storytelling',
+    [2, 'Projection',                    'Architectural · Environmental · Storytelling',
       'Transforming surfaces into immersive visual experiences. Precision-mapped content designed to tell stories, elevate brands, and engage audiences.'],
-    [3, 'Education Immersive Interactive', 'Video · Lighting · Set Design · Touring',
+    [3, 'Education Immersive Interactive','Video · Lighting · Set Design · Touring',
       'Research and development for immersive learning environments. Video, lighting, set design that inspire, educate, and captivate audiences.'],
-    [4, 'Video Content Creation',       'Concept · Shoot · Edit · Animate',
+    [4, 'Video Content Creation',        'Concept · Shoot · Edit · Animate',
       'High-impact video content for live shows, installations, and brands. From concept development to final delivery, we bring ideas to life on every screen.'],
-    [5, 'Set Design & Fabrication',     'Design · Engineer · Build',
+    [5, 'Set Design & Fabrication',      'Design · Engineer · Build',
       'Custom set and scenic design built in-house. From concept and 3D design to fabrication and installation, we build environments that stand out.'],
-    [6, 'Concert Production Design',    'Video · Lighting · Set Design · Touring',
+    [6, 'Concert Production Design',     'Video · Lighting · Set Design · Touring',
       'Full production design for touring artists and live events. Video, lighting, set design, and touring systems that create unforgettable live experiences.'],
-    [7, 'Rentals',                      'Projection · Inflatable Environments · Lighting · Silent Disco',
+    [7, 'Rentals',                       'Projection · Inflatable Environments · Lighting · Silent Disco',
       'Modular immersive rental systems featuring projection technology, inflatable environments, lighting, and silent disco experiences.'],
-    [8, 'Consulting & Systems Design',  'Plan · Design · Integrate',
+    [8, 'Consulting & Systems Design',   'Plan · Design · Integrate',
       'From initial concept to system integration, we help plan and design solutions that deliver results. Technical expertise. Creative vision.'],
   ]
-
   const platContainer = document.getElementById('plat-cards')
   platCards.forEach(([i, defTitle, defTags, defDesc]) => {
-    const num = String(i).padStart(2, '0')
+    const num = String(i).padStart(2,'0')
     platContainer.innerHTML += `
       <div class="project-block">
         <div class="project-label">Card ${num}</div>
         <div class="field"><label>Title</label><input type="text" data-key="plat-${i}-title" placeholder="${defTitle}"></div>
-        <div class="field" style="margin-top:0.5rem"><label>Tags</label><input type="text" data-key="plat-${i}-tags" placeholder="${defTags}"></div>
-        <div class="field" style="margin-top:0.5rem"><label>Description</label><textarea data-key="plat-${i}-desc" placeholder="${defDesc}"></textarea></div>
-        <div class="img-upload-row">
-          <div class="img-thumb-box" id="plat-thumb-${i}">
-            <div class="img-thumb-empty">No image</div>
-          </div>
+        <div class="field"><label>Tags</label><input type="text" data-key="plat-${i}-tags" placeholder="${defTags}"></div>
+        <div class="field"><label>Description</label><textarea data-key="plat-${i}-desc" placeholder="${defDesc}"></textarea></div>
+        <div class="media-slot">
           <div>
-            <input type="hidden" data-key="plat-${i}-image" id="plat-img-val-${i}">
-            <label class="upload-label" for="plat-file-${i}">Choose Image</label>
-            <input type="file" id="plat-file-${i}" accept="image/*" style="display:none" onchange="uploadPlatImg(${i}, this)">
-            <div class="img-status" id="plat-img-status-${i}"></div>
+            <div class="slot-label">Card Image / Video</div>
+            <div class="thumb-box" id="plat-${i}-thumb"><div class="thumb-empty">No media</div></div>
+          </div>
+          <div class="slot-actions">
+            <input type="hidden" data-key="plat-${i}-image" id="plat-${i}-val">
+            <button class="pick-btn" onclick="openPicker(url => setMediaSlot('plat-${i}', url))">Choose Media</button>
+            <button class="clear-btn" onclick="clearMediaSlot('plat-${i}')">✕ Clear</button>
+            <div class="slot-url" id="plat-${i}-url"></div>
           </div>
         </div>
-      </div>
-    `
+      </div>`
   })
 
-  // ── Image upload ─────────────────────────────────────────────────────────
-  async function uploadPlatImg(n, input) {
-    const file = input.files[0]
-    if (!file) return
-    const statusEl = document.getElementById(`plat-img-status-${n}`)
-    statusEl.textContent = 'Uploading…'
-    statusEl.style.color = '#888'
-
-    const ext = file.name.split('.').pop().toLowerCase()
-    const key = `platforms/card-${n}.${ext}`
-
-    const fd = new FormData()
-    fd.append('file', file)
-    fd.append('key', key)
-
-    try {
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${password}` },
-        body: fd,
-      })
-      if (!res.ok) throw new Error(await res.text())
-      const { url } = await res.json()
-
-      // Store URL in hidden input so Save All picks it up
-      document.getElementById(`plat-img-val-${n}`).value = url
-
-      // Show thumbnail
-      const thumb = document.getElementById(`plat-thumb-${n}`)
-      thumb.innerHTML = `<img src="${url}" alt="">`
-
-      statusEl.textContent = 'Uploaded ✓'
-      statusEl.style.color = '#4ade80'
-      setTimeout(() => { statusEl.textContent = '' }, 3000)
-    } catch (e) {
-      statusEl.textContent = 'Error: ' + e.message
-      statusEl.style.color = '#f87171'
-    }
-  }
-
+  // ── Core admin functions ──────────────────────────────────────────────────
   function setStatus(msg, type = '') {
     const el = document.getElementById('status')
     el.textContent = msg
@@ -266,7 +463,7 @@
   }
 
   function toggle(header) {
-    const body = header.nextElementSibling
+    const body  = header.nextElementSibling
     const arrow = header.querySelector('.section-toggle')
     body.classList.toggle('open')
     arrow.textContent = body.classList.contains('open') ? '▼' : '▶'
@@ -289,17 +486,21 @@
   }
 
   function populate(data) {
+    // Text fields
     document.querySelectorAll('[data-key]').forEach(el => {
       const val = data[el.dataset.key]
       if (val !== undefined) el.value = val
     })
-    // Restore platform image thumbnails
-    for (let i = 1; i <= 8; i++) {
-      const url = data[`plat-${i}-image`]
-      if (!url) continue
-      const thumb = document.getElementById(`plat-thumb-${i}`)
-      if (thumb) thumb.innerHTML = `<img src="${url}" alt="">`
-    }
+    // Restore all media thumbnails
+    const slots = [
+      'ai-hero',
+      ...Array.from({length:13}, (_,i) => `cc-${i+1}`),
+      ...Array.from({length:8},  (_,i) => `plat-${i+1}`),
+    ]
+    slots.forEach(slotId => {
+      const input = document.getElementById(`${slotId}-val`)
+      if (input && input.value) setMediaSlot(slotId, input.value)
+    })
   }
 
   function collect() {
@@ -324,7 +525,7 @@
       const res = await fetch(API, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${password}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify(collect())
+        body: JSON.stringify(collect()),
       })
       if (res.status === 401) { setStatus('Wrong password', 'err'); return }
       if (!res.ok) throw new Error(await res.text())

@@ -8,8 +8,8 @@ function row(idx, videoKey, posterKey, client, title, desc) {
   const poster = posterKey ? `poster="${R2}/${posterKey}"` : ''
   return `
     <div class="cc-row">
-      <div class="cc-media">
-        <video class="cc-video" src="${R2}/${videoKey}" ${poster} muted loop playsinline preload="metadata"></video>
+      <div class="cc-media" id="cc-media-box-${idx}">
+        <video id="cc-media-${idx}" class="cc-video" src="${R2}/${videoKey}" ${poster} muted loop playsinline preload="metadata"></video>
       </div>
       <div class="cc-text">
         <span class="cc-client" data-ck="cc-${idx}-client">${client}</span>
@@ -77,6 +77,33 @@ document.querySelector('#app').innerHTML = `
 
 initPage('creative-collective')
 loadContent()
+
+// Load CMS media overrides (admin can swap videos or set poster images per row)
+function isVideo(url) { return /\.(mp4|webm|mov|ogg)(\?|$)/i.test(url) }
+async function loadCCMedia() {
+  try {
+    const data = await fetch('/api/content').then(r => r.json())
+    for (let i = 1; i <= 13; i++) {
+      const url = data[`cc-${i}-media`]
+      if (!url) continue
+      const box = document.getElementById(`cc-media-box-${i}`)
+      if (!box) continue
+      if (isVideo(url)) {
+        const vid = box.querySelector('video')
+        if (vid) { vid.src = url; vid.load() }
+        else {
+          box.innerHTML = `<video id="cc-media-${i}" class="cc-video" src="${url}" muted loop playsinline preload="metadata"></video>`
+        }
+      } else {
+        // Image replaces video
+        const old = box.querySelector('video')
+        if (old) old.pause()
+        box.innerHTML = `<img src="${url}" class="cc-video" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">`
+      }
+    }
+  } catch { /* fall back to hardcoded media */ }
+}
+loadCCMedia()
 
 // Video hover play (desktop) / intersection play (mobile)
 const isMobile = () => window.innerWidth < 768

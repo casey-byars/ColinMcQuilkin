@@ -41,7 +41,7 @@ document.querySelector('#app').innerHTML = `
         </div>
       </div>
       <div class="ai-hero-video">
-        <img src="https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev/ai-lab-hero.png" alt="360 AI Lab" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+        <img id="ai-hero-img" src="https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev/ai-lab-hero.png" alt="360 AI Lab" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
         <div class="ai-play-btn">
           <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
         </div>
@@ -133,3 +133,15 @@ document.querySelector('#app').innerHTML = `
 
 initPage('ai-360-lab')
 loadContent()
+
+// Load CMS hero image override if set in admin
+async function loadAIMedia() {
+  try {
+    const data = await fetch('/api/content').then(r => r.json())
+    const url = data['ai-hero-image']
+    if (!url) return
+    const img = document.getElementById('ai-hero-img')
+    if (img) img.src = url
+  } catch {}
+}
+loadAIMedia()
