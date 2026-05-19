@@ -1,6 +1,6 @@
 import './style.css'
 import './creative-collective.css'
-import { navHTML, initPage, loadContent } from './shared.js'
+import { navHTML, footerHTML, initPage, loadContent } from './shared.js'
 
 const R2 = 'https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev'
 
@@ -73,6 +73,8 @@ document.querySelector('#app').innerHTML = `
       'A real-time audio-reactive spectrum visualization installation created for Mazda at SXSW Hype Hotel, turning music into a dynamic light and projection experience.')}
 
   </section>
+
+  ${footerHTML}
 `
 
 initPage('creative-collective')

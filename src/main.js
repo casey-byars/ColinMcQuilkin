@@ -1,5 +1,5 @@
 import './style.css'
-import { navHTML, initPage, loadContent } from './shared.js'
+import { navHTML, footerHTML, initPage, loadContent } from './shared.js'
 
 const R2 = 'https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev'
 
@@ -96,6 +96,8 @@ document.querySelector('#app').innerHTML = `
     </a>
 
   </section>
+
+  ${footerHTML}
 `
 
 initPage('experiences')

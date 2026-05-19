@@ -1,6 +1,6 @@
 import './style.css'
 import './immersive-systems.css'
-import { navHTML, initPage } from './shared.js'
+import { navHTML, footerHTML, initPage } from './shared.js'
 
 function card(num, title, tag, desc, specs) {
   const specItems = specs.map(s => `<span class="is-spec">${s}</span>`).join('')
@@ -62,6 +62,8 @@ document.querySelector('#app').innerHTML = `
 
     </div>
   </section>
+
+  ${footerHTML}
 `
 
 initPage('immersive-systems')

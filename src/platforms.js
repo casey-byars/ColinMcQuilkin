@@ -1,6 +1,6 @@
 import './style.css'
 import './platforms.css'
-import { navHTML, initPage } from './shared.js'
+import { navHTML, footerHTML, initPage } from './shared.js'
 
 const R2 = 'https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev'
 
@@ -72,6 +72,8 @@ document.querySelector('#app').innerHTML = `
 
     </div>
   </section>
+
+  ${footerHTML}
 `
 
 initPage('platforms')

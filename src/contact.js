@@ -1,6 +1,6 @@
 import './style.css'
 import './contact.css'
-import { navHTML, initPage, loadContent } from './shared.js'
+import { navHTML, footerHTML, initPage, loadContent } from './shared.js'
 
 document.querySelector('#app').innerHTML = `
   ${navHTML}
@@ -83,13 +83,9 @@ document.querySelector('#app').innerHTML = `
 
     </div>
 
-    <!-- Footer mark -->
-    <div class="contact-footer">
-      <span>——</span>
-      <span class="contact-footer-logo">CMD</span>
-      <span>——</span>
-    </div>
   </div>
+
+  ${footerHTML}
 `
 
 initPage('contact')

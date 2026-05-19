@@ -1,3 +1,26 @@
+export const footerHTML = `
+  <footer class="site-footer">
+    <div class="footer-mark">
+      <span class="footer-rule">——</span>
+      <span class="footer-logo">CMDESIGN</span>
+      <span class="footer-rule">——</span>
+    </div>
+    <nav class="footer-nav">
+      <a href="/">Experiences</a>
+      <a href="/creative-collective.html">Creative Collective</a>
+      <a href="/platforms.html">Platforms</a>
+      <a href="/immersive-systems.html">Immersive Systems</a>
+      <a href="/ai-360-lab.html">AI 360 Lab</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+    <div class="footer-copy">
+      <a href="mailto:colinmcquilkin@yahoo.com">colinmcquilkin@yahoo.com</a>
+      <span class="footer-dot">·</span>
+      <span>© ${new Date().getFullYear()} Colin McQuilkin Design</span>
+    </div>
+  </footer>
+`
+
 export const navHTML = `
   <nav class="border-b border-neutral-800">
     <div class="flex items-center justify-between px-6 md:px-10 py-6">

@@ -1,6 +1,6 @@
 import './style.css'
 import './ai-360-lab.css'
-import { navHTML, initPage, loadContent } from './shared.js'
+import { navHTML, footerHTML, initPage, loadContent } from './shared.js'
 
 document.querySelector('#app').innerHTML = `
   ${navHTML}
@@ -129,6 +129,8 @@ document.querySelector('#app').innerHTML = `
     </div>
 
   </div>
+
+  ${footerHTML}
 `
 
 initPage('ai-360-lab')
