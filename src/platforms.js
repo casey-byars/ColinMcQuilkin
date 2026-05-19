@@ -2,7 +2,12 @@ import './style.css'
 import './platforms.css'
 import { navHTML, initPage } from './shared.js'
 
-function card(num, title, tags, desc) {
+const R2 = 'https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev'
+
+function card(num, title, tags, desc, mediaKey = null) {
+  const media = mediaKey
+    ? `<video src="${R2}/${mediaKey}" muted loop playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;"></video>`
+    : ''
   return `
     <div class="plat-card">
       <div class="plat-text">
@@ -12,9 +17,7 @@ function card(num, title, tags, desc) {
         <div class="plat-tags">${tags}</div>
         <p class="plat-desc">${desc}</p>
       </div>
-      <div class="plat-image">
-        <!-- drop image/video here -->
-      </div>
+      <div class="plat-image">${media}</div>
     </div>
   `
 }
@@ -34,11 +37,13 @@ document.querySelector('#app').innerHTML = `
 
       ${card('01', 'Interactive<br>Experiences',
         'Interactive · Brand Activation · Immersive',
-        'Interactive experiences that bring brands, museums, and festivals to life through immersive brand activation, interactive installations, and engaging environments.')}
+        'Interactive experiences that bring brands, museums, and festivals to life through immersive brand activation, interactive installations, and engaging environments.',
+        'platform-1.mp4')}
 
       ${card('02', 'Projection',
         'Architectural · Environmental · Storytelling',
-        'Transforming surfaces into immersive visual experiences. Precision-mapped content designed to tell stories, elevate brands, and engage audiences.')}
+        'Transforming surfaces into immersive visual experiences. Precision-mapped content designed to tell stories, elevate brands, and engage audiences.',
+        'platform-2.mp4')}
 
       ${card('03', 'Education<br>Immersive<br>Interactive',
         'Video · Lighting · Set Design · Touring',
@@ -69,3 +74,18 @@ document.querySelector('#app').innerHTML = `
 `
 
 initPage('platforms')
+
+const isMobile = () => window.innerWidth < 768
+document.querySelectorAll('.plat-card').forEach(card => {
+  const v = card.querySelector('video')
+  if (!v) return
+  v.addEventListener('loadedmetadata', () => { v.currentTime = 0.001 })
+  if (isMobile()) {
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) v.play(); else { v.pause(); v.currentTime = 0.001 }
+    }, { threshold: 0.5 }).observe(card)
+  } else {
+    card.addEventListener('mouseenter', () => v.play())
+    card.addEventListener('mouseleave', () => { v.pause(); v.currentTime = 0.001 })
+  }
+})

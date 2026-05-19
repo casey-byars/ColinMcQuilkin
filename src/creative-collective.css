@@ -28,11 +28,14 @@
 }
 
 .cc-media img,
-.cc-media video {
+.cc-media video,
+.cc-video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  position: absolute;
+  inset: 0;
 }
 
 .cc-text {
@@ -43,6 +46,15 @@
   padding: 3rem;
   background: #080808;
   border-left: 1px solid #222;
+}
+
+.cc-client {
+  display: block;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #666;
+  margin-bottom: 0.5rem;
 }
 
 .cc-project-title {

@@ -41,7 +41,7 @@ document.querySelector('#app').innerHTML = `
         </div>
       </div>
       <div class="ai-hero-video">
-        <!-- drop video/image here -->
+        <img src="https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev/ai-lab-hero.png" alt="360 AI Lab" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
         <div class="ai-play-btn">
           <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
         </div>
