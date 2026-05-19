@@ -312,7 +312,7 @@
         : `<img src="${item.url}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">`
       const badgeColor = vid ? '#5b8fff' : '#888'
       return `
-        <div class="picker-item" onclick="selectMedia(${JSON.stringify(item.url)})">
+        <div class="picker-item" data-url="${item.url}">
           <div class="picker-thumb">${preview}</div>
           <div class="picker-info">
             <div class="picker-name" title="${item.key}">${filename}</div>
@@ -365,6 +365,12 @@
     setTimeout(() => { statusEl.textContent = '' }, 3000)
     await loadMedia()  // refresh grid
   }
+
+  // Picker item clicks via event delegation (avoids quoting issues in onclick attrs)
+  document.getElementById('picker-grid').addEventListener('click', e => {
+    const item = e.target.closest('.picker-item')
+    if (item) selectMedia(item.dataset.url)
+  })
 
   // Close picker on Escape
   document.addEventListener('keydown', e => {
