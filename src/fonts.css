@@ -6,9 +6,9 @@
   --font-body: 'Inter', system-ui, sans-serif;
 
   /* Page title sizes (fluid) */
-  --title-hero:    clamp(3rem,   9vw, 8.5rem);
-  --title-large:   clamp(2.5rem, 7vw, 7rem);
-  --title-section: clamp(1.75rem, 3vw, 2.75rem);
+  --title-hero:    clamp(2rem,   4vw, 4rem);
+  --title-large:   clamp(1.5rem, 3vw, 3rem);
+  --title-section: clamp(1.25rem, 2vw, 2rem);
 
   /* Label / nav sizes */
   --text-label: 0.65rem;
