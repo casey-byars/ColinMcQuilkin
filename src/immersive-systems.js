@@ -1,6 +1,6 @@
 import './style.css'
 import './immersive-systems.css'
-import { navHTML, footerHTML, initPage } from './shared.js'
+import { navHTML, footerHTML, initPage, getContent } from './shared.js'
 
 function card(num, title, tag, desc, specs) {
   const n = parseInt(num)
@@ -14,11 +14,11 @@ function card(num, title, tag, desc, specs) {
           <span class="is-num-line"></span>
           <span class="is-num-dot"></span>
         </div>
-        <div class="is-title" data-ck="is-${n}-title">${title}</div>
-        <div class="is-tag"   data-ck="is-${n}-tag">${tag}</div>
-        <p class="is-desc"    data-ck="is-${n}-desc">${desc}</p>
+        <div class="is-title" data-ck="is-${n}-title"></div>
+        <div class="is-tag"   data-ck="is-${n}-tag"></div>
+        <p class="is-desc"    data-ck="is-${n}-desc"></p>
         <div class="is-specs" id="is-specs-${n}">${specItems}</div>
-        <a href="#" class="is-link">VIEW SYSTEM DETAILS &nbsp;→</a>
+        <a href="/contact.html" class="is-link">CONTACT US NOW &nbsp;→</a>
       </div>
     </div>
   `
@@ -27,11 +27,9 @@ function card(num, title, tag, desc, specs) {
 document.querySelector('#app').innerHTML = `
   ${navHTML}
 
-  <section class="text-center py-16 px-4">
-    <h1 class="is-page-title mb-6">IMMERSIVE SYSTEMS</h1>
-    <p class="is-subtitle">
-      Projection-mapped environments, inflatable architecture, interactive art systems, silent disco, and branded photo experiences.
-    </p>
+  <section class="py-4 px-4">
+    <h1 class="page-title mb-4" data-ck="is-title" data-ck-fs="is-title-fs">IMMERSIVE SYSTEMS</h1>
+    <p class="page-subtitle" data-ck="is-subtitle" data-ck-hide>Projection-mapped environments, inflatable architecture, interactive art systems, silent disco, and branded photo experiences.</p>
   </section>
 
   <section class="px-4 pb-4">
@@ -73,7 +71,8 @@ function isVideo(url) { return /\.(mp4|webm|mov|ogg)(\?|$)/i.test(url) }
 
 // Attach hover-play (desktop) or intersection-play (mobile) to a video inside a card
 function attachVideoPlay(vid, card) {
-  vid.disablePictureInPicture = true          // hide Chrome PiP icon
+  vid.disablePictureInPicture = true
+  vid.disableRemotePlayback = true
   vid.addEventListener('loadedmetadata', () => { vid.currentTime = 0.001 })
   if (window.innerWidth < 768) {
     new IntersectionObserver(([e]) => {
@@ -88,7 +87,7 @@ function attachVideoPlay(vid, card) {
 
 async function loadPageContent() {
   try {
-    const data = await fetch('/api/content').then(r => r.json())
+    const data = await getContent()
 
     // Text fields
     document.querySelectorAll('[data-ck]').forEach(el => {
@@ -112,7 +111,7 @@ async function loadPageContent() {
       if (!container) continue
 
       if (isVideo(url)) {
-        container.innerHTML = `<video src="${url}" muted loop playsinline preload="metadata" disablePictureInPicture style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;"></video>`
+        container.innerHTML = `<video src="${url}" muted loop playsinline preload="metadata" disablePictureInPicture disableremoteplayback style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;"></video>`
         const vid  = container.querySelector('video')
         const card = container.closest('.is-card')
         if (vid && card) attachVideoPlay(vid, card)

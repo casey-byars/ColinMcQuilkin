@@ -1,9 +1,11 @@
 /* ================================================
    GLOBAL TYPOGRAPHY — Edit here to change site fonts
    ================================================ */
+
 :root {
-  --font-display: 'Playfair Display', Georgia, serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+  --font-display: 'Poiret One', Georgia, serif;
+  --font-body:    'Finlandica', system-ui, sans-serif;
+  --font-accent:  'Nixie One', serif;
 
   /* Page title sizes (fluid) */
   --title-hero:    clamp(2rem,   4vw, 4rem);
@@ -24,7 +26,9 @@
 
 body {
   font-family: var(--font-body);
+  background: #000;
 }
 
 .font-display { font-family: var(--font-display); }
 .font-body    { font-family: var(--font-body); }
+.font-accent  { font-family: var(--font-accent); }

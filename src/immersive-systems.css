@@ -1,16 +1,16 @@
 .is-page-title {
   font-family: var(--font-display);
-  font-size: clamp(2.5rem, 7vw, 7.5rem);
-  font-weight: 400;
-  letter-spacing: 0.1em;
+  font-size: clamp(2.5rem, 6.5vw, 6rem);
+  font-weight: 300;
+  letter-spacing: 0.15em;
   color: white;
   line-height: 1;
 }
 
 .is-subtitle {
   font-size: 0.62rem;
-  letter-spacing: 0.18em;
-  color: #888;
+  letter-spacing: 0.3em;
+  color: #999;
   text-transform: uppercase;
   max-width: 900px;
   margin: 0 auto;
@@ -20,8 +20,8 @@
 .is-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 1px;
-  background: #1a1a1a;
+  gap: 25px;
+  background: #080808;
 }
 
 .is-card {
@@ -31,7 +31,7 @@
 }
 
 .is-image {
-  aspect-ratio: 3/4;
+  height: 260px;
   background: #111;
   overflow: hidden;
   position: relative;
@@ -80,7 +80,7 @@
 }
 
 .is-title {
-  font-size: 0.95rem;
+  font-size: 1.15rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -90,17 +90,19 @@
 }
 
 .is-tag {
-  font-size: 0.58rem;
+  font-size: 0.7rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: #888;
+  padding-bottom: 0.75rem;
   margin-bottom: 0.75rem;
+  border-bottom: 1px solid #1e1e1e;
 }
 
 .is-desc {
-  font-size: 0.68rem;
-  color: #777;
-  line-height: 1.7;
+  font-size: 0.82rem;
+  color: #888;
+  line-height: 1.75;
   margin-bottom: 1rem;
   flex: 1;
 }
@@ -115,14 +117,14 @@
 }
 
 .is-spec {
-  font-size: 0.58rem;
+  font-size: 0.65rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #666;
 }
 
 .is-link {
-  font-size: 0.6rem;
+  font-size: 0.68rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: white;

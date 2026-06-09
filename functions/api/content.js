@@ -15,7 +15,7 @@ const DEFAULT_CONTENT = {
   'ai-subtitle': 'Education · Immersive · Interactive',
   'contact-subtitle': 'Vision · Collaboration · Execution',
 
-  // Creative Collective projects
+  // Creative Collections projects
   'cc-1-client': 'MAZDA', 'cc-1-title': 'Music in a Different Light',
   'cc-1-desc': 'An immersive brand activation at SXSW Hype Hotel blending projection, lighting, and live performance to transform a venue into a sensory experience.',
   'cc-2-client': 'COCA-COLA', 'cc-2-title': 'Starlight Final Four',
@@ -55,6 +55,7 @@ const CORS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Authorization, Content-Type',
+  'Cache-Control': 'no-store, no-cache, must-revalidate',
 }
 
 export async function onRequest({ request, env }) {

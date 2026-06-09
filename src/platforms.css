@@ -1,87 +1,106 @@
+/* ── Page header ─────────────────────────────────────────────────────────── */
 .plat-page-title {
   font-family: var(--font-display);
-  font-size: clamp(3.5rem, 10vw, 9rem);
-  font-weight: 400;
+  font-size: clamp(2.5rem, 6.5vw, 6rem);
+  font-weight: 300;
   letter-spacing: 0.15em;
   color: white;
   line-height: 1;
 }
 
 .plat-subtitle {
-  font-size: 0.65rem;
-  letter-spacing: 0.18em;
-  color: #999;
-  text-transform: uppercase;
-  max-width: 900px;
-  margin: 0 auto;
-  line-height: 1.8;
+  font-size: 1.44rem;
+  letter-spacing: 0.06em;
+  color: #888;
+  max-width: 480px;
+  line-height: 1.75;
 }
 
+/* ── Grid ────────────────────────────────────────────────────────────────── */
 .plat-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  background: #222;
-}
-
-.plat-card {
-  display: flex;
-  background: #060606;
-  min-height: 280px;
-}
-
-.plat-text {
-  flex: 1;
-  padding: 1.5rem 1.25rem;
   display: flex;
   flex-direction: column;
+  gap: 8px;
+  background: #080808;
+}
+
+/* ── Row card ────────────────────────────────────────────────────────────── */
+.plat-card {
+  display: flex;
+  min-height: 360px;
+  max-height: 360px;
+  border: 1px solid #1a1a1a;
+  overflow: hidden;
+  transition: border-color 0.3s;
+  cursor: pointer;
+}
+.plat-card:hover { border-color: #3a3a3a; }
+
+/* ── Text panel ──────────────────────────────────────────────────────────── */
+.plat-text {
+  flex: 0 0 27%;
+  padding: 1.25rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+/* Thin white inner frame */
+.plat-frame {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 1.25rem 1.5rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: border-color 0.3s;
+}
+.plat-card:hover .plat-frame {
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
 .plat-number {
-  font-family: var(--font-display);
-  font-size: 2.25rem;
+  font-family: var(--font-body);
+  font-size: 0.5rem;
   font-weight: 400;
-  color: #5b8fff;
-  line-height: 1;
-  margin-bottom: 0.5rem;
-}
-
-.plat-divider {
-  width: 2rem;
-  height: 1px;
-  background: #5b8fff;
-  margin-bottom: 0.75rem;
+  color: #333;
+  letter-spacing: 0.2em;
 }
 
 .plat-title {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.6vw, 1.5rem);
+  font-weight: 400;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: white;
-  line-height: 1.4;
-  margin-bottom: 0.5rem;
-}
-
-.plat-tags {
-  font-size: 0.6rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #5b8fff;
-  margin-bottom: 0.75rem;
-  line-height: 1.6;
+  line-height: 1.2;
 }
 
 .plat-desc {
-  font-size: 0.7rem;
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  font-weight: 400;
   color: #888;
-  line-height: 1.7;
-  flex: 1;
+  line-height: 1.75;
+  margin: 0;
 }
 
+.plat-view-link {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #333;
+  margin-top: 0.25rem;
+  transition: color 0.2s;
+}
+.plat-card:hover .plat-view-link { color: #999; }
+
+/* ── Image panel ─────────────────────────────────────────────────────────── */
 .plat-image {
-  width: 42%;
-  flex-shrink: 0;
+  flex: 1;
   background: #111;
   overflow: hidden;
   position: relative;
@@ -93,24 +112,231 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: opacity 0.5s ease, transform 0.6s ease;
+}
+.plat-card:hover .plat-image img,
+.plat-card:hover .plat-image video { transform: scale(1.03); }
+
+/* ── Poster thumbnail (overlays video, fades out on hover) ───────────────── */
+.plat-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.6s ease;
+  z-index: 1;
+}
+.plat-card:hover .plat-poster { transform: scale(1.03); }
+
+/* ── Mobile ──────────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .plat-card { flex-direction: column; min-height: unset; max-height: unset; }
+  .plat-text { flex: none; padding: 1rem; }
+  .plat-image { min-height: 220px; }
 }
 
-@media (max-width: 1023px) {
-  .plat-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+/* ── Platform Popup Modal ────────────────────────────────────────────────── */
+#plat-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+}
+#plat-modal.is-open { display: flex; }
+
+#plat-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.92);
+  cursor: pointer;
 }
 
-@media (max-width: 600px) {
-  .plat-grid {
-    grid-template-columns: 1fr;
-  }
+#plat-modal-box {
+  position: relative;
+  z-index: 1;
+  width: 92vw;
+  max-width: 1100px;
+  max-height: 92vh;
+  background: #050505;
+  border: 1px solid #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
 
-  .plat-card {
-    min-height: 200px;
-  }
+#plat-modal-close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  z-index: 10;
+  background: rgba(0,0,0,0.75);
+  border: 1px solid #333;
+  color: #888;
+  width: 1.9rem;
+  height: 1.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s, border-color 0.15s;
+}
+#plat-modal-close:hover { color: white; border-color: #666; opacity: 1; }
 
-  .plat-image {
-    width: 38%;
-  }
+/* ── Slideshow ───────────────────────────────────────────────────────────── */
+#plat-slideshow-wrap {
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  flex: 1;
+  background: #000;
+  overflow: hidden;
+}
+
+#plat-slideshow-inner {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  overflow: hidden;
+}
+
+#plat-slide-img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  display: block;
+  transition: opacity 0.2s;
+  user-select: none;
+  pointer-events: none;
+}
+
+.plat-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  border: 1px solid #333;
+  color: white;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.15s, border-color 0.15s;
+  z-index: 2;
+  user-select: none;
+}
+.plat-arrow:hover { background: rgba(255,255,255,0.12); border-color: #666; opacity: 1 !important; }
+#plat-prev-btn { left: 0.75rem; }
+#plat-next-btn { right: 0.75rem; }
+
+#plat-slide-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.55rem 1rem;
+  border-top: 1px solid #111;
+  background: #050505;
+  min-height: 2.4rem;
+}
+
+#plat-slide-dots {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.plat-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #2a2a2a;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+  flex-shrink: 0;
+}
+.plat-dot.active { background: white; transform: scale(1.35); }
+.plat-dot:hover  { background: #777; }
+
+#plat-slide-counter {
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  color: #444;
+  min-width: 3rem;
+  text-align: center;
+}
+
+/* ── Video ───────────────────────────────────────────────────────────────── */
+#plat-video-wrap {
+  flex-direction: column;
+  width: 100%;
+}
+
+#plat-modal-video {
+  width: 100%;
+  max-height: 84vh;
+  display: block;
+  background: #000;
+}
+
+#plat-modal-vol {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 1rem;
+  border-top: 1px solid #1a1a1a;
+  background: #050505;
+}
+
+#plat-vol-btn {
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s;
+}
+#plat-vol-btn:hover { color: white; opacity: 1; }
+#plat-vol-icon { width: 18px; height: 18px; }
+
+#plat-vol-slider {
+  flex: 0 0 120px;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 2px;
+  background: linear-gradient(to right, white 80%, #2a2a2a 80%);
+  outline: none;
+  cursor: pointer;
+}
+#plat-vol-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 10px; height: 10px;
+  background: white; border-radius: 50%; cursor: pointer;
+}
+#plat-vol-slider::-moz-range-thumb {
+  width: 10px; height: 10px;
+  background: white; border: none; border-radius: 50%; cursor: pointer;
+}
+
+#plat-vol-pct {
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+  color: #555;
+  min-width: 2.2rem;
 }

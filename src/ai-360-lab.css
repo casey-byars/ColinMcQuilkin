@@ -1,16 +1,16 @@
 .ai-page-title {
   font-family: var(--font-display);
-  font-size: clamp(3rem, 9vw, 8rem);
-  font-weight: 400;
-  letter-spacing: 0.35em;
+  font-size: clamp(2.5rem, 6.5vw, 6rem);
+  font-weight: 300;
+  letter-spacing: 0.15em;
   color: white;
   line-height: 1;
 }
 
 .ai-subtitle {
-  font-size: 0.65rem;
-  letter-spacing: 0.35em;
-  color: #888;
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  color: #999;
   text-transform: uppercase;
 }
 
@@ -19,13 +19,13 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1px;
-  background: #1a1a1a;
+  background: #000;
   margin-bottom: 1px;
 }
 
 .ai-hero-text {
-  background: #060606;
-  padding: 3rem;
+  background: #000;
+  padding: 3rem 3rem 3rem 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -56,9 +56,9 @@
 }
 
 .ai-hero-desc {
-  font-size: 0.85rem;
+  font-size: var(--text-body);
   color: #888;
-  line-height: 1.8;
+  line-height: 1.75;
   margin-bottom: 2rem;
   max-width: 480px;
 }
@@ -109,6 +109,9 @@
   justify-content: center;
   min-height: 400px;
   cursor: pointer;
+  margin: 12px 12px 12px 0;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .ai-hero-video img,
@@ -153,12 +156,13 @@
   z-index: 1;
 }
 
-/* Bottom grid */
+/* Bottom grid — cell 02 is 2fr wide, image cell (4th) is 0.5fr */
 .ai-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: 2fr 1fr 1fr 0.5fr 1fr 1fr 1fr;
   gap: 1px;
   background: #1a1a1a;
+  border-top: 1px solid #1a1a1a;
 }
 
 .ai-cell {
@@ -190,9 +194,17 @@
 }
 
 .ai-cell-desc {
-  font-size: 0.68rem;
-  color: #777;
-  line-height: 1.7;
+  font-size: var(--text-body);
+  color: #888;
+  line-height: 1.75;
+  margin-bottom: 0.75rem;
+}
+
+.ai-02-logos {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
   margin-bottom: 0.75rem;
 }
 
@@ -235,6 +247,32 @@
   font-size: 0.6rem;
 }
 
+.ai-dotlist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.ai-dotlist li {
+  font-size: 0.68rem;
+  color: #888;
+  line-height: 1.5;
+  padding-left: 1.1rem;
+  position: relative;
+}
+
+.ai-dotlist li::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  color: #666;
+  font-size: 1rem;
+  line-height: 1.1;
+}
+
 .ai-who-list {
   list-style: none;
   padding: 0;
@@ -260,41 +298,177 @@
   flex-shrink: 0;
 }
 
+/* Divider image cell inside grid */
+.ai-divider-cell {
+  overflow: hidden;
+  background: #060606;
+  padding: 0;
+}
+
+.ai-divider-cell img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+}
+
 /* Quote footer */
 .ai-quote {
+  position: relative;
   text-align: center;
-  padding: 3rem 2rem;
+  padding: 3.5rem 5rem;
   border-top: 1px solid #1a1a1a;
 }
 
-.ai-quote-marks {
-  font-size: 3rem;
-  color: #333;
-  font-family: var(--font-display);
+.ai-quote-mark {
+  position: absolute;
+  font-size: 5rem;
+  color: #2a2a2a;
+  font-family: Georgia, serif;
   line-height: 1;
+  top: 50%;
+  transform: translateY(-50%);
 }
+
+.ai-quote-mark--left  { left: clamp(1.5rem, 5vw, 6rem); }
+.ai-quote-mark--right { right: clamp(1.5rem, 5vw, 6rem); }
 
 .ai-quote-text {
   font-size: 0.68rem;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: #888;
-  line-height: 2;
+  line-height: 2.2;
   max-width: 700px;
   margin: 0 auto;
 }
 
-@media (max-width: 1100px) {
-  .ai-grid { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 900px) {
+  .ai-grid { grid-template-columns: repeat(4, 1fr); }
+  .ai-cell--wide { grid-column: span 2; }
+  .ai-divider-cell { min-height: 160px; }
 }
 
 @media (max-width: 767px) {
   .ai-hero { grid-template-columns: 1fr; }
-  .ai-hero-video { min-height: 280px; }
+  .ai-hero-text { padding: 3rem; }
+  .ai-hero-video { min-height: 280px; margin: 0 12px 12px 12px; }
   .ai-grid { grid-template-columns: repeat(2, 1fr); }
   .ai-info-blocks { grid-template-columns: 1fr; }
+  .ai-divider-cell { min-height: 140px; }
 }
 
 @media (max-width: 480px) {
   .ai-grid { grid-template-columns: 1fr; }
+  .ai-divider-cell { min-height: 200px; }
+}
+
+/* ── Video Modal ─────────────────────────────────────────────────────────── */
+#ai-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+#ai-modal.is-open { display: flex; }
+
+#ai-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.92);
+}
+
+#ai-modal-box {
+  position: relative;
+  z-index: 1;
+  background: #0a0a0a;
+  border: 1px solid #222;
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+#ai-modal-close {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  background: none;
+  border: 1px solid #333;
+  color: #666;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  border-radius: 0;
+  transition: color 0.2s, border-color 0.2s;
+}
+#ai-modal-close:hover { color: white; border-color: #666; }
+
+#ai-modal-video-wrap {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+
+#ai-modal-video {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ── Volume bar ──────────────────────────────────────────────────────────── */
+#ai-modal-vol {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  border-top: 1px solid #1a1a1a;
+  background: #080808;
+}
+
+#ai-vol-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: #888;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+#ai-vol-btn:hover { color: white; }
+#ai-vol-btn svg { width: 18px; height: 18px; }
+
+#ai-vol-slider {
+  flex: 0 0 120px;
+  height: 2px;
+  appearance: none;
+  background: linear-gradient(to right, white 80%, #2a2a2a 80%);
+  border-radius: 0;
+  outline: none;
+  cursor: pointer;
+}
+#ai-vol-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-radius: 50%;
+}
+
+#ai-vol-pct {
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: #555;
+  min-width: 2.5rem;
+  text-align: right;
 }

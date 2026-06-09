@@ -36,6 +36,7 @@
     #editor { display: none; max-width: 1000px; margin: 0 auto; padding: 0; }
     .save-bar { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; border-bottom: 1px solid #1a1a1a; }
     .save-bar h1 { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: #555; }
+    #floating-save { position: fixed; bottom: 2rem; right: 2rem; z-index: 100; display: none; box-shadow: 0 4px 24px rgba(0,0,0,0.6); }
 
     /* ── Tabs ────────────────────────────────────────────────────────────── */
     .tab-bar { display: flex; border-bottom: 1px solid #1a1a1a; background: #050505; overflow-x: auto; scrollbar-width: none; position: sticky; top: 65px; z-index: 9; }
@@ -70,6 +71,31 @@
     .slot-actions { display: flex; flex-direction: column; gap: 0.4rem; justify-content: center; }
     .slot-url { font-size: 0.5rem; color: #444; letter-spacing: 0.04em; word-break: break-all; max-width: 300px; margin-top: 0.2rem; }
 
+    /* ── Font-size select ────────────────────────────────────────────────── */
+    .fs-select { background: #0d0d0d; border: 1px solid #222; color: #ddd; padding: 0.5rem 2rem 0.5rem 0.75rem; font-size: 12px; font-family: inherit; outline: none; appearance: none; -webkit-appearance: none; cursor: pointer; transition: border-color 0.2s; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23555' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.6rem center; }
+    .fs-select:focus { border-color: #555; }
+    .general-row { display: grid; grid-template-columns: 120px 1fr auto; align-items: center; gap: 0.75rem; }
+
+    /* ── Popup type toggle ──────────────────────────────────────────────────── */
+    .popup-type-btn { padding: 0.3rem 0.65rem; font-size: 0.55rem; letter-spacing: 0.12em; }
+    .popup-type-btn.active { background: #333; color: white; border-color: #666; }
+
+    /* ── Slideshow slide thumbs (admin) ─────────────────────────────────────── */
+    .plat-slides-grid { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: flex-start; padding: 0.35rem 0; }
+    .plat-slide-thumb { position: relative; width: 80px; height: 58px; border: 1px solid #2a2a2a; background: #111; overflow: hidden; flex-shrink: 0; }
+    .plat-slide-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .plat-slide-remove { position: absolute; top: 2px; right: 2px; width: 15px; height: 15px; background: rgba(0,0,0,0.85); border: none; color: #666; font-size: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; line-height: 1; }
+    .plat-slide-remove:hover { color: #f87171; opacity: 1; }
+
+    /* ── Drag & drop (CC rows) ───────────────────────────────────────────── */
+    .drag-handle { display:flex; align-items:center; justify-content:center; width:24px; height:24px; cursor:grab; color:#2a2a2a; font-size:16px; flex-shrink:0; user-select:none; border-radius:2px; transition:color 0.15s; }
+    .drag-handle:hover { color:#666; }
+    .drag-handle:active { cursor:grabbing; }
+    .project-block.is-dragging { opacity:0.35; outline:1px dashed #555; }
+    /* ── Reorder arrows (Platforms) ─────────────────────────────────────── */
+    .reorder-btn { background:none; border:1px solid #222; color:#444; width:22px; height:22px; font-size:10px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:color 0.15s, border-color 0.15s; padding:0; }
+    .reorder-btn:hover { color:white; border-color:#666; opacity:1; }
+
     /* ── Media Picker Modal ──────────────────────────────────────────────── */
     #media-picker { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.97); z-index: 1000; flex-direction: column; }
     #picker-header { display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.5rem; border-bottom: 1px solid #222; background: #080808; flex-shrink: 0; flex-wrap: wrap; }
@@ -103,6 +129,14 @@
     #picker-footer { padding: 0.65rem 1.5rem; border-top: 1px solid #222; background: #080808; display: flex; align-items: center; justify-content: space-between; font-size: 0.6rem; letter-spacing: 0.1em; flex-shrink: 0; }
     #picker-count  { color: #444; }
     #picker-status { color: #555; }
+
+    /* ── Confirm Modal ───────────────────────────────────────────────────── */
+    #confirm-modal { display: none; position: fixed; inset: 0; z-index: 2000; align-items: center; justify-content: center; background: rgba(0,0,0,0.85); }
+    #confirm-modal.open { display: flex; }
+    #confirm-box { background: #0d0d0d; border: 1px solid #333; padding: 2rem; max-width: 360px; width: 100%; margin: 1rem; }
+    #confirm-filename { font-size: 0.7rem; letter-spacing: 0.12em; color: white; margin-bottom: 0.5rem; word-break: break-all; }
+    #confirm-msg { font-size: 0.6rem; letter-spacing: 0.1em; color: #555; text-transform: uppercase; margin-bottom: 1.75rem; }
+    #confirm-actions { display: flex; gap: 0.75rem; justify-content: flex-end; }
   </style>
 </head>
 <body>
@@ -110,7 +144,10 @@
 <!-- ── Header ──────────────────────────────────────────────────────────── -->
 <header>
   <span class="logo">CMDESIGN — Content Editor</span>
-  <span class="status" id="status">Not saved</span>
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <span class="status" id="status">Not saved</span>
+    <button class="secondary" id="logout-btn" onclick="logout()" style="display:none;padding:0.4rem 0.85rem;font-size:0.55rem;">Log Out</button>
+  </div>
 </header>
 
 <!-- ── Login ───────────────────────────────────────────────────────────── -->
@@ -135,34 +172,183 @@
   <!-- ── Tab bar ── -->
   <div class="tab-bar">
     <button class="tab-btn active" data-tab="general">General</button>
-    <button class="tab-btn" data-tab="cc">Creative Collective</button>
+    <button class="tab-btn" data-tab="exp">Experience</button>
     <button class="tab-btn" data-tab="platforms">Platforms</button>
+    <button class="tab-btn" data-tab="cc">Creative Collections</button>
     <button class="tab-btn" data-tab="is">Immersive Systems</button>
     <button class="tab-btn" data-tab="ai">AI Lab</button>
     <button class="tab-btn" data-tab="contact">Contact</button>
+    <button class="tab-btn" data-tab="seo">SEO</button>
   </div>
 
-  <!-- ── General: page subtitles ── -->
+  <!-- ── General: page titles + subtitles ── -->
   <div class="tab-panel active" id="tab-general">
-    <div class="panel-title">Page Subtitles</div>
-    <div class="field"><label>Experiences</label><input type="text" data-key="experiences-subtitle"></div>
-    <div class="field"><label>Creative Collective</label><input type="text" data-key="cc-subtitle"></div>
-    <div class="field"><label>Platforms</label><input type="text" data-key="platforms-subtitle"></div>
-    <div class="field"><label>Immersive Systems</label><input type="text" data-key="is-subtitle"></div>
-    <div class="field"><label>360 AI Lab</label><input type="text" data-key="ai-subtitle"></div>
-    <div class="field"><label>Contact</label><input type="text" data-key="contact-subtitle"></div>
+    <div class="panel-title">Page Titles &amp; Subtitles</div>
+
+    <div class="project-block" style="gap:0.75rem;">
+      <div class="project-label">Experience <span style="color:#333;margin:0 0.4rem;">—</span> <span style="color:#555;text-transform:none;letter-spacing:0.04em;">IMAGINATION × INNOVATION × ILLUMINATION</span></div>
+      <div class="field"><label>Nav Button Name</label><input type="text" data-key="nav-experiences" placeholder="Experience"></div>
+      <div style="display:flex;align-items:center;gap:0.75rem;">
+        <div class="field" style="flex:1;"><label>Title</label><input type="text" data-key="experiences-title" placeholder="IMAGINATION × INNOVATION × ILLUMINATION"></div>
+        <div class="field" style="flex-shrink:0;"><label>Title Size</label>
+          <select class="fs-select" data-key="experiences-title-fs">
+            <option value="">Default</option>
+            <option value="2rem">2rem — Tiny</option>
+            <option value="3rem">3rem — Small</option>
+            <option value="4rem">4rem — Medium</option>
+            <option value="5rem">5rem — Large</option>
+            <option value="6rem">6rem — X-Large</option>
+            <option value="7rem">7rem — 2X-Large</option>
+            <option value="8rem">8rem — 3X-Large</option>
+            <option value="10rem">10rem — Huge</option>
+            <option value="12rem">12rem — Massive</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Subtitle</label><input type="text" data-key="experiences-subtitle" placeholder="Immersive Design, Projection, Interactive Art, and Live Environments."></div>
+    </div>
+
+    <div class="project-block" style="gap:0.75rem;">
+      <div class="project-label">Platforms <span style="color:#333;margin:0 0.4rem;">—</span> <span style="color:#555;text-transform:none;letter-spacing:0.04em;">PLATFORMS</span></div>
+      <div class="field"><label>Nav Button Name</label><input type="text" data-key="nav-platforms" placeholder="Platforms"></div>
+      <div style="display:flex;align-items:center;gap:0.75rem;">
+        <div class="field" style="flex:1;"><label>Title</label><input type="text" data-key="platforms-title" placeholder="PLATFORMS"></div>
+        <div class="field" style="flex-shrink:0;"><label>Title Size</label>
+          <select class="fs-select" data-key="platforms-title-fs">
+            <option value="">Default</option>
+            <option value="2rem">2rem — Tiny</option>
+            <option value="3rem">3rem — Small</option>
+            <option value="4rem">4rem — Medium</option>
+            <option value="5rem">5rem — Large</option>
+            <option value="6rem">6rem — X-Large</option>
+            <option value="7rem">7rem — 2X-Large</option>
+            <option value="8rem">8rem — 3X-Large</option>
+            <option value="10rem">10rem — Huge</option>
+            <option value="12rem">12rem — Massive</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Subtitle</label><input type="text" data-key="platforms-subtitle" placeholder="A complete creative production studio for immersive experiences..."></div>
+    </div>
+
+    <div class="project-block" style="gap:0.75rem;">
+      <div class="project-label">Creative Collections <span style="color:#333;margin:0 0.4rem;">—</span> <span style="color:#555;text-transform:none;letter-spacing:0.04em;">CREATIVE COLLECTIVE</span></div>
+      <div class="field"><label>Nav Button Name</label><input type="text" data-key="nav-cc" placeholder="Creative Collections"></div>
+      <div style="display:flex;align-items:center;gap:0.75rem;">
+        <div class="field" style="flex:1;"><label>Title</label><input type="text" data-key="cc-title" placeholder="CREATIVE COLLECTIVE"></div>
+        <div class="field" style="flex-shrink:0;"><label>Title Size</label>
+          <select class="fs-select" data-key="cc-title-fs">
+            <option value="">Default</option>
+            <option value="2rem">2rem — Tiny</option>
+            <option value="3rem">3rem — Small</option>
+            <option value="4rem">4rem — Medium</option>
+            <option value="5rem">5rem — Large</option>
+            <option value="6rem">6rem — X-Large</option>
+            <option value="7rem">7rem — 2X-Large</option>
+            <option value="8rem">8rem — 3X-Large</option>
+            <option value="10rem">10rem — Huge</option>
+            <option value="12rem">12rem — Massive</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Subtitle</label><input type="text" data-key="cc-subtitle" placeholder="Concept · Design · Execution"></div>
+    </div>
+
+    <div class="project-block" style="gap:0.75rem;">
+      <div class="project-label">Immersive Systems <span style="color:#333;margin:0 0.4rem;">—</span> <span style="color:#555;text-transform:none;letter-spacing:0.04em;">IMMERSIVE SYSTEMS</span></div>
+      <div class="field"><label>Nav Button Name</label><input type="text" data-key="nav-is" placeholder="Immersive Systems"></div>
+      <div style="display:flex;align-items:center;gap:0.75rem;">
+        <div class="field" style="flex:1;"><label>Title</label><input type="text" data-key="is-title" placeholder="IMMERSIVE SYSTEMS"></div>
+        <div class="field" style="flex-shrink:0;"><label>Title Size</label>
+          <select class="fs-select" data-key="is-title-fs">
+            <option value="">Default</option>
+            <option value="2rem">2rem — Tiny</option>
+            <option value="3rem">3rem — Small</option>
+            <option value="4rem">4rem — Medium</option>
+            <option value="5rem">5rem — Large</option>
+            <option value="6rem">6rem — X-Large</option>
+            <option value="7rem">7rem — 2X-Large</option>
+            <option value="8rem">8rem — 3X-Large</option>
+            <option value="10rem">10rem — Huge</option>
+            <option value="12rem">12rem — Massive</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Subtitle</label><input type="text" data-key="is-subtitle" placeholder="Projection-mapped environments, inflatable architecture..."></div>
+    </div>
+
+    <div class="project-block" style="gap:0.75rem;">
+      <div class="project-label">AI 360 Lab <span style="color:#333;margin:0 0.4rem;">—</span> <span style="color:#555;text-transform:none;letter-spacing:0.04em;">360 AI LAB</span></div>
+      <div class="field"><label>Nav Button Name</label><input type="text" data-key="nav-ai" placeholder="AI 360 Lab"></div>
+      <div style="display:flex;align-items:center;gap:0.75rem;">
+        <div class="field" style="flex:1;"><label>Title</label><input type="text" data-key="ai-title" placeholder="360 AI LAB"></div>
+        <div class="field" style="flex-shrink:0;"><label>Title Size</label>
+          <select class="fs-select" data-key="ai-title-fs">
+            <option value="">Default</option>
+            <option value="2rem">2rem — Tiny</option>
+            <option value="3rem">3rem — Small</option>
+            <option value="4rem">4rem — Medium</option>
+            <option value="5rem">5rem — Large</option>
+            <option value="6rem">6rem — X-Large</option>
+            <option value="7rem">7rem — 2X-Large</option>
+            <option value="8rem">8rem — 3X-Large</option>
+            <option value="10rem">10rem — Huge</option>
+            <option value="12rem">12rem — Massive</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Subtitle</label><input type="text" data-key="ai-subtitle" placeholder="Education · Immersive · Interactive"></div>
+    </div>
+
+    <div class="project-block" style="gap:0.75rem;">
+      <div class="project-label">Contact <span style="color:#333;margin:0 0.4rem;">—</span> <span style="color:#555;text-transform:none;letter-spacing:0.04em;">BEGIN A PROJECT</span></div>
+      <div class="field"><label>Nav Button Name</label><input type="text" data-key="nav-contact" placeholder="Contact"></div>
+      <div style="display:flex;align-items:center;gap:0.75rem;">
+        <div class="field" style="flex:1;"><label>Title</label><input type="text" data-key="contact-title" placeholder="BEGIN A PROJECT"></div>
+        <div class="field" style="flex-shrink:0;"><label>Title Size</label>
+          <select class="fs-select" data-key="contact-title-fs">
+            <option value="">Default</option>
+            <option value="2rem">2rem — Tiny</option>
+            <option value="3rem">3rem — Small</option>
+            <option value="4rem">4rem — Medium</option>
+            <option value="5rem">5rem — Large</option>
+            <option value="6rem">6rem — X-Large</option>
+            <option value="7rem">7rem — 2X-Large</option>
+            <option value="8rem">8rem — 3X-Large</option>
+            <option value="10rem">10rem — Huge</option>
+            <option value="12rem">12rem — Massive</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Subtitle</label><input type="text" data-key="contact-subtitle" placeholder="Vision · Collaboration · Execution"></div>
+    </div>
+
   </div>
 
-  <!-- ── Creative Collective ── -->
-  <div class="tab-panel" id="tab-cc">
-    <div class="panel-title">Creative Collective — Projects</div>
-    <div id="cc-projects" style="display:flex;flex-direction:column;gap:0.75rem;"></div>
+  <!-- ── Experience ── -->
+  <div class="tab-panel" id="tab-exp">
+    <div class="panel-title">Experience — Grid Cards</div>
+    <div id="exp-cards" style="display:flex;flex-direction:column;gap:0.75rem;"></div>
   </div>
 
   <!-- ── Platforms ── -->
   <div class="tab-panel" id="tab-platforms">
     <div class="panel-title">Platforms — Cards</div>
     <div id="plat-cards" style="display:flex;flex-direction:column;gap:0.75rem;"></div>
+    <input type="hidden" data-key="plat-count" id="plat-count-val" value="8">
+    <div style="padding-top:1rem;">
+      <button class="secondary" onclick="addPlatCard()">+ Add Platform Row</button>
+    </div>
+  </div>
+
+  <!-- ── Creative Collections ── -->
+  <div class="tab-panel" id="tab-cc">
+    <div class="panel-title">Creative Collections — Projects</div>
+    <div id="cc-projects" style="display:flex;flex-direction:column;gap:0.75rem;"></div>
+    <input type="hidden" data-key="cc-count" id="cc-count-val" value="13">
+    <div style="padding-top:1rem;">
+      <button class="secondary" onclick="addCCProject()">+ Add Project Row</button>
+    </div>
   </div>
 
   <!-- ── Immersive Systems ── -->
@@ -173,27 +359,234 @@
 
   <!-- ── AI Lab ── -->
   <div class="tab-panel" id="tab-ai">
-    <div class="panel-title">360 AI Lab — Hero</div>
-    <div class="field"><label>Heading</label><input type="text" data-key="ai-hero-heading"></div>
+
+    <div class="panel-title">360 AI Lab — Section 01: Hero</div>
+    <div class="field"><label>Section Label</label><input type="text" data-key="ai-01-label" placeholder="WHAT IS THE 360 AI LAB"></div>
+    <div class="field"><label>Heading</label><input type="text" data-key="ai-hero-heading" placeholder="A Modular Immersive Education Platform"></div>
     <div class="field"><label>Description</label><textarea data-key="ai-hero-desc"></textarea></div>
-    <div class="media-slot">
-      <div>
-        <div class="slot-label">Hero Image / Video</div>
-        <div class="thumb-box" id="ai-hero-thumb"><div class="thumb-empty">No media</div></div>
+    <div class="project-grid">
+      <div class="field"><label>Info Block 1 — Label</label><input type="text" data-key="ai-info-1-label" placeholder="Where It Happens"></div>
+      <div class="field"><label>Info Block 1 — Text</label><input type="text" data-key="ai-info-1-text" placeholder="Inside the dome, in projection environments..."></div>
+    </div>
+    <div class="project-grid">
+      <div class="field"><label>Info Block 2 — Label</label><input type="text" data-key="ai-info-2-label" placeholder="How It's Structured"></div>
+      <div class="field"><label>Info Block 2 — Text</label><input type="text" data-key="ai-info-2-text" placeholder="Single sessions, intensive multi-day programs..."></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+      <div class="media-slot">
+        <div>
+          <div class="slot-label">Hero Poster Image</div>
+          <div class="thumb-box" id="ai-hero-thumb"><div class="thumb-empty">No image</div></div>
+        </div>
+        <div class="slot-actions">
+          <input type="hidden" data-key="ai-hero-image" id="ai-hero-val">
+          <button class="pick-btn" onclick="openPicker(url => setMediaSlot('ai-hero', url))">Choose Image</button>
+          <button class="clear-btn" onclick="clearMediaSlot('ai-hero')">✕ Clear</button>
+          <div class="slot-url" id="ai-hero-url"></div>
+        </div>
       </div>
-      <div class="slot-actions">
-        <input type="hidden" data-key="ai-hero-image" id="ai-hero-val">
-        <button class="pick-btn" onclick="openPicker(url => setMediaSlot('ai-hero', url))">Choose Media</button>
-        <button class="clear-btn" onclick="clearMediaSlot('ai-hero')">✕ Clear</button>
-        <div class="slot-url" id="ai-hero-url"></div>
+      <div class="media-slot">
+        <div>
+          <div class="slot-label">Popup Video</div>
+          <div class="thumb-box" id="ai-hero-vid-thumb"><div class="thumb-empty">No video</div></div>
+        </div>
+        <div class="slot-actions">
+          <input type="hidden" data-key="ai-hero-video" id="ai-hero-vid-val">
+          <button class="pick-btn" onclick="openPicker(url => setMediaSlot('ai-hero-vid', url))">Choose Video</button>
+          <button class="clear-btn" onclick="clearMediaSlot('ai-hero-vid')">✕ Clear</button>
+          <div class="slot-url" id="ai-hero-vid-url"></div>
+        </div>
       </div>
     </div>
+
+    <div class="panel-title" style="margin-top:1.5rem;">Section 02: AI Creative Workflow</div>
+    <div class="field"><label>Section Label</label><input type="text" data-key="ai-02-label" placeholder="AI Creative Workflow"></div>
+    <div class="field"><label>Tools (comma-separated)</label><input type="text" data-key="ai-02-tools" placeholder="ChatGPT, Midjourney, Pika, Suno/Udio, Resolume, TouchDesigner"></div>
+    <div class="field"><label>Description</label><textarea data-key="ai-02-desc" placeholder="Explore the essential AI and creative tools..."></textarea></div>
+
+    <div class="panel-title" style="margin-top:1.5rem;">Section 03: AI Thinking Lab</div>
+    <div class="field"><label>Section Label</label><input type="text" data-key="ai-03-label" placeholder="AI Thinking Lab"></div>
+    <div class="field"><label>Description</label><textarea data-key="ai-03-desc" placeholder="Explore peer-to-frame, image-to-motion..."></textarea></div>
+    <div class="project-grid">
+      <div class="field"><label>List Style</label>
+        <select data-key="ai-03-list-type">
+          <option value="check">✓ Checkmark</option>
+          <option value="dot">· Dot</option>
+        </select>
+      </div>
+    </div>
+    <div class="field"><label>List Items (one per line)</label><textarea data-key="ai-03-list" placeholder="Immersive Storytelling Experience&#10;Participatory Worldbuilding Studio&#10;Performance + Talkback Hybrid"></textarea></div>
+
+    <div class="panel-title" style="margin-top:1.5rem;">Section 04: Immersive Educational Modules</div>
+    <div class="field"><label>Section Label</label><input type="text" data-key="ai-04-label" placeholder="Immersive Educational Modules"></div>
+    <div class="field"><label>Description</label><textarea data-key="ai-04-desc" placeholder="Modular learning units for schools, museums..."></textarea></div>
+    <div class="project-grid">
+      <div class="field"><label>List Style</label>
+        <select data-key="ai-04-list-type">
+          <option value="check">✓ Checkmark</option>
+          <option value="dot">· Dot</option>
+        </select>
+      </div>
+    </div>
+    <div class="field"><label>List Items (one per line)</label><textarea data-key="ai-04-list" placeholder="AI Literacy&#10;Creative Technology&#10;Systems Thinking&#10;Environmental Storytelling"></textarea></div>
+
+    <div class="panel-title" style="margin-top:1.5rem;">Section 05: Real-Time Visual Systems</div>
+    <div class="field"><label>Section Label</label><input type="text" data-key="ai-05-label" placeholder="Real-Time Visual Systems"></div>
+    <div class="project-grid">
+      <div class="field"><label>List Style</label>
+        <select data-key="ai-05-list-type">
+          <option value="check">✓ Checkmark</option>
+          <option value="dot">· Dot</option>
+        </select>
+      </div>
+    </div>
+    <div class="field"><label>List Items (one per line)</label><textarea data-key="ai-05-list" placeholder="Projection Mapping&#10;Interactive Systems&#10;Motion-Based Response&#10;Live Visual Control&#10;Immersive Storytelling"></textarea></div>
+
+    <div class="panel-title" style="margin-top:1.5rem;">Section 06: Participatory Learning</div>
+    <div class="field"><label>Section Label</label><input type="text" data-key="ai-06-label" placeholder="Participatory Learning"></div>
+    <div class="field"><label>Description</label><textarea data-key="ai-06-desc" placeholder="We believe the best learning happens together..."></textarea></div>
+
+    <div class="panel-title" style="margin-top:1.5rem;">Section 07: Who It's For</div>
+    <div class="field"><label>Section Label</label><input type="text" data-key="ai-07-label" placeholder="Who It's For"></div>
+    <div class="project-grid">
+      <div class="field"><label>List Style</label>
+        <select data-key="ai-07-list-type">
+          <option value="check">✓ Checkmark</option>
+          <option value="dot">· Dot</option>
+        </select>
+      </div>
+    </div>
+    <div class="field"><label>List Items (one per line)</label><textarea data-key="ai-07-list" placeholder="Schools & Universities&#10;Museums & Cultural Institutions&#10;Youth Programs & Camps&#10;Arts Organizations&#10;Conferences & Festivals&#10;Innovation Labs & Studios"></textarea></div>
+
+    <div class="panel-title" style="margin-top:1.5rem;">Divider Image (between Box 4 and Box 5)</div>
+    <div class="media-slot">
+      <div>
+        <div class="slot-label">Divider Image</div>
+        <div class="thumb-box" id="ai-divider-thumb"><div class="thumb-empty">No image</div></div>
+      </div>
+      <div class="slot-actions">
+        <input type="hidden" data-key="ai-divider-image" id="ai-divider-val">
+        <button class="pick-btn" onclick="openPicker(url => setMediaSlot('ai-divider', url))">Choose Image</button>
+        <button class="clear-btn" onclick="clearMediaSlot('ai-divider')">✕ Clear</button>
+        <div class="slot-url" id="ai-divider-url"></div>
+      </div>
+    </div>
+
+    <div class="panel-title" style="margin-top:1.5rem;">Quote</div>
+    <div class="field"><label>Quote Text (use new lines for line breaks)</label><textarea data-key="ai-quote-text" placeholder="Experience is the bridge between imagination and understanding.&#10;Together, we learn, create, and explore new realities."></textarea></div>
+
   </div>
 
   <!-- ── Contact ── -->
   <div class="tab-panel" id="tab-contact">
-    <div class="panel-title">Contact Page</div>
-    <div class="field"><label>Description</label><textarea data-key="contact-desc"></textarea></div>
+
+    <div class="panel-title">Contact — Info Panel</div>
+    <div class="field"><label>Section Label</label><input type="text" data-key="contact-section-label" placeholder="Begin a Project"></div>
+    <div class="field"><label>Description</label><textarea data-key="contact-desc" placeholder="Tell us about your project vision and goals."></textarea></div>
+    <div class="project-grid">
+      <div class="field"><label>Name</label><input type="text" data-key="contact-name" placeholder="Colin McQuilkin"></div>
+      <div class="field"><label>Role / Title</label><input type="text" data-key="contact-role" placeholder="Creative Director, CMDESIGN"></div>
+    </div>
+    <div class="field"><label>Email</label><input type="text" data-key="contact-email" placeholder="colinmcquilkin@yahoo.com"></div>
+    <div class="field"><label>Phone</label><input type="text" data-key="contact-phone" placeholder="504-628-6400"></div>
+    <div class="field"><label>Instagram</label><input type="text" data-key="contact-instagram" placeholder="@colinmcquilkindesign"></div>
+
+    <div class="panel-title" style="margin-top:1.5rem;">Contact — Form</div>
+    <div class="project-grid">
+      <div class="field"><label>Form Label</label><input type="text" data-key="contact-form-label" placeholder="Project Inquiry"></div>
+      <div class="field"><label>Submit Button Text</label><input type="text" data-key="contact-submit-text" placeholder="Start a Project →"></div>
+    </div>
+    <div class="field">
+      <label>Form Endpoint <span style="color:#333;font-size:0.55rem;text-transform:none;letter-spacing:0">(Formspree URL — e.g. https://formspree.io/f/xxxxx)</span></label>
+      <input type="text" data-key="contact-form-action" placeholder="https://formspree.io/f/">
+    </div>
+
+  </div>
+
+  <!-- ── SEO ── -->
+  <div class="tab-panel" id="tab-seo">
+
+    <div class="panel-title">SEO — Search Engine Optimization</div>
+    <p style="font-size:0.65rem;color:#555;line-height:1.7;margin-bottom:0.5rem;">These values replace the page title, meta description, and social sharing image served to Google and link previews. Leave blank to use the built-in defaults.</p>
+
+    <div class="panel-title" style="margin-top:0.5rem;">Home Page</div>
+    <div class="field"><label>Title</label><input type="text" data-key="seo-home-title" placeholder="Colin McQuilkin — Immersive Experience Designer"></div>
+    <div class="field"><label>Description</label><textarea data-key="seo-home-desc" placeholder="Colin McQuilkin — immersive experience designer based in New Orleans &amp; Gulf Coast..."></textarea></div>
+    <div class="media-slot">
+      <div><div class="slot-label">Social Share Image</div><div class="thumb-box" id="seo-home-thumb"><div class="thumb-empty">No image</div></div></div>
+      <div class="slot-actions">
+        <input type="hidden" data-key="seo-home-image" id="seo-home-val">
+        <button class="pick-btn" onclick="openPicker(url => setMediaSlot('seo-home', url))">Choose Image</button>
+        <button class="clear-btn" onclick="clearMediaSlot('seo-home')">✕ Clear</button>
+        <div class="slot-url" id="seo-home-url"></div>
+      </div>
+    </div>
+
+    <div class="panel-title" style="margin-top:1rem;">Platforms</div>
+    <div class="field"><label>Title</label><input type="text" data-key="seo-platforms-title" placeholder="Platforms — Colin McQuilkin Design"></div>
+    <div class="field"><label>Description</label><textarea data-key="seo-platforms-desc" placeholder="Colin McQuilkin's creative production platforms — serving New Orleans, Gulf Coast, and clients nationwide..."></textarea></div>
+    <div class="media-slot">
+      <div><div class="slot-label">Social Share Image</div><div class="thumb-box" id="seo-platforms-thumb"><div class="thumb-empty">No image</div></div></div>
+      <div class="slot-actions">
+        <input type="hidden" data-key="seo-platforms-image" id="seo-platforms-val">
+        <button class="pick-btn" onclick="openPicker(url => setMediaSlot('seo-platforms', url))">Choose Image</button>
+        <button class="clear-btn" onclick="clearMediaSlot('seo-platforms')">✕ Clear</button>
+        <div class="slot-url" id="seo-platforms-url"></div>
+      </div>
+    </div>
+
+    <div class="panel-title" style="margin-top:1rem;">Creative Collections</div>
+    <div class="field"><label>Title</label><input type="text" data-key="seo-cc-title" placeholder="Creative Collections — Colin McQuilkin Design"></div>
+    <div class="field"><label>Description</label><textarea data-key="seo-cc-desc" placeholder="Immersive creative projects by Colin McQuilkin — including work with Nike, Mazda, and the Walter Anderson Museum..."></textarea></div>
+    <div class="media-slot">
+      <div><div class="slot-label">Social Share Image</div><div class="thumb-box" id="seo-cc-thumb"><div class="thumb-empty">No image</div></div></div>
+      <div class="slot-actions">
+        <input type="hidden" data-key="seo-cc-image" id="seo-cc-val">
+        <button class="pick-btn" onclick="openPicker(url => setMediaSlot('seo-cc', url))">Choose Image</button>
+        <button class="clear-btn" onclick="clearMediaSlot('seo-cc')">✕ Clear</button>
+        <div class="slot-url" id="seo-cc-url"></div>
+      </div>
+    </div>
+
+    <div class="panel-title" style="margin-top:1rem;">Immersive Systems</div>
+    <div class="field"><label>Title</label><input type="text" data-key="seo-is-title" placeholder="Immersive Systems — Colin McQuilkin Design"></div>
+    <div class="field"><label>Description</label><textarea data-key="seo-is-desc" placeholder="Projection mapping, inflatable domes, silent disco &amp; interactive art systems..."></textarea></div>
+    <div class="media-slot">
+      <div><div class="slot-label">Social Share Image</div><div class="thumb-box" id="seo-is-thumb"><div class="thumb-empty">No image</div></div></div>
+      <div class="slot-actions">
+        <input type="hidden" data-key="seo-is-image" id="seo-is-val">
+        <button class="pick-btn" onclick="openPicker(url => setMediaSlot('seo-is', url))">Choose Image</button>
+        <button class="clear-btn" onclick="clearMediaSlot('seo-is')">✕ Clear</button>
+        <div class="slot-url" id="seo-is-url"></div>
+      </div>
+    </div>
+
+    <div class="panel-title" style="margin-top:1rem;">360 AI Lab</div>
+    <div class="field"><label>Title</label><input type="text" data-key="seo-ai-title" placeholder="360 AI Lab — Colin McQuilkin Design"></div>
+    <div class="field"><label>Description</label><textarea data-key="seo-ai-desc" placeholder="A modular immersive education platform combining AI tools, projection mapping, and interactive technology..."></textarea></div>
+    <div class="media-slot">
+      <div><div class="slot-label">Social Share Image</div><div class="thumb-box" id="seo-ai-thumb"><div class="thumb-empty">No image</div></div></div>
+      <div class="slot-actions">
+        <input type="hidden" data-key="seo-ai-image" id="seo-ai-val">
+        <button class="pick-btn" onclick="openPicker(url => setMediaSlot('seo-ai', url))">Choose Image</button>
+        <button class="clear-btn" onclick="clearMediaSlot('seo-ai')">✕ Clear</button>
+        <div class="slot-url" id="seo-ai-url"></div>
+      </div>
+    </div>
+
+    <div class="panel-title" style="margin-top:1rem;">Contact</div>
+    <div class="field"><label>Title</label><input type="text" data-key="seo-contact-title" placeholder="Contact — Colin McQuilkin Design"></div>
+    <div class="field"><label>Description</label><textarea data-key="seo-contact-desc" placeholder="Start a project with Colin McQuilkin. Based in New Orleans &amp; Gulf Coast, available worldwide..."></textarea></div>
+    <div class="media-slot">
+      <div><div class="slot-label">Social Share Image</div><div class="thumb-box" id="seo-contact-thumb"><div class="thumb-empty">No image</div></div></div>
+      <div class="slot-actions">
+        <input type="hidden" data-key="seo-contact-image" id="seo-contact-val">
+        <button class="pick-btn" onclick="openPicker(url => setMediaSlot('seo-contact', url))">Choose Image</button>
+        <button class="clear-btn" onclick="clearMediaSlot('seo-contact')">✕ Clear</button>
+        <div class="slot-url" id="seo-contact-url"></div>
+      </div>
+    </div>
+
   </div>
 
 </div><!-- /editor -->
@@ -215,9 +608,22 @@
   </div>
 </div>
 
+<!-- ── Confirm Delete Modal ────────────────────────────────────────────── -->
+<div id="confirm-modal">
+  <div id="confirm-box">
+    <div id="confirm-filename"></div>
+    <div id="confirm-msg">This cannot be undone</div>
+    <div id="confirm-actions">
+      <button class="secondary" id="confirm-cancel">Cancel</button>
+      <button id="confirm-ok" style="background:#f87171;color:#000;">Delete</button>
+    </div>
+  </div>
+</div>
+
 <script>
   // ── State ─────────────────────────────────────────────────────────────────
   const API        = '/api/content'
+  const API_FRESH  = () => `/api/content?_=${Date.now()}`
   const UPLOAD_API = '/api/upload'
   const MEDIA_API  = '/api/media'
   let password   = ''
@@ -436,9 +842,30 @@
     if (item) selectMedia(item.dataset.url)
   })
 
+  // ── Custom confirm dialog ─────────────────────────────────────────────────
+  function showConfirm(filename) {
+    return new Promise(resolve => {
+      const modal  = document.getElementById('confirm-modal')
+      const okBtn  = document.getElementById('confirm-ok')
+      const cancel = document.getElementById('confirm-cancel')
+      document.getElementById('confirm-filename').textContent = `Delete "${filename}"?`
+      modal.classList.add('open')
+      const cleanup = (result) => {
+        modal.classList.remove('open')
+        okBtn.removeEventListener('click', onOk)
+        cancel.removeEventListener('click', onCancel)
+        resolve(result)
+      }
+      const onOk     = () => cleanup(true)
+      const onCancel = () => cleanup(false)
+      okBtn.addEventListener('click', onOk)
+      cancel.addEventListener('click', onCancel)
+    })
+  }
+
   async function deleteMedia(key, itemEl) {
     const filename = key.split('/').pop()
-    if (!confirm(`Delete "${filename}"?\n\nThis cannot be undone.`)) return
+    if (!await showConfirm(filename)) return
 
     const statusEl = document.getElementById('picker-status')
     statusEl.textContent = 'Deleting…'
@@ -452,7 +879,6 @@
       })
       if (!res.ok) throw new Error(await res.text())
 
-      // Remove from local list and DOM without a full reload
       _allMedia = _allMedia.filter(i => i.key !== key)
       itemEl.remove()
 
@@ -473,46 +899,188 @@
     if (e.key === 'Escape') closePicker()
   })
 
-  // ── Creative Collective blocks ────────────────────────────────────────────
-  const ccProjects = [
-    [1, 'MAZDA',                      'Music in a Different Light'],
-    [2, 'COCA-COLA',                  'Starlight Final Four'],
-    [3, 'Walter Anderson Museum',     'Silent Light'],
-    [4, 'NIKE',                       'Fuel Band SXSW'],
-    [5, 'CMD',                        'Immersion 360 AI Lab'],
-    [6, 'MAZDA',                      'SXSW Hype Hotel'],
-    [7, 'CMD',                        'Luminous Owls'],
-    [8, 'ASYMMETRIC',                 'Work4Hire SXSW'],
-    [9, 'CMD',                        'Trampled By Owls'],
-    [10,'Lauren Rodgers Museum',      'Under the Oaks'],
-    [11,'Big Gigantic',               'Big Gigantic'],
-    [12,'CMD',                        'CMD Fabrication'],
-    [13,'MAZDA',                      'Spectrum Analyzer'],
+  // ── Experiences card blocks ───────────────────────────────────────────────
+  const R2_PUB = 'https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev'
+
+  const expCards = [
+    [1,  'MAZDA',                  'Music in a Different Light',  `${R2_PUB}/hype-hotel-mazda.mp4`],
+    [2,  'COCA-COLA',              'Starlight Final Four',        `${R2_PUB}/starlight-final-four.mp4`],
+    [3,  'MAZDA',                  'Spectrum Analyzer',           `${R2_PUB}/spectrum-analyzer.mp4`],
+    [4,  'NIKE',                   'Fuel Band',                   `${R2_PUB}/grid-4-nike-fuel-band.mp4`],
+    [5,  'WALTER ANDERSON',        'Silent Light',                `${R2_PUB}/grid-5-silent-light.mp4`],
+    [6,  'CMD',                    'Immersion 360 AI Lab',        `${R2_PUB}/grid-6-ai-lab.jpg`],
+    [7,  'CMD',                    'Trampled Fabrication',        `${R2_PUB}/grid-7-trampled.mp4`],
+    [8,  'CMD',                    'G-Pods',                      `${R2_PUB}/grid-g-pods.mp4`],
+    [9,  'LAUREN RODGERS MUSEUM',  'Under the Oaks',              `${R2_PUB}/grid-under-the-oaks.mp4`],
+    [10, 'COLIN MCQUILKIN DESIGN', 'CMDESIGN Public Art',         `${R2_PUB}/grid-10-public-art.png`],
   ]
-  const ccContainer = document.getElementById('cc-projects')
-  ccProjects.forEach(([i, defClient, defTitle]) => {
-    ccContainer.innerHTML += `
+  const expContainer = document.getElementById('exp-cards')
+  expCards.forEach(([i, defClient, defTitle]) => {
+    const num = String(i).padStart(2, '0')
+    expContainer.innerHTML += `
       <div class="project-block">
-        <div class="project-label">Project ${String(i).padStart(2,'0')}</div>
+        <div class="project-label">Card ${num}</div>
         <div class="project-grid">
-          <div class="field"><label>Client</label><input type="text" data-key="cc-${i}-client" placeholder="${defClient}"></div>
-          <div class="field"><label>Title</label><input type="text" data-key="cc-${i}-title" placeholder="${defTitle}"></div>
+          <div class="field"><label>Client</label><input type="text" data-key="exp-${i}-client" placeholder="${defClient}"></div>
+          <div class="field"><label>Title</label><input type="text" data-key="exp-${i}-title" placeholder="${defTitle}"></div>
         </div>
-        <div class="field"><label>Description</label><textarea data-key="cc-${i}-desc"></textarea></div>
-        <div class="media-slot">
-          <div>
-            <div class="slot-label">Video / Image</div>
-            <div class="thumb-box" id="cc-${i}-thumb"><div class="thumb-empty">No media</div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;padding-top:0.65rem;border-top:1px solid #181818;margin-top:0.25rem;">
+          <div class="media-slot" style="border-top:none;padding-top:0;margin-top:0;">
+            <div>
+              <div class="slot-label">Thumbnail Image</div>
+              <div class="thumb-box" id="exp-${i}-poster-thumb"><div class="thumb-empty">No image</div></div>
+            </div>
+            <div class="slot-actions">
+              <input type="hidden" data-key="exp-${i}-poster" id="exp-${i}-poster-val">
+              <button class="pick-btn" onclick="openPicker(url => setMediaSlot('exp-${i}-poster', url))">Choose Image</button>
+              <button class="clear-btn" onclick="clearMediaSlot('exp-${i}-poster')">✕ Clear</button>
+              <div class="slot-url" id="exp-${i}-poster-url"></div>
+            </div>
           </div>
-          <div class="slot-actions">
-            <input type="hidden" data-key="cc-${i}-media" id="cc-${i}-val">
-            <button class="pick-btn" onclick="openPicker(url => setMediaSlot('cc-${i}', url))">Choose Media</button>
-            <button class="clear-btn" onclick="clearMediaSlot('cc-${i}')">✕ Clear</button>
-            <div class="slot-url" id="cc-${i}-url"></div>
+          <div class="media-slot" style="border-top:none;padding-top:0;margin-top:0;">
+            <div>
+              <div class="slot-label">Hover Video</div>
+              <div class="thumb-box" id="exp-${i}-thumb"><div class="thumb-empty">No media</div></div>
+            </div>
+            <div class="slot-actions">
+              <input type="hidden" data-key="exp-${i}-media" id="exp-${i}-val">
+              <button class="pick-btn" onclick="openPicker(url => setMediaSlot('exp-${i}', url))">Choose Video</button>
+              <button class="clear-btn" onclick="clearMediaSlot('exp-${i}')">✕ Clear</button>
+              <div class="slot-url" id="exp-${i}-url"></div>
+            </div>
           </div>
         </div>
       </div>`
   })
+  // Show default thumbnails (populate() will overwrite with KV overrides when they exist)
+  expCards.forEach(([i,,,defMedia]) => {
+    const input = document.getElementById(`exp-${i}-val`)
+    if (input && !input.value) setDefaultThumb(`exp-${i}`, defMedia)
+  })
+
+  // ── Creative Collections blocks ────────────────────────────────────────────
+
+  // Sets only the visual thumbnail — does NOT touch the hidden input, so collect()
+  // won't save it as a KV override. populate() will call setMediaSlot() on top of
+  // this if a real KV override exists.
+  function setDefaultThumb(slotId, url) {
+    const thumb = document.getElementById(`${slotId}-thumb`)
+    if (!thumb) return
+    if (isVideo(url)) {
+      thumb.innerHTML = `<video src="${url}" muted loop playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;"></video>`
+      const v = thumb.querySelector('video')
+      v.addEventListener('loadedmetadata', () => { v.currentTime = 0.001 })
+    } else {
+      thumb.innerHTML = `<img src="${url}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">`
+    }
+  }
+
+  const ccProjects = [
+    [1,  'MAZDA',                  'Music in a Different Light',  `${R2_PUB}/hype-hotel-mazda.mp4`],
+    [2,  'COCA-COLA',              'Starlight Final Four',        `${R2_PUB}/starlight-final-four.mp4`],
+    [3,  'Walter Anderson Museum', 'Silent Light',                `${R2_PUB}/grid-5-silent-light.mp4`],
+    [4,  'NIKE',                   'Fuel Band SXSW',              `${R2_PUB}/cc-nike-cover.jpg`],
+    [5,  'CMD',                    'Immersion 360 AI Lab',        `${R2_PUB}/cc-5-ai-lab-cover.jpg`],
+    [6,  'MAZDA',                  'SXSW Hype Hotel',             `${R2_PUB}/cc-6-mazda-hype-hotel.mp4`],
+    [7,  'CMD',                    'Luminous Owls',               `${R2_PUB}/cc-7-luminous-owls-cover.jpg`],
+    [8,  'ASYMMETRIC',             'Work4Hire SXSW',              `${R2_PUB}/cc-8-work4hire.mp4`],
+    [9,  'CMD',                    'Trampled By Owls',            `${R2_PUB}/cc-trampled-cover.jpg`],
+    [10, 'Lauren Rodgers Museum',  'Under the Oaks',              `${R2_PUB}/grid-under-the-oaks.mp4`],
+    [11, 'Big Gigantic',           'Big Gigantic',                `${R2_PUB}/cc-11-big-gigantic.mp4`],
+    [12, 'CMD',                    'CMD Fabrication',             `${R2_PUB}/cc-12-cmd-fabrication.mp4`],
+    [13, 'MAZDA',                  'Spectrum Analyzer',           `${R2_PUB}/cc-spectrum-cover.jpg`],
+  ]
+  // Default poster images (used as row thumbnails where available)
+  const ccPosters = {
+    4: `${R2_PUB}/cc-nike-cover.jpg`,
+    5: `${R2_PUB}/cc-5-ai-lab-cover.jpg`,
+    7: `${R2_PUB}/cc-7-luminous-owls-cover.jpg`,
+    9: `${R2_PUB}/cc-trampled-cover.jpg`,
+    13:`${R2_PUB}/cc-spectrum-cover.jpg`,
+  }
+
+  function buildCCBlock(i, defClient = '', defTitle = '') {
+    const num = String(i).padStart(2,'0')
+    return `
+      <div class="project-block" data-cc-i="${i}">
+        <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.1rem;">
+          <button class="reorder-btn" onclick="moveCCBlock(this,'up')" title="Move up">▲</button>
+          <button class="reorder-btn" onclick="moveCCBlock(this,'down')" title="Move down">▼</button>
+          <div class="project-label">Project ${num}</div>
+          <button class="clear-btn" style="margin-left:auto;" onclick="deleteAdminRow('cc',${i})">✕ Delete Row</button>
+        </div>
+        <div class="project-grid">
+          <div class="field"><label>Client</label><input type="text" data-key="cc-${i}-client" placeholder="${defClient}"></div>
+          <div class="field"><label>Title</label><input type="text" data-key="cc-${i}-title" placeholder="${defTitle}"></div>
+        </div>
+        <div class="field"><label>Row Description <span style="color:#333;font-size:0.55rem;text-transform:none;letter-spacing:0">(visible on the page)</span></label><textarea data-key="cc-${i}-desc"></textarea></div>
+        <div class="field"><label>Popup Description <span style="color:#333;font-size:0.55rem;text-transform:none;letter-spacing:0">(shown when row is clicked)</span></label><textarea data-key="cc-${i}-modal-desc"></textarea></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;padding-top:0.65rem;border-top:1px solid #181818;margin-top:0.25rem;">
+          <div class="media-slot" style="border-top:none;padding-top:0;margin-top:0;">
+            <div>
+              <div class="slot-label">Row Thumbnail</div>
+              <div class="thumb-box" id="cc-${i}-tn-thumb"><div class="thumb-empty">No image</div></div>
+            </div>
+            <div class="slot-actions">
+              <input type="hidden" data-key="cc-${i}-thumb" id="cc-${i}-tn-val">
+              <button class="pick-btn" onclick="openPicker(url => setMediaSlot('cc-${i}-tn', url))">Choose Image</button>
+              <button class="clear-btn" onclick="clearMediaSlot('cc-${i}-tn')">✕ Clear</button>
+              <div class="slot-url" id="cc-${i}-tn-url"></div>
+            </div>
+          </div>
+          <div class="media-slot" style="border-top:none;padding-top:0;margin-top:0;">
+            <div>
+              <div class="slot-label">Popup Video</div>
+              <div class="thumb-box" id="cc-${i}-thumb"><div class="thumb-empty">No video</div></div>
+            </div>
+            <div class="slot-actions">
+              <input type="hidden" data-key="cc-${i}-media" id="cc-${i}-val">
+              <button class="pick-btn" onclick="openPicker(url => setMediaSlot('cc-${i}', url))">Choose Video</button>
+              <button class="clear-btn" onclick="clearMediaSlot('cc-${i}')">✕ Clear</button>
+              <div class="slot-url" id="cc-${i}-url"></div>
+            </div>
+          </div>
+        </div>
+      </div>`
+  }
+
+  const ccContainer = document.getElementById('cc-projects')
+  ccProjects.forEach(([i, defClient, defTitle]) => {
+    ccContainer.insertAdjacentHTML('beforeend', buildCCBlock(i, defClient, defTitle))
+  })
+  // Default thumbnails: poster image for thumbnail slot, video for video slot
+  ccProjects.forEach(([i,,,defVideo]) => {
+    const tnInput  = document.getElementById(`cc-${i}-tn-val`)
+    const vidInput = document.getElementById(`cc-${i}-val`)
+    if (tnInput  && !tnInput.value  && ccPosters[i]) setDefaultThumb(`cc-${i}-tn`, ccPosters[i])
+    if (vidInput && !vidInput.value)                 setDefaultThumb(`cc-${i}`,    defVideo)
+  })
+
+  // ── CC reorder arrows ─────────────────────────────────────────────────────
+  function moveCCBlock(btn, dir) {
+    const block = btn.closest('.project-block[data-cc-i]')
+    if (!block) return
+    if (dir === 'up') {
+      const prev = block.previousElementSibling
+      if (prev) prev.before(block)
+    } else {
+      const next = block.nextElementSibling
+      if (next) next.after(block)
+    }
+  }
+
+  // ── Platform reorder arrows ───────────────────────────────────────────────
+  function movePlatCard(btn, dir) {
+    const block = btn.closest('.project-block[data-plat-i]')
+    if (!block) return
+    if (dir === 'up') {
+      const prev = block.previousElementSibling
+      if (prev) prev.before(block)
+    } else {
+      const next = block.nextElementSibling
+      if (next) next.after(block)
+    }
+  }
 
   // ── Platform card blocks ──────────────────────────────────────────────────
   const platCards = [
@@ -533,28 +1101,79 @@
     [8, 'Consulting & Systems Design',   'Plan · Design · Integrate',
       'From initial concept to system integration, we help plan and design solutions that deliver results. Technical expertise. Creative vision.'],
   ]
-  const platContainer = document.getElementById('plat-cards')
-  platCards.forEach(([i, defTitle, defTags, defDesc]) => {
+  function buildPlatBlock(i, defTitle = '', defTags = '', defDesc = '') {
     const num = String(i).padStart(2,'0')
-    platContainer.innerHTML += `
-      <div class="project-block">
-        <div class="project-label">Card ${num}</div>
+    return `
+      <div class="project-block" data-plat-i="${i}">
+        <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.1rem;">
+          <button class="reorder-btn" onclick="movePlatCard(this,'up')" title="Move up">▲</button>
+          <button class="reorder-btn" onclick="movePlatCard(this,'down')" title="Move down">▼</button>
+          <div class="project-label">Card ${num}</div>
+          <button class="clear-btn" style="margin-left:auto;" onclick="deleteAdminRow('plat',${i})">✕ Delete Row</button>
+        </div>
         <div class="field"><label>Title</label><input type="text" data-key="plat-${i}-title" placeholder="${defTitle}"></div>
         <div class="field"><label>Tags</label><input type="text" data-key="plat-${i}-tags" placeholder="${defTags}"></div>
         <div class="field"><label>Description</label><textarea data-key="plat-${i}-desc" placeholder="${defDesc}"></textarea></div>
-        <div class="media-slot">
-          <div>
-            <div class="slot-label">Card Image / Video</div>
-            <div class="thumb-box" id="plat-${i}-thumb"><div class="thumb-empty">No media</div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;padding-top:0.65rem;border-top:1px solid #181818;margin-top:0.25rem;">
+          <div class="media-slot" style="border-top:none;padding-top:0;margin-top:0;">
+            <div>
+              <div class="slot-label">Thumbnail <span style="color:#444;text-transform:none;letter-spacing:0">(shown before video plays)</span></div>
+              <div class="thumb-box" id="plat-${i}-tn-thumb"><div class="thumb-empty">No image</div></div>
+            </div>
+            <div class="slot-actions">
+              <input type="hidden" data-key="plat-${i}-thumb" id="plat-${i}-tn-val">
+              <button class="pick-btn" onclick="openPicker(url => setMediaSlot('plat-${i}-tn', url))">Choose Image</button>
+              <button class="clear-btn" onclick="clearMediaSlot('plat-${i}-tn')">✕ Clear</button>
+              <div class="slot-url" id="plat-${i}-tn-url"></div>
+            </div>
           </div>
-          <div class="slot-actions">
-            <input type="hidden" data-key="plat-${i}-image" id="plat-${i}-val">
-            <button class="pick-btn" onclick="openPicker(url => setMediaSlot('plat-${i}', url))">Choose Media</button>
-            <button class="clear-btn" onclick="clearMediaSlot('plat-${i}')">✕ Clear</button>
-            <div class="slot-url" id="plat-${i}-url"></div>
+          <div class="media-slot" style="border-top:none;padding-top:0;margin-top:0;">
+            <div>
+              <div class="slot-label">Card Video / Image</div>
+              <div class="thumb-box" id="plat-${i}-thumb"><div class="thumb-empty">No media</div></div>
+            </div>
+            <div class="slot-actions">
+              <input type="hidden" data-key="plat-${i}-image" id="plat-${i}-val">
+              <button class="pick-btn" onclick="openPicker(url => setMediaSlot('plat-${i}', url))">Choose Media</button>
+              <button class="clear-btn" onclick="clearMediaSlot('plat-${i}')">✕ Clear</button>
+              <div class="slot-url" id="plat-${i}-url"></div>
+            </div>
+          </div>
+        </div>
+        <div style="border-top:1px solid #181818;margin-top:0.5rem;padding-top:0.75rem;">
+          <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.6rem;flex-wrap:wrap;">
+            <span class="slot-label" style="margin:0;min-width:fit-content;">Popup Content</span>
+            <button class="pick-btn popup-type-btn active" data-plat-type="${i}" data-type-val="" onclick="setPlatPopupType(${i},'')">None</button>
+            <button class="pick-btn popup-type-btn" data-plat-type="${i}" data-type-val="slideshow" onclick="setPlatPopupType(${i},'slideshow')">Slideshow</button>
+            <button class="pick-btn popup-type-btn" data-plat-type="${i}" data-type-val="video" onclick="setPlatPopupType(${i},'video')">Video</button>
+            <input type="hidden" data-key="plat-${i}-popup-type" id="plat-${i}-popup-type-val">
+          </div>
+          <div id="plat-${i}-slideshow-panel" style="display:none;">
+            <div class="slot-label" style="margin-bottom:0.25rem;">Slide Images</div>
+            <input type="hidden" data-key="plat-${i}-popup-slides" id="plat-${i}-popup-slides-val">
+            <div id="plat-${i}-slides-container" class="plat-slides-grid"></div>
+          </div>
+          <div id="plat-${i}-video-panel" style="display:none;">
+            <div class="media-slot" style="padding-top:0;border-top:none;margin-top:0;">
+              <div>
+                <div class="slot-label">Popup Video</div>
+                <div class="thumb-box" id="plat-${i}-pv-thumb"><div class="thumb-empty">No video</div></div>
+              </div>
+              <div class="slot-actions">
+                <input type="hidden" data-key="plat-${i}-popup-video" id="plat-${i}-pv-val">
+                <button class="pick-btn" onclick="openPicker(url => setMediaSlot('plat-${i}-pv', url))">Choose Video</button>
+                <button class="clear-btn" onclick="clearMediaSlot('plat-${i}-pv')">✕ Clear</button>
+                <div class="slot-url" id="plat-${i}-pv-url"></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>`
+  }
+
+  const platContainer = document.getElementById('plat-cards')
+  platCards.forEach(([i, defTitle, defTags, defDesc]) => {
+    platContainer.insertAdjacentHTML('beforeend', buildPlatBlock(i, defTitle, defTags, defDesc))
   })
 
   // ── Immersive Systems card builder ───────────────────────────────────────
@@ -586,13 +1205,13 @@
       <div class="project-block">
         <div class="project-label">Card ${num}</div>
         <div class="project-grid">
-          <div class="field"><label>Title</label><input type="text" data-key="is-${i}-title" placeholder="${defTitle}"></div>
-          <div class="field"><label>Tag / Category</label><input type="text" data-key="is-${i}-tag" placeholder="${defTag}"></div>
+          <div class="field"><label>Title</label><input type="text" data-key="is-${i}-title" value="${defTitle}"></div>
+          <div class="field"><label>Tag / Category</label><input type="text" data-key="is-${i}-tag" value="${defTag}"></div>
         </div>
-        <div class="field"><label>Description</label><textarea data-key="is-${i}-desc" placeholder="${defDesc}"></textarea></div>
+        <div class="field"><label>Description</label><textarea data-key="is-${i}-desc">${defDesc}</textarea></div>
         <div class="field" style="margin-top:0.5rem">
           <label>Specs <span style="color:#333;font-size:0.55rem;text-transform:none;letter-spacing:0">(comma-separated)</span></label>
-          <input type="text" data-key="is-${i}-specs" placeholder="${defSpecs}">
+          <input type="text" data-key="is-${i}-specs" value="${defSpecs}">
         </div>
         <div class="media-slot">
           <div>
@@ -609,14 +1228,169 @@
       </div>`
   })
 
+  // ── Platform popup helpers ────────────────────────────────────────────────
+
+  function setPlatPopupType(i, type) {
+    const typeVal = document.getElementById(`plat-${i}-popup-type-val`)
+    const slidePanel = document.getElementById(`plat-${i}-slideshow-panel`)
+    const videoPanel = document.getElementById(`plat-${i}-video-panel`)
+    if (typeVal)    typeVal.value = type
+    if (slidePanel) slidePanel.style.display = type === 'slideshow' ? 'block' : 'none'
+    if (videoPanel) videoPanel.style.display  = type === 'video'    ? 'block' : 'none'
+    document.querySelectorAll(`[data-plat-type="${i}"]`).forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.typeVal === type)
+    })
+  }
+
+  function renderPlatSlides(i) {
+    const container  = document.getElementById(`plat-${i}-slides-container`)
+    const hiddenInput = document.getElementById(`plat-${i}-popup-slides-val`)
+    if (!container || !hiddenInput) return
+    const slides = (hiddenInput.value || '').split(',').map(s => s.trim()).filter(Boolean)
+    container.innerHTML = slides.map((url, idx) => `
+      <div class="plat-slide-thumb">
+        <img src="${url}" alt="" loading="lazy">
+        <button class="plat-slide-remove" onclick="removePlatSlide(${i},${idx})" title="Remove">✕</button>
+      </div>`).join('') +
+      `<button class="pick-btn" style="height:58px;font-size:0.55rem;" onclick="openPicker(url => addPlatSlide(${i}, url))">+ Add Image</button>`
+  }
+
+  function addPlatSlide(i, url) {
+    const hiddenInput = document.getElementById(`plat-${i}-popup-slides-val`)
+    if (!hiddenInput) return
+    const slides = (hiddenInput.value || '').split(',').map(s => s.trim()).filter(Boolean)
+    slides.push(url)
+    hiddenInput.value = slides.join(',')
+    renderPlatSlides(i)
+  }
+
+  function removePlatSlide(i, idx) {
+    const hiddenInput = document.getElementById(`plat-${i}-popup-slides-val`)
+    if (!hiddenInput) return
+    const slides = (hiddenInput.value || '').split(',').map(s => s.trim()).filter(Boolean)
+    slides.splice(idx, 1)
+    hiddenInput.value = slides.join(',')
+    renderPlatSlides(i)
+  }
+
+  // Track which rows were deleted this session so save() can wipe their KV data
+  const deletedCCRows  = new Set()
+  const deletedPlatRows = new Set()
+
+  async function deleteAdminRow(type, i) {
+    const label = type === 'cc' ? `Creative Collections row ${i}` : `Platform row ${i}`
+    if (!await showConfirm(label)) return
+    if (type === 'cc') {
+      document.querySelector(`[data-cc-i="${i}"]`)?.remove()
+      deletedCCRows.add(i)
+    } else {
+      document.querySelector(`[data-plat-i="${i}"]`)?.remove()
+      deletedPlatRows.add(i)
+    }
+  }
+
+  function addCCProject() {
+    const countInput = document.getElementById('cc-count-val')
+    const next = parseInt(countInput.value || '13') + 1
+    countInput.value = next
+    document.getElementById('cc-projects').insertAdjacentHTML('beforeend', buildCCBlock(next))
+    const newBlock = document.querySelector(`[data-cc-i="${next}"]`)
+    if (newBlock) setTimeout(() => newBlock.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50)
+  }
+
+  function addPlatCard() {
+    const countInput = document.getElementById('plat-count-val')
+    const next = parseInt(countInput.value || '8') + 1
+    countInput.value = next
+    document.getElementById('plat-cards').insertAdjacentHTML('beforeend', buildPlatBlock(next))
+    setPlatPopupType(next, '')
+    const newBlock = document.querySelector(`[data-plat-i="${next}"]`)
+    if (newBlock) setTimeout(() => newBlock.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50)
+  }
+
   // ── Core admin functions ──────────────────────────────────────────────────
+
+  let dirtySnapshot = {}
+
+  // Collect only the active tab's [data-key] fields
+  function collectActiveTab() {
+    const data = {}
+    document.querySelectorAll('.tab-panel.active [data-key]').forEach(el => {
+      const val = (el.value ?? '').trim()
+      // Hidden inputs always save (so clearing media / setting type=none is persisted)
+      // Text/textarea only saved when non-empty (avoids overwriting with blank placeholder)
+      if (val || el.type === 'hidden') data[el.dataset.key] = val
+    })
+    // CC row order + count — derived from actual DOM, not just hidden input
+    if (document.querySelector('.tab-panel.active')?.id === 'tab-cc') {
+      const ccBlocks = [...document.querySelectorAll('#cc-projects .project-block[data-cc-i]')]
+      const ccOrder = ccBlocks.map(el => el.dataset.ccI).join(',')
+      if (ccOrder) {
+        data['cc-order'] = ccOrder
+        const maxI = Math.max(...ccBlocks.map(el => parseInt(el.dataset.ccI)))
+        data['cc-count'] = String(maxI)
+      }
+    }
+    // Plat card order + count — derived from actual DOM
+    if (document.querySelector('.tab-panel.active')?.id === 'tab-platforms') {
+      const platBlocks = [...document.querySelectorAll('#plat-cards .project-block[data-plat-i]')]
+      const platOrder = platBlocks.map(el => el.dataset.platI).join(',')
+      if (platOrder) {
+        data['plat-order'] = platOrder
+        const maxI = Math.max(...platBlocks.map(el => parseInt(el.dataset.platI)))
+        data['plat-count'] = String(maxI)
+      }
+    }
+    // Wipe data for deleted CC rows
+    deletedCCRows.forEach(i => {
+      ['client','title','desc','modal-desc'].forEach(k => { data[`cc-${i}-${k}`] = '' })
+      data[`cc-${i}-thumb`]  = ''
+      data[`cc-${i}-media`]  = ''
+      data[`cc-${i}-deleted`] = '1'
+    })
+    // Wipe data for deleted Plat rows
+    deletedPlatRows.forEach(i => {
+      ['title','tags','desc'].forEach(k => { data[`plat-${i}-${k}`] = '' })
+      data[`plat-${i}-image`]       = ''
+      data[`plat-${i}-thumb`]       = ''
+      data[`plat-${i}-popup-type`]  = ''
+      data[`plat-${i}-popup-slides`] = ''
+      data[`plat-${i}-popup-video`] = ''
+      data[`plat-${i}-deleted`]     = '1'
+    })
+    return data
+  }
+
+  function isTabDirty() {
+    const current = collectActiveTab()
+    const keys = new Set([...Object.keys(current), ...Object.keys(dirtySnapshot)])
+    for (const k of keys) {
+      if ((current[k] ?? '') !== (dirtySnapshot[k] ?? '')) return true
+    }
+    return false
+  }
+
+  function updateSaveBtn() {
+    const activeBtn = document.querySelector('.tab-btn.active')
+    const tabName = activeBtn ? activeBtn.textContent.trim() : 'Page'
+    document.getElementById('save-btn').textContent = `Save ${tabName}`
+    document.getElementById('floating-save').textContent = `Save ${tabName}`
+  }
+
   // ── Tab switching ─────────────────────────────────────────────────────────
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
+      if (isTabDirty()) {
+        const activeBtn = document.querySelector('.tab-btn.active')
+        const tabName = activeBtn ? activeBtn.textContent.trim() : 'this tab'
+        if (!confirm(`You have unsaved changes on "${tabName}". Discard and switch tabs?`)) return
+      }
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'))
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'))
       btn.classList.add('active')
       document.getElementById('tab-' + btn.dataset.tab).classList.add('active')
+      updateSaveBtn()
+      dirtySnapshot = collectActiveTab()
     })
   })
 
@@ -626,17 +1400,30 @@
     el.className = 'status ' + type
   }
 
+  function logout() {
+    sessionStorage.removeItem('cms_pwd')
+    password = ''
+    document.getElementById('editor').style.display = 'none'
+    document.getElementById('login').style.display = 'block'
+    document.getElementById('logout-btn').style.display = 'none'
+    document.getElementById('floating-save').style.display = 'none'
+    document.getElementById('pwd').value = ''
+  }
+
   async function login() {
     password = document.getElementById('pwd').value
     if (!password) return
     try {
-      const res = await fetch(API)
+      const res = await fetch(API_FRESH())
       if (!res.ok) throw new Error()
       original = await res.json()
       sessionStorage.setItem('cms_pwd', password)
       populate(original)
       document.getElementById('login').style.display = 'none'
       document.getElementById('editor').style.display = 'block'
+      document.getElementById('logout-btn').style.display = 'block'
+      document.getElementById('floating-save').style.display = 'block'
+      updateSaveBtn()
       setStatus('Loaded')
     } catch {
       document.getElementById('login-err').style.display = 'block'
@@ -649,12 +1436,15 @@
     if (!saved) return
     password = saved
     try {
-      const res = await fetch(API)
+      const res = await fetch(API_FRESH())
       if (!res.ok) throw new Error()
       original = await res.json()
       populate(original)
       document.getElementById('login').style.display = 'none'
       document.getElementById('editor').style.display = 'block'
+      document.getElementById('logout-btn').style.display = 'block'
+      document.getElementById('floating-save').style.display = 'block'
+      updateSaveBtn()
       setStatus('Loaded')
     } catch {
       sessionStorage.removeItem('cms_pwd')
@@ -662,22 +1452,84 @@
   })()
 
   function populate(data) {
+    // Hide deleted default CC blocks (1-13); build extras only if not deleted
+    const ccCountVal = Math.max(13, parseInt(data['cc-count'] || '13'))
+    const ccContainer = document.getElementById('cc-projects')
+    for (let i = 1; i <= 13; i++) {
+      if (data[`cc-${i}-deleted`] === '1') {
+        const block = ccContainer.querySelector(`[data-cc-i="${i}"]`)
+        if (block) block.remove()
+      }
+    }
+    for (let i = 14; i <= ccCountVal; i++) {
+      if (data[`cc-${i}-deleted`] === '1') continue
+      if (!ccContainer.querySelector(`[data-cc-i="${i}"]`)) {
+        ccContainer.insertAdjacentHTML('beforeend', buildCCBlock(i))
+      }
+    }
+    document.getElementById('cc-count-val').value = ccCountVal
+
+    // Hide deleted default plat blocks (1-8); build extras only if not deleted
+    const platCountVal = Math.max(8, parseInt(data['plat-count'] || '8'))
+    const platContainer2 = document.getElementById('plat-cards')
+    for (let i = 1; i <= 8; i++) {
+      if (data[`plat-${i}-deleted`] === '1') {
+        const block = platContainer2.querySelector(`[data-plat-i="${i}"]`)
+        if (block) block.remove()
+      }
+    }
+    for (let i = 9; i <= platCountVal; i++) {
+      if (data[`plat-${i}-deleted`] === '1') continue
+      if (!platContainer2.querySelector(`[data-plat-i="${i}"]`)) {
+        platContainer2.insertAdjacentHTML('beforeend', buildPlatBlock(i))
+      }
+    }
+    document.getElementById('plat-count-val').value = platCountVal
+
     // Text fields — only set value on actual form elements
     document.querySelectorAll('[data-key]').forEach(el => {
       const val = data[el.dataset.key]
       if (val !== undefined && 'value' in el) el.value = val
     })
+    // AI Lab: use placeholder as default value when KV has no saved value
+    document.querySelectorAll('#tab-ai [data-key]').forEach(el => {
+      if (data[el.dataset.key] === undefined && el.placeholder && 'value' in el) {
+        el.value = el.placeholder
+      }
+    })
+    // Restore CC row order
+    if (data['cc-order']) {
+      const container = document.getElementById('cc-projects')
+      data['cc-order'].split(',').forEach(i => {
+        const block = container.querySelector(`[data-cc-i="${i.trim()}"]`)
+        if (block) container.appendChild(block)
+      })
+    }
     // Restore all media thumbnails
     const slots = [
-      'ai-hero',
-      ...Array.from({length:13}, (_,i) => `cc-${i+1}`),
-      ...Array.from({length:8},  (_,i) => `plat-${i+1}`),
-      ...Array.from({length:6},  (_,i) => `is-${i+1}`),
+      'ai-hero', 'ai-hero-vid', 'ai-divider',
+      'seo-home', 'seo-platforms', 'seo-cc', 'seo-is', 'seo-ai', 'seo-contact',
+      ...Array.from({length:10},         (_,i) => `exp-${i+1}`),
+      ...Array.from({length:10},         (_,i) => `exp-${i+1}-poster`),
+      ...Array.from({length:ccCountVal}, (_,i) => `cc-${i+1}-tn`),
+      ...Array.from({length:ccCountVal}, (_,i) => `cc-${i+1}`),
+      ...Array.from({length:platCountVal},(_,i) => `plat-${i+1}`),
+      ...Array.from({length:platCountVal},(_,i) => `plat-${i+1}-tn`),
+      ...Array.from({length:platCountVal},(_,i) => `plat-${i+1}-pv`),
+      ...Array.from({length:6},          (_,i) => `is-${i+1}`),
     ]
     slots.forEach(slotId => {
       const input = document.getElementById(`${slotId}-val`)
       if (input && input.value) setMediaSlot(slotId, input.value)
     })
+    // Restore platform popup type + slide thumbnails
+    for (let i = 1; i <= platCountVal; i++) {
+      const typeInput = document.getElementById(`plat-${i}-popup-type-val`)
+      if (typeInput) setPlatPopupType(i, typeInput.value || '')
+      renderPlatSlides(i)
+    }
+    // Snapshot the current tab so dirty-detection starts clean
+    dirtySnapshot = collectActiveTab()
   }
 
   function collect() {
@@ -686,6 +1538,10 @@
       const val = (el.value ?? '').trim()   // non-form elements return undefined for .value
       if (val) data[el.dataset.key] = val
     })
+    // Save CC row order (always write so a reorder to default is also persisted)
+    const ccOrder = [...document.querySelectorAll('#cc-projects .project-block[data-cc-i]')]
+      .map(el => el.dataset.ccI).join(',')
+    if (ccOrder) data['cc-order'] = ccOrder
     return data
   }
 
@@ -696,28 +1552,52 @@
 
   async function save() {
     const btn = document.getElementById('save-btn')
-    btn.disabled = true
-    btn.textContent = 'Saving…'
+    const floatBtn = document.getElementById('floating-save')
+    const tabName = document.querySelector('.tab-btn.active')?.textContent.trim() || 'Page'
+    btn.disabled = true; floatBtn.disabled = true
+    btn.textContent = 'Saving…'; floatBtn.textContent = 'Saving…'
     setStatus('Saving…')
     try {
+      const tabData = collectActiveTab()
+      const merged = { ...original, ...tabData }
       const res = await fetch(API, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${password}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify(collect()),
+        body: JSON.stringify(merged),
       })
-      if (res.status === 401) { setStatus('Wrong password', 'err'); return }
+      if (res.status === 401) {
+        alert('❌ Save failed: Wrong password.\n\nClick "Log Out" in the header and log back in, then try saving again.')
+        setStatus('Wrong password — log out and back in', 'err')
+        return
+      }
       if (!res.ok) throw new Error(await res.text())
-      original = collect()
-      setStatus('Saved ✓', 'ok')
-      setTimeout(() => setStatus(''), 3000)
+
+      // Verify the save actually persisted by reading back from KV
+      const verify = await fetch(API_FRESH())
+      const saved = await verify.json()
+      const ccCountSaved = saved['cc-count']
+      const ccCountExpected = merged['cc-count']
+      if (ccCountExpected && ccCountSaved !== ccCountExpected) {
+        throw new Error(`Count mismatch after save (expected ${ccCountExpected}, got ${ccCountSaved}). Try again.`)
+      }
+
+      original = saved
+      localStorage.setItem('cms_v1', JSON.stringify(original))
+      dirtySnapshot = collectActiveTab()
+      const ccCount = saved['cc-count'] ? ` · ${saved['cc-count']} CC rows` : ''
+      setStatus(`Saved ✓${ccCount}`, 'ok')
+      setTimeout(() => setStatus(''), 4000)
     } catch (e) {
+      alert('❌ Save error: ' + e.message)
       setStatus('Error: ' + e.message, 'err')
     } finally {
-      btn.disabled = false
-      btn.textContent = 'Save All Changes'
+      btn.disabled = false; floatBtn.disabled = false
+      btn.textContent = `Save ${tabName}`; floatBtn.textContent = `Save ${tabName}`
     }
   }
 </script>
+
+<button id="floating-save" onclick="save()">Save</button>
 
 </body>
 </html>

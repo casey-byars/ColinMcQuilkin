@@ -1,5 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Finlandica:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Nixie+One&family=Poiret+One&display=swap');
 @import "tailwindcss";
 @import "./fonts.css";
+
+/* ── Shared page header ──────────────────────────────────────────────────── */
+.page-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6.5vw, 6rem);
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  color: white;
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.page-subtitle {
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: #888;
+  line-height: 1.75;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+/* ── Site-wide max width ─────────────────────────────────────────────────── */
+#app {
+  max-width: 1260px;
+  margin: 0 auto;
+}
 
 /* ── Site Footer ─────────────────────────────────────────────────────────── */
 .site-footer {
@@ -49,6 +77,53 @@
 
 .footer-nav a:hover { color: #aaa; }
 
+/* ── Top Navigation layout ───────────────────────────────────────────────── */
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 2.5rem;
+}
+
+/* Desktop nav: hidden by default, shown above 1260px */
+.nav-desktop {
+  display: none;
+  gap: 2.5rem;
+}
+
+/* Hamburger: shown by default, hidden above 1260px */
+.nav-hamburger { display: flex; }
+
+/* Mobile dropdown: hidden by default */
+.nav-mobile-menu { display: none; }
+
+@media (min-width: 1260px) {
+  .nav-desktop    { display: flex; }
+  .nav-hamburger  { display: none; }
+  .nav-mobile-menu{ display: none !important; }
+  .nav-inner      { padding: 1.5rem 2.5rem; }
+}
+
+/* ── Top Navigation ──────────────────────────────────────────────────────── */
+.nav-link {
+  text-decoration: none;
+  position: relative;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.2s ease;
+}
+.nav-link:hover::after,
+.nav-link.nav-active::after {
+  width: 100%;
+}
+
 .footer-copy {
   display: flex;
   align-items: center;
@@ -67,6 +142,12 @@
 .footer-copy a:hover { color: #888; }
 
 .footer-dot { color: #222; }
+
+/* ── Suppress Chrome media overlay controls on all videos ────────────────── */
+video::-webkit-media-controls             { display: none !important; }
+video::-webkit-media-controls-enclosure  { display: none !important; }
+video::-webkit-media-controls-panel      { display: none !important; }
+video::-webkit-media-controls-overlay-play-button { display: none !important; }
 
 .project-card {
   position: relative;
@@ -100,6 +181,17 @@
   height: 100%;
   object-fit: cover;
 }
+
+.card-poster-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.project-card:hover .card-poster-img { opacity: 0; }
 
 .card-client {
   font-size: 10px;
