@@ -1,234 +1,136 @@
-import './style.css'
+import './redesign-base.css'
 import './ai-360-lab.css'
 import { navHTML, footerHTML, initPage, getContent } from './shared.js'
 
 document.querySelector('#app').innerHTML = `
   ${navHTML}
 
-  <section class="py-4 px-4">
-    <h1 class="page-title mb-4" data-ck="ai-title" data-ck-fs="ai-title-fs">360 AI LAB</h1>
-    <p class="page-subtitle" data-ck="ai-subtitle" data-ck-hide>Education &nbsp;·&nbsp; Immersive &nbsp;·&nbsp; Interactive</p>
+  <!-- AI HERO -->
+  <section class="ai-hero">
+    <div class="ai-hero-bg"></div>
+    <div class="ai-grid-lines"></div>
+    <div class="ai-glow-1"></div>
+    <div class="ai-glow-2"></div>
+    <div class="ai-hero-content">
+      <div class="ai-badge"><span class="ai-badge-dot"></span><span data-ck="ai-badge">Now Available for Booking Nationwide</span></div>
+      <h1 data-ck="ai-hero-h1">The 360&deg;<br><em>AI</em> <span class="accent-teal">Lab</span></h1>
+      <p class="ai-hero-desc" data-ck="ai-hero-desc">A traveling generative AI dome experience. Step inside real-time artificial intelligence. Available for corporate events, festivals, universities, and cultural institutions nationwide.</p>
+      <div class="ai-actions">
+        <a href="/contact.html" class="btn-teal" data-ck="ai-hero-cta1">Book a Discovery Call &#8594;</a>
+        <a href="#ai-overview" class="btn-ghost" data-ck="ai-hero-cta2">Program Overview</a>
+      </div>
+    </div>
+    <div class="ai-specs-bar">
+      <div class="ai-spec"><span class="ai-spec-val">40ft</span><span class="ai-spec-key">Dome Diameter</span></div>
+      <div class="ai-spec"><span class="ai-spec-val">90</span><span class="ai-spec-key">Person Capacity</span></div>
+      <div class="ai-spec"><span class="ai-spec-val">4-6h</span><span class="ai-spec-key">Setup Time</span></div>
+      <div class="ai-spec"><span class="ai-spec-val">120V</span><span class="ai-spec-key">Power Required</span></div>
+    </div>
   </section>
 
-  <div class="px-4">
-
-    <!-- HERO: text left, video right -->
-    <div class="ai-hero">
-      <div class="ai-hero-text">
-        <div class="ai-section-label">
-          <span class="ai-section-num">01</span>
-          <span data-ck="ai-01-label"></span>
+  <!-- PROGRAM OVERVIEW -->
+  <section class="ai-overview" id="ai-overview">
+    <div class="ai-dome-visual">
+      <div class="ai-dome-ring ai-ring-1"></div>
+      <div class="ai-dome-ring ai-ring-2"></div>
+      <div class="ai-dome-ring ai-ring-3"></div>
+    </div>
+    <div>
+      <div class="eyebrow" style="color:#00d4cc" data-ck="ai-overview-eyebrow">Program Overview</div>
+      <h2 class="display" style="margin-bottom:24px" data-ck="ai-overview-heading">What Is the<br>360&deg; <em>AI Lab</em>?</h2>
+      <div class="gold-rule" style="background:#00d4cc"></div>
+      <p style="font-size:15px;color:var(--light-grey);line-height:1.8;margin-bottom:20px" data-ck="ai-overview-p1">The 360&deg; AI Lab is the Southeast&rsquo;s first traveling generative AI dome experience. Inside a 40-foot inflatable dome, real-time artificial intelligence generates visual content that responds to audience input, music, and environmental data &mdash; creating a unique, collective experience every time.</p>
+      <p style="font-size:15px;color:var(--grey);line-height:1.8;margin-bottom:40px" data-ck="ai-overview-p2">It&rsquo;s part art installation, part technology workshop, part collective experience. Every session is unique &mdash; no two experiences are ever the same.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div style="padding:20px;border:1px solid rgba(0,212,204,0.2);background:rgba(0,212,204,0.03)">
+          <div style="font-family:var(--condensed);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#00d4cc;margin-bottom:8px">For Events</div>
+          <div style="font-family:var(--condensed);font-size:13px;color:var(--light-grey)" data-ck="ai-for-events">Festivals, corporate events, product launches, galas</div>
         </div>
-        <h2 class="ai-hero-heading" data-ck="ai-hero-heading"></h2>
-        <p class="ai-hero-desc" data-ck="ai-hero-desc"></p>
-        <div class="ai-info-blocks">
-          <div class="ai-info-block">
-            <div class="ai-info-icon">⌂</div>
-            <div>
-              <div class="ai-info-label" data-ck="ai-info-1-label"></div>
-              <div class="ai-info-text" data-ck="ai-info-1-text"></div>
-            </div>
-          </div>
-          <div class="ai-info-block">
-            <div class="ai-info-icon">◷</div>
-            <div>
-              <div class="ai-info-label" data-ck="ai-info-2-label"></div>
-              <div class="ai-info-text" data-ck="ai-info-2-text"></div>
-            </div>
-          </div>
+        <div style="padding:20px;border:1px solid rgba(0,212,204,0.2);background:rgba(0,212,204,0.03)">
+          <div style="font-family:var(--condensed);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#00d4cc;margin-bottom:8px">For Education</div>
+          <div style="font-family:var(--condensed);font-size:13px;color:var(--light-grey)" data-ck="ai-for-edu">Universities, K-12, museums, workshops</div>
         </div>
       </div>
-      <div class="ai-hero-video">
-        <img id="ai-hero-img" src="https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev/ai-lab-hero.png" alt="360 AI Lab" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
-        <div class="ai-play-btn">
-          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-        </div>
-        <span class="ai-watch-label">Click to Watch</span>
+    </div>
+  </section>
+
+  <!-- CURRICULUM -->
+  <section class="ai-curriculum">
+    <div class="eyebrow" style="color:#00d4cc" data-ck="ai-curriculum-eyebrow">Education Track</div>
+    <h2 class="display" data-ck="ai-curriculum-heading">Workshop Curriculum</h2>
+    <div class="curriculum-grid">
+      <div class="curriculum-module">
+        <div class="module-num">Module 01</div>
+        <div class="module-name" data-ck="ai-mod-1-name">What Is Generative AI?</div>
+        <div class="module-desc" data-ck="ai-mod-1-desc">An accessible introduction to how AI generates visual and spatial content in real time. No technical background required.</div>
+      </div>
+      <div class="curriculum-module">
+        <div class="module-num">Module 02</div>
+        <div class="module-name" data-ck="ai-mod-2-name">The Artist &amp; the Algorithm</div>
+        <div class="module-desc" data-ck="ai-mod-2-desc">Exploring the creative relationship between human intention and machine generation. What does authorship mean when AI is involved?</div>
+      </div>
+      <div class="curriculum-module">
+        <div class="module-num">Module 03</div>
+        <div class="module-name" data-ck="ai-mod-3-name">Inside the Dome</div>
+        <div class="module-desc" data-ck="ai-mod-3-desc">Participants experience the AI Lab firsthand &mdash; immersed in a live generative visual environment that responds to collective input.</div>
+      </div>
+      <div class="curriculum-module">
+        <div class="module-num">Module 04</div>
+        <div class="module-name" data-ck="ai-mod-4-name">Creative Applications</div>
+        <div class="module-desc" data-ck="ai-mod-4-desc">How is AI being used in art, architecture, entertainment, and design today? Practical pathways for creative professionals.</div>
       </div>
     </div>
+  </section>
 
-    <!-- BOTTOM GRID: sections 02–07 with divider image between 04 and 05 -->
-    <div class="ai-grid">
-
-      <div class="ai-cell ai-cell--wide">
-        <div class="ai-cell-label"><span class="ai-cell-num">02</span> <span data-ck="ai-02-label"></span></div>
-        <img class="ai-02-logos" src="https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev/uploads/AI-Logos.jpg" alt="AI tools">
-        <div class="ai-tool-row" id="ai-02-tools">
-          <span class="ai-tool">ChatGPT</span>
-          <span class="ai-tool">Midjourney</span>
-          <span class="ai-tool">Pika</span>
-          <span class="ai-tool">Suno/Udio</span>
-          <span class="ai-tool">Resolume</span>
-          <span class="ai-tool">TouchDesigner</span>
-        </div>
-        <p class="ai-cell-desc" data-ck="ai-02-desc"></p>
-      </div>
-
-      <div class="ai-cell">
-        <div class="ai-cell-label"><span class="ai-cell-num">03</span> <span data-ck="ai-03-label"></span></div>
-        <p class="ai-cell-desc" data-ck="ai-03-desc"></p>
-        <ul class="ai-checklist" id="ai-03-list"></ul>
-      </div>
-
-      <div class="ai-cell">
-        <div class="ai-cell-label"><span class="ai-cell-num">04</span> <span data-ck="ai-04-label"></span></div>
-        <p class="ai-cell-desc" data-ck="ai-04-desc"></p>
-        <ul class="ai-checklist" id="ai-04-list"></ul>
-      </div>
-
-      <!-- Divider image cell -->
-      <div class="ai-divider-cell" id="ai-divider-wrap">
-        <img id="ai-divider-img" src="https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev/uploads/light-man-low-resolution-2x.jpeg" alt="">
-      </div>
-
-      <div class="ai-cell">
-        <div class="ai-cell-label"><span class="ai-cell-num">05</span> <span data-ck="ai-05-label"></span></div>
-        <ul class="ai-checklist" id="ai-05-list"></ul>
-      </div>
-
-      <div class="ai-cell">
-        <div class="ai-cell-label"><span class="ai-cell-num">06</span> <span data-ck="ai-06-label"></span></div>
-        <p class="ai-cell-desc" data-ck="ai-06-desc"></p>
-      </div>
-
-      <div class="ai-cell">
-        <div class="ai-cell-label"><span class="ai-cell-num">07</span> <span data-ck="ai-07-label"></span></div>
-        <ul class="ai-checklist" id="ai-07-list"></ul>
-      </div>
-
-    </div>
-
-    <!-- QUOTE -->
-    <div class="ai-quote">
-      <span class="ai-quote-mark ai-quote-mark--left">&ldquo;</span>
-      <p class="ai-quote-text" id="ai-quote-text">Experience is the bridge between imagination and understanding.<br>Together, we learn, create, and explore new realities.</p>
-      <span class="ai-quote-mark ai-quote-mark--right">&rdquo;</span>
-    </div>
-
-  </div>
-
-  <!-- ── Video Modal ── -->
-  <div id="ai-modal" role="dialog" aria-modal="true">
-    <div id="ai-modal-backdrop"></div>
-    <div id="ai-modal-box">
-      <button id="ai-modal-close" aria-label="Close">✕</button>
-      <div id="ai-modal-video-wrap">
-        <video id="ai-modal-video" playsinline controls disablePictureInPicture disableremoteplayback style="pointer-events:auto;"></video>
-      </div>
-      <div id="ai-modal-vol">
-        <button id="ai-vol-btn" aria-label="Toggle mute">
-          <svg id="ai-vol-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-            <path id="ai-vol-wave1" d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-            <path id="ai-vol-wave2" d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-          </svg>
-        </button>
-        <input type="range" id="ai-vol-slider" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
-        <span id="ai-vol-pct">80%</span>
+  <!-- FAQ -->
+  <section class="faq-section" style="background:var(--black)">
+    <div class="section-header" style="margin-bottom:0">
+      <div>
+        <div class="eyebrow" style="color:#00d4cc" data-ck="ai-faq-eyebrow">Questions</div>
+        <h2 class="display" data-ck="ai-faq-heading">About the 360&deg; AI Lab</h2>
       </div>
     </div>
-  </div>
+    <div class="faq-grid" style="margin-top:56px">
+      <div class="faq-item">
+        <div class="faq-q"><span data-ck="ai-faq-1-q">What power requirements does the dome need?</span><span>+</span></div>
+        <div class="faq-a" data-ck="ai-faq-1-a">The 360&deg; AI Lab runs on standard 120V household/commercial power &mdash; two standard 20-amp circuits. No generator or special electrical infrastructure required, making it suitable for most venues.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span data-ck="ai-faq-2-q">How much space is needed for the dome?</span><span>+</span></div>
+        <div class="faq-a" data-ck="ai-faq-2-a">The dome requires a footprint of approximately 44x44 feet and a ceiling height of at least 20 feet. It can be installed indoors or outdoors on a flat, level surface.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span data-ck="ai-faq-3-q">How long does setup take?</span><span>+</span></div>
+        <div class="faq-a" data-ck="ai-faq-3-a">Full setup takes 4&ndash;6 hours with our two-person crew. We handle all rigging, projection calibration, and AI system configuration. Breakdown takes approximately 2&ndash;3 hours.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span data-ck="ai-faq-4-q">Can the dome content be customized for our brand or event?</span><span>+</span></div>
+        <div class="faq-a" data-ck="ai-faq-4-a">Yes. The AI system can be trained with brand-specific visual parameters, color palettes, and thematic content. Custom branding integration is available as an add-on to standard rental packages.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span data-ck="ai-faq-5-q">How far does the dome travel?</span><span>+</span></div>
+        <div class="faq-a" data-ck="ai-faq-5-a">The system is designed for national deployment. We&rsquo;ve set up in Louisiana, Mississippi, Alabama, Tennessee, and Texas. Travel costs are included in the rental quote for destinations beyond our base radius.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span data-ck="ai-faq-6-q">Is there an educational curriculum available?</span><span>+</span></div>
+        <div class="faq-a" data-ck="ai-faq-6-a">Yes. The 360&deg; AI Lab includes an optional educational track with four curriculum modules covering generative AI fundamentals, creative applications, and the ethics of machine creativity.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="ai-badge" style="margin:0 auto 32px;width:fit-content"><span class="ai-badge-dot"></span><span data-ck="ai-cta-badge">Available for Booking</span></div>
+    <h2 class="cta-heading" data-ck="ai-cta-heading">Experience AI<br>From the <em>Inside</em></h2>
+    <p class="cta-sub" data-ck="ai-cta-sub">Check availability for your event date. We respond to all inquiries within 24 hours.</p>
+    <div class="cta-buttons">
+      <a href="/contact.html" class="btn-teal" data-ck="ai-cta-btn">Book a Discovery Call &#8594;</a>
+      <button class="btn-ghost" data-ck="ai-cta-btn2">Download Brochure</button>
+    </div>
+  </section>
 
   ${footerHTML}
 `
 
 initPage('ai-360-lab')
-
-// ── Modal logic ─────────────────────────────────────────────────────────────
-const R2 = 'https://pub-2978629bd67943adbfc351e6dbcc0f6f.r2.dev'
-let aiVideoUrl = `${R2}/cc-5-ai-lab.mp4`
-
-const aiVolSlider = document.getElementById('ai-vol-slider')
-const aiVolPct    = document.getElementById('ai-vol-pct')
-const aiVolBtn    = document.getElementById('ai-vol-btn')
-const aiVolWave1  = document.getElementById('ai-vol-wave1')
-const aiVolWave2  = document.getElementById('ai-vol-wave2')
-
-function applyAIVolume(vol) {
-  const vid = document.getElementById('ai-modal-video')
-  vid.volume = vol
-  vid.muted  = vol === 0
-  aiVolSlider.value = vol
-  aiVolPct.textContent = Math.round(vol * 100) + '%'
-  const pct = vol * 100
-  aiVolSlider.style.background = `linear-gradient(to right, white ${pct}%, #2a2a2a ${pct}%)`
-  aiVolWave1.style.opacity = vol > 0 ? '1' : '0'
-  aiVolWave2.style.opacity = vol > 0.4 ? '1' : '0'
-}
-
-aiVolSlider.addEventListener('input', e => applyAIVolume(parseFloat(e.target.value)))
-aiVolBtn.addEventListener('click', () => {
-  const vid = document.getElementById('ai-modal-video')
-  applyAIVolume(vid.muted || vid.volume === 0 ? 0.8 : 0)
-})
-
-function openAIModal() {
-  if (!aiVideoUrl) return
-  const modal = document.getElementById('ai-modal')
-  const vid   = document.getElementById('ai-modal-video')
-  applyAIVolume(0.8)
-  vid.src = aiVideoUrl
-  vid.load()
-  vid.play().catch(() => {})
-  modal.classList.add('is-open')
-  document.body.style.overflow = 'hidden'
-}
-
-function closeAIModal() {
-  const modal = document.getElementById('ai-modal')
-  const vid   = document.getElementById('ai-modal-video')
-  vid.pause()
-  vid.src = ''
-  modal.classList.remove('is-open')
-  document.body.style.overflow = ''
-}
-
-document.getElementById('ai-modal-close').addEventListener('click', closeAIModal)
-document.getElementById('ai-modal-backdrop').addEventListener('click', closeAIModal)
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAIModal() })
-
-document.querySelector('.ai-hero-video').addEventListener('click', openAIModal)
-
-function renderAIList(id, items, type) {
-  const ul = document.getElementById(id)
-  if (!ul) return
-  ul.className = type === 'dot' ? 'ai-dotlist' : 'ai-checklist'
-  ul.innerHTML = items.split('\n').filter(s => s.trim()).map(s => `<li>${s.trim()}</li>`).join('')
-}
-
-async function loadAIMedia() {
-  try {
-    const data = await getContent()
-
-    // Hero image + popup video
-    const imgUrl = data['ai-hero-image']
-    if (imgUrl) { const img = document.getElementById('ai-hero-img'); if (img) img.src = imgUrl }
-    if (data['ai-hero-video']) aiVideoUrl = data['ai-hero-video']
-
-    // Divider image between 04 and 05
-    if (data['ai-divider-image']) {
-      const el = document.getElementById('ai-divider-img')
-      if (el) el.src = data['ai-divider-image']
-    }
-
-    // Tools row (comma-separated)
-    if (data['ai-02-tools']) {
-      const row = document.getElementById('ai-02-tools')
-      if (row) row.innerHTML = data['ai-02-tools'].split(',').map(t => `<span class="ai-tool">${t.trim()}</span>`).join('')
-    }
-
-    // Lists (sections 03–05, 07)
-    ;[3, 4, 5, 7].forEach(n => {
-      const key = `ai-0${n}-list`
-      const typeKey = `ai-0${n}-list-type`
-      if (data[key]) renderAIList(`ai-0${n}-list`, data[key], data[typeKey] || 'check')
-    })
-
-    // Quote text (newlines → <br>)
-    if (data['ai-quote-text']) {
-      const el = document.getElementById('ai-quote-text')
-      if (el) el.innerHTML = data['ai-quote-text'].replace(/\n/g, '<br>')
-    }
-  } catch {}
-}
-loadAIMedia()
+getContent()

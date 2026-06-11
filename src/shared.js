@@ -1,56 +1,72 @@
-export const footerHTML = `
-  <footer class="site-footer">
-    <div class="footer-mark">
-      <span class="footer-rule">——</span>
-      <span class="footer-logo">CMDESIGN</span>
-      <span class="footer-rule">——</span>
-    </div>
-    <nav class="footer-nav">
-      <a href="/"><span data-ck="nav-experiences">Experience</span></a>
-      <a href="/platforms.html"><span data-ck="nav-platforms">Platforms</span></a>
-      <a href="/creative-collective.html"><span data-ck="nav-cc">Creative Collections</span></a>
-      <a href="/immersive-systems.html"><span data-ck="nav-is">Immersive Systems</span></a>
-      <a href="/ai-360-lab.html"><span data-ck="nav-ai">AI 360 Lab</span></a>
-      <a href="/contact.html"><span data-ck="nav-contact">Contact</span></a>
-    </nav>
-    <div class="footer-copy">
-      <a href="mailto:colinmcquilkin@yahoo.com">colinmcquilkin@yahoo.com</a>
-      <span class="footer-dot">·</span>
-      <span>© ${new Date().getFullYear()} Colin McQuilkin Design</span>
-    </div>
-    <div style="display:flex;justify-content:center;padding:2rem 1rem 0;">
-      <img src="/cdc-logos.png" alt="Client logos" style="max-width:560px;width:100%;opacity:0.45;display:block;">
-    </div>
-  </footer>
-`
-
 export const navHTML = `
-  <nav class="border-b border-neutral-800" style="background:#000;">
-    <div class="nav-inner">
-      <a href="/"><img src="/CMD_logo.png" alt="CMDESIGN" style="display:block;height:52px;width:auto;flex-shrink:0;"></a>
-      <button id="menu-toggle" class="nav-hamburger flex flex-col gap-1.5 p-2">
-        <span class="block w-6 h-px bg-white transition-all"></span>
-        <span class="block w-6 h-px bg-white transition-all"></span>
-        <span class="block w-6 h-px bg-white transition-all"></span>
-      </button>
-      <div id="nav-desktop" class="nav-desktop text-xs tracking-[0.2em] text-neutral-400 uppercase">
-        <a href="/" class="nav-link hover:text-white transition-colors" data-page="experiences"><span data-ck="nav-experiences">Experience</span></a>
-        <a href="/platforms.html" class="nav-link hover:text-white transition-colors" data-page="platforms"><span data-ck="nav-platforms">Platforms</span></a>
-        <a href="/creative-collective.html" class="nav-link hover:text-white transition-colors" data-page="creative-collective"><span data-ck="nav-cc">Creative Collections</span></a>
-        <a href="/immersive-systems.html" class="nav-link hover:text-white transition-colors" data-page="immersive-systems"><span data-ck="nav-is">Immersive Systems</span></a>
-        <a href="/ai-360-lab.html" class="nav-link hover:text-white transition-colors" data-page="ai-360-lab"><span data-ck="nav-ai">AI 360 Lab</span></a>
-        <a href="/contact.html" class="nav-link hover:text-white transition-colors" data-page="contact"><span data-ck="nav-contact">Contact</span></a>
-      </div>
-    </div>
-    <div id="mobile-menu" class="nav-mobile-menu flex-col px-6 pb-6 gap-5 text-xs tracking-[0.2em] text-neutral-400 uppercase">
-      <a href="/" class="nav-link hover:text-white transition-colors" data-page="experiences"><span data-ck="nav-experiences">Experience</span></a>
-      <a href="/platforms.html" class="nav-link hover:text-white transition-colors" data-page="platforms"><span data-ck="nav-platforms">Platforms</span></a>
-      <a href="/creative-collective.html" class="nav-link hover:text-white transition-colors" data-page="creative-collective"><span data-ck="nav-cc">Creative Collections</span></a>
-      <a href="/immersive-systems.html" class="nav-link hover:text-white transition-colors" data-page="immersive-systems"><span data-ck="nav-is">Immersive Systems</span></a>
-      <a href="/ai-360-lab.html" class="nav-link hover:text-white transition-colors" data-page="ai-360-lab"><span data-ck="nav-ai">AI 360 Lab</span></a>
-      <a href="/contact.html" class="nav-link hover:text-white transition-colors" data-page="contact"><span data-ck="nav-contact">Contact</span></a>
+  <nav id="site-nav">
+    <a class="nav-logo" href="/"><img src="/CMD_logo.png" alt="CMDESIGN" style="height:40px;width:auto;display:block;"></a>
+    <ul class="nav-links">
+      <li><a href="/" class="nav-link" data-page="experiences"><span data-ck="nav-experiences">Experience</span></a></li>
+      <li><a href="/creative-collective.html" class="nav-link" data-page="creative-collective"><span data-ck="nav-cc">Case Studies</span></a></li>
+      <li><a href="/platforms.html" class="nav-link" data-page="platforms"><span data-ck="nav-platforms">Platforms</span></a></li>
+      <li><a href="/immersive-systems.html" class="nav-link" data-page="immersive-systems"><span data-ck="nav-is">Immersive Systems</span></a></li>
+      <li><a href="/ai-360-lab.html" class="nav-link" data-page="ai-360-lab"><span data-ck="nav-ai">AI 360 Lab</span></a></li>
+    </ul>
+    <a href="/contact.html" class="nav-cta">Get In Touch</a>
+    <div class="mobile-menu-btn" id="mobile-menu-btn">
+      <span></span><span></span><span></span>
     </div>
   </nav>
+  <div class="mobile-nav-open" id="mobile-nav">
+    <a href="/" class="nav-link" data-page="experiences"><span data-ck="nav-experiences">Experience</span></a>
+    <a href="/creative-collective.html" class="nav-link" data-page="creative-collective"><span data-ck="nav-cc">Case Studies</span></a>
+    <a href="/platforms.html" class="nav-link" data-page="platforms"><span data-ck="nav-platforms">Platforms</span></a>
+    <a href="/immersive-systems.html" class="nav-link" data-page="immersive-systems"><span data-ck="nav-is">Immersive Systems</span></a>
+    <a href="/ai-360-lab.html" class="nav-link" data-page="ai-360-lab"><span data-ck="nav-ai">AI 360 Lab</span></a>
+    <a href="/contact.html" class="nav-link" data-page="contact"><span data-ck="nav-contact">Contact</span></a>
+  </div>
+`
+
+export const footerHTML = `
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo"><img src="/CMD_logo.png" alt="CMDESIGN" style="height:36px;width:auto;margin-bottom:16px;"></div>
+        <p class="footer-desc" data-ck="footer-desc">The Southeast's leading immersive experience studio. Projection mapping, AI experiences, museum installations, and branded activations. Based in New Orleans. Deployed nationally.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Services</div>
+        <ul class="footer-links">
+          <li><a href="/platforms.html">Projection Mapping</a></li>
+          <li><a href="/platforms.html">Interactive Systems</a></li>
+          <li><a href="/ai-360-lab.html">360&deg; AI Lab</a></li>
+          <li><a href="/platforms.html">Concert Production</a></li>
+          <li><a href="/immersive-systems.html">Immersive Rentals</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Studio</div>
+        <ul class="footer-links">
+          <li><a href="/creative-collective.html">Case Studies</a></li>
+          <li><a href="/">Journal</a></li>
+          <li><a href="/contact.html">About</a></li>
+          <li><a href="/contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Contact</div>
+        <ul class="footer-links">
+          <li><a>New Orleans, Louisiana</a></li>
+          <li><a href="mailto:hello@colinmcquilkin.design">hello@colinmcquilkin.design</a></li>
+          <li><a>@colinmcquilkindesign</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">&copy; ${new Date().getFullYear()} CMDESIGN &mdash; Colin McQuilkin Design. All rights reserved.</span>
+      <div class="footer-social">
+        <a class="social-link">Instagram</a>
+        <a class="social-link">LinkedIn</a>
+        <a class="social-link">Vimeo</a>
+      </div>
+    </div>
+  </footer>
 `
 
 const CACHE_KEY = 'cms_v1'
@@ -102,7 +118,6 @@ export async function loadContent() {
 
 export function initPage(activePage) {
   // Suppress browser media session overlay (Opera/Chrome HUD) for all videos.
-  // Fires in capture phase so it catches dynamically-injected videos too.
   if ('mediaSession' in navigator) {
     window.addEventListener('play', e => {
       if (e.target.tagName !== 'VIDEO') return
@@ -114,16 +129,60 @@ export function initPage(activePage) {
   // Highlight active nav link
   document.querySelectorAll('.nav-link').forEach(a => {
     if (a.dataset.page === activePage) {
-      a.classList.add('text-white', 'nav-active')
-      a.classList.remove('text-neutral-400')
+      a.classList.add('active')
     }
   })
 
   // Mobile menu toggle
-  document.getElementById('menu-toggle').addEventListener('click', () => {
-    const menu = document.getElementById('mobile-menu')
-    const open = menu.style.display === 'flex'
-    menu.style.display = open ? 'none' : 'flex'
+  const menuBtn = document.getElementById('mobile-menu-btn')
+  const mobileNav = document.getElementById('mobile-nav')
+  if (menuBtn && mobileNav) {
+    menuBtn.addEventListener('click', () => {
+      mobileNav.classList.toggle('open')
+    })
+  }
+
+  // Scroll-based nav shadow
+  const nav = document.getElementById('site-nav')
+  if (nav) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        nav.style.borderBottomColor = 'rgba(255,255,255,0.06)'
+      } else {
+        nav.style.borderBottomColor = 'rgba(255,255,255,0.08)'
+      }
+    })
+  }
+
+  // FAQ toggle
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open')
+      const grid = item.closest('.faq-grid')
+      if (grid) {
+        grid.querySelectorAll('.faq-item').forEach(i => {
+          i.classList.remove('open')
+          const plus = i.querySelector('.faq-q span:last-child')
+          if (plus) plus.textContent = '+'
+        })
+      }
+      if (!isOpen) {
+        item.classList.add('open')
+        const plus = item.querySelector('.faq-q span:last-child')
+        if (plus) plus.textContent = '-'
+      }
+    })
+  })
+
+  // Filter buttons
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const group = this.closest('.filter-group')
+      if (group) {
+        group.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'))
+      }
+      this.classList.add('active')
+    })
   })
 
   const isMobile = () => window.innerWidth < 768
